@@ -1,0 +1,41 @@
+{
+  "name": "fuse-equipment-api",
+  "version": "1.0.0",
+  "description": "fuse equipment api façade",
+  "main": "main.js",
+  "scripts": {
+    "start": "babel-node main.js",
+    "start-dev": "nodemon main.js --exec babel-node",
+    "test": "npm run lint && npm run unit-tests",
+    "unit-tests": "NODE_ENV=test mocha 'test/**/*_spec.js'",
+    "lint": "eslint 'midlewares/**/*.js' 'test/**/.js' *.js"
+  },
+  "keywords": [
+    "Fuse",
+    "Facade"
+  ],
+  "author": "AGCO",
+  "dependencies": {
+    "babel": "^6.3.26",
+    "babel-cli": "^6.4.5",
+    "babel-core": "^6.7.4",
+    "babel-preset-es2015": "^6.3.13",
+    "bcrypt": "^0.8.5",
+    "bluebird": "^3.3.4",
+    "body-parser": "^1.14.2",
+    "consign": "^0.1.2",
+    "cors": "^2.7.1",
+    "hapi": "^13.3.0",
+    "request": "^2.69.0",
+    "request-promise": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.5.3",
+    "eslint-config-agco": "0.0.3",
+    "eslint-plugin-standard": "^1.3.2",
+    "mocha": "^2.4.5",
+    "supertest": "^1.1.0",
+    "testdouble": "^1.2.0"
+  }
+}
