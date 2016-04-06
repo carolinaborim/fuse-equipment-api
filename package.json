@@ -26,6 +26,7 @@
     "consign": "^0.1.2",
     "cors": "^2.7.1",
     "hapi": "^13.3.0",
+    "mocha-bamboo-reporter": "^1.1.0",
     "request": "^2.69.0",
     "request-promise": "^2.0.1"
   },
