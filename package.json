@@ -6,7 +6,7 @@
   "scripts": {
     "start": "babel-node main.js",
     "start-dev": "nodemon main.js --exec babel-node",
-    "test": "npm run lint && npm run unit-tests",
+    "test": "snyk test && npm run lint && npm run unit-tests",
     "unit-tests": "NODE_ENV=test mocha 'test/**/*_spec.js'",
     "lint": "eslint 'midlewares/**/*.js' 'test/**/.js' *.js"
   },
@@ -28,7 +28,8 @@
     "hapi": "^13.3.0",
     "mocha-bamboo-reporter": "^1.1.0",
     "request": "^2.69.0",
-    "request-promise": "^2.0.1"
+    "request-promise": "^2.0.1",
+    "snyk": "^1.13.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
