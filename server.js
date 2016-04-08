@@ -2,10 +2,9 @@ import Hapi from 'hapi';
 
 const server = new Hapi.Server();
 const PORT = process.env.PORT || 9090;
-const BASE_URI = process.env.BASE_URI || 'localhost';
 
 server.connection({
-  host: BASE_URI,
+  host: '0.0.0.0',
   port: PORT
 });
 
