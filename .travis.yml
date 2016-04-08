@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "4.2"
+- '4.2'
 addons:
   apt:
     sources:
@@ -9,4 +9,11 @@ addons:
     - gcc-4.8
     - g++-4.8
 env:
-  - TRAVIS=travis CXX=g++-4.8
+- TRAVIS=travis CXX=g++-4.8
+deploy:
+  provider: heroku
+  api_key:
+    secure: H+XT8bigjVVdUIhj31BgIff8PcuQi5IdzUTykB+IKV1vu7hUA3hAtWhlA805jx0FLuvtUmGTAE7tcr+R/aF/ED4Cy0eE9993905TiCPvIeGYuvyQJyDnMxm2Q4iui01deU/D4arm65a4EtO2X42jM0g9pg9VHX54WtruDLfWNzPPsP2e1UKHedkppd6i34Lei1JLbCaEvUChhAIQrbCUaaGKN10UKiQOQhaS9yJk534hoZEBDUiUW5AcEZhF0w6qTZ8TxBJg0rzEM7KmPWVXzDf5k2VUj6Lhba3Ppfy3U9cbxaIY4Ne4AAYqyVdCR+vH7C5Nz23bLATwA2+fjdh/UEMD8tqM+xcHDRRE74enSbf66oswOU3vJ2+9XIPYMJLMn0skCGlppmCAUbHuvoldNTMLEC0PQR07buuFXV1AvJhp+9v9Q9muFsS3eJtCPLUul+fZdSuQDadAaQm/G7t5cs1XA/SmwrbtWOrLbtfjrVAyuYEL+XRiUxfz189RP6NjI1F7vKrSn7F6V0i7db1lUghyvm9bZZHSIrb9DS7iWPRCOyB/gPwM8buP9pR35gtDaczf0W00tdwx+FO9oqNaYD9+z39cMQom9CxaJEIqDaaKXcjnCBy+SlvAyKHl7QpWlYpbpd2hRgSnIHrnOJqJu7Ns/QErx+vzB2TAV9hW01Y=
+  app: fuse-equipment-api
+  on:
+    repo: agco-fuse/fuse-equipment-api
