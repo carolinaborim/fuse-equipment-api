@@ -1,27 +1,32 @@
 import server from '../server';
 
 describe('Route: equipment', () => {
-  it('responds with a Hello world', (done) => {
-    const expectedResponse = 'hello world';
+  it('request telemetry api with same authorization header', (done) => {
+    const authenticationHeader = 'Bearer VALID_TOKEN';
     const options = {
       url: '/equipment',
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Authorization': authenticationHeader
+      }
+    };
+    const expectedResponse = {
+      'equipments': []
+    };
+    const telemetryRequest = {
+      method: 'GET',
+      json: true,
+      url: `${FUSE_TELEMETRY_API_URL}/equipment`,
+      headers: {
+        'Authorization': authenticationHeader
+      }
     };
 
-    server.inject(options, (res) => {
-      expect(res.payload).to.be.eql(expectedResponse);
-      done();
-    });
-  });
-
-  it('responds with a success http status code', (done) => {
-    const options = {
-      url: '/equipment',
-      method: 'GET'
-    };
+    respondWithSuccess(httpClient(telemetryRequest), expectedResponse);
 
     server.inject(options, (res) => {
       expect(res.statusCode).to.be.eql(200);
+      td.verify(httpClient(telemetryRequest));
       done();
     });
   });
