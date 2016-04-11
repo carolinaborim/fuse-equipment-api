@@ -8,7 +8,7 @@ describe('Route: equipment', () => {
         method: 'GET'
     };
 
-    server.inject(options, function (res) {
+    server.inject(options, (res) => {
         expect(res.payload).to.be.eql(expectedResponse);
         done();
     });
@@ -22,7 +22,7 @@ describe('Route: equipment', () => {
         method: 'GET'
     };
 
-    server.inject(options, function (res) {
+    server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(200);
         done();
     });
