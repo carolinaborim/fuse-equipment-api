@@ -1,3 +1,4 @@
+import supertest from 'supertest';
 import chai from 'chai';
 import app from '../app';
 import td from 'testdouble';
