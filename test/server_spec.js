@@ -1,5 +1,3 @@
-import server from '../server';
-
 describe('Route: equipment', () => {
   it('request telemetry api with same authorization header', (done) => {
     const authenticationHeader = 'Bearer VALID_TOKEN';
@@ -7,16 +5,15 @@ describe('Route: equipment', () => {
       url: '/equipment',
       method: 'GET',
       headers: {
-        'Authorization': authenticationHeader
+        Authorization: authenticationHeader
       }
     };
-
     const telemetryRequest = {
       method: 'GET',
       json: true,
       url: `${FUSE_TELEMETRY_API_URL}/equipment`,
       headers: {
-        'Authorization': authenticationHeader
+        Authorization: authenticationHeader
       }
     };
 

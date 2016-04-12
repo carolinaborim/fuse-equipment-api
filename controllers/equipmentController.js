@@ -3,7 +3,9 @@ import Joi from 'joi';
 
 const equipment = new Equipment();
 
-const EquipmentController = () => {
+const EquipmentController = (httpClient, telemetryAPI) => {
+  EquipmentController.httpClient = httpClient;
+  EquipmentController.telemetryAPI = telemetryAPI;
   EquipmentController.defaultEquipment = {
     equipment: [
       {
@@ -22,7 +24,26 @@ const EquipmentController = () => {
 };
 
 EquipmentController.prototype.findAll = (request, reply) => {
-  return reply('hello world');
+  return EquipmentController.httpClient({
+    method: 'GET',
+    json: true,
+    url: `${EquipmentController.telemetryAPI}/equipment`,
+    headers: {
+      Authorization: request.headers.authorization
+    }
+  })
+  .then((response) => {
+    console.log(response);
+    return reply({
+      data: []
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+    return reply({
+      error: err
+    });
+  });
 };
 
 EquipmentController.prototype.findById = (request, reply) => {
