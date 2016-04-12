@@ -1,6 +1,13 @@
 import Equipment from '../models/equipment';
 import Joi from 'joi';
 
+const responseWithError = (request, reply) => (err) => {
+  //request.response.statusCode = 401;
+  const response = reply(err.response.body);
+  response.statusCode = 401;
+  return response;
+}
+
 const equipment = new Equipment();
 
 const EquipmentController = (httpClient, telemetryAPI) => {
@@ -33,17 +40,11 @@ EquipmentController.prototype.findAll = (request, reply) => {
     }
   })
   .then((response) => {
-    console.log(response);
     return reply({
       data: []
     });
   })
-  .catch((err) => {
-    console.log(err);
-    return reply({
-      error: err
-    });
-  });
+  .catch(responseWithError(request, reply));
 };
 
 EquipmentController.prototype.findById = (request, reply) => {
