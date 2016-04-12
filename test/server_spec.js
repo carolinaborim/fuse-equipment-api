@@ -124,18 +124,21 @@ describe('Route: equipment', () => {
     };
 
     respondWithFailure(httpClient(telemetryRequest), {
-      statusCode: 401,
       response: {
-        body: {
-          error: 'Unauthorized user'
-        }
+        statusCode: 401,
+        body: 'Unauthorized'
       }
     });
 
     server.inject(options, (res) => {
       expect(res.statusCode).to.be.eql(401);
       expect(JSON.parse(res.payload)).to.be.eql({
-        error: 'Unauthorized user'
+        errors: [
+          {
+            status: 401,
+            title:  'Unauthorized'
+          }
+        ]
       });
       td.verify(httpClient(telemetryRequest));
       done();

@@ -2,8 +2,15 @@ import Equipment from '../models/equipment';
 import Joi from 'joi';
 
 const responseWithError = (request, reply) => (err) => {
-  const response = reply(err.response.body);
-  response.statusCode = 401;
+  const response = reply({
+    errors: [
+      {
+        status: err.response.statusCode,
+        title:  err.response.body
+      }
+    ]
+  });
+  response.statusCode = err.response.statusCode;
   return response;
 }
 
