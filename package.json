@@ -8,7 +8,7 @@
     "start-dev": "nodemon main.js --exec babel-node",
     "test": "snyk test && npm run lint && npm run unit-tests",
     "unit-tests": "NODE_ENV=test mocha 'test/**/*_spec.js'",
-    "lint": "eslint 'midlewares/**/*.js' 'test/**/.js' *.js"
+    "lint": "eslint '**/**/*.js' *.js"
   },
   "keywords": [
     "Fuse",
@@ -26,10 +26,14 @@
     "consign": "^0.1.2",
     "cors": "^2.7.1",
     "hapi": "^13.3.0",
+    "hapi-swagger": "^5.0.1",
+    "inert": "^3.2.0",
+    "joi": "^8.0.5",
     "mocha-bamboo-reporter": "^1.1.0",
     "request": "^2.69.0",
     "request-promise": "^2.0.1",
-    "snyk": "^1.13.2"
+    "snyk": "^1.13.2",
+    "vision": "^4.1.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
