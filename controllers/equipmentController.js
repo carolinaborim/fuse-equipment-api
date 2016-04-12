@@ -2,11 +2,51 @@ import Equipment from '../models/equipment';
 import Joi from 'joi';
 
 const responseWithError = (request, reply) => (err) => {
-  //request.response.statusCode = 401;
   const response = reply(err.response.body);
   response.statusCode = 401;
   return response;
 }
+
+const responseWithEquipments = (request, reply) => (equipments) => {
+  let data = equipments.equipment.map((equipment) => {
+    return {
+      type: 'equipment',
+      id: equipment.id,
+      attributes: {
+        description: equipment.description,
+        serviceLevel: equipment.serviceLevel,
+        identificationNumber: equipment.identificationNumber,
+        manufacturingDate: equipment.manufacturingDate
+      },
+      relationships: {
+        dealer: {
+          links: {
+            self: '',
+            related: ''
+          },
+          data: {
+            type: 'dealer',
+            id: equipment.links.dealer
+          }
+        },
+        model: {
+          links: {
+            self: '',
+            related: ''
+          },
+          data: {
+            type: 'model',
+            id: equipment.links.model
+          }
+        }
+      }
+    };
+  });
+
+  return reply({
+    data: data
+  });
+};
 
 const equipment = new Equipment();
 
@@ -39,11 +79,7 @@ EquipmentController.prototype.findAll = (request, reply) => {
       Authorization: request.headers.authorization
     }
   })
-  .then((response) => {
-    return reply({
-      data: []
-    });
-  })
+  .then(responseWithEquipments(request, reply))
   .catch(responseWithError(request, reply));
 };
 
