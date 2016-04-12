@@ -18,7 +18,7 @@ const app = (httpClient, telemetryAPI) => {
         json: true,
         url: `${telemetryAPI}/equipment`,
         headers: {
-            'Authorization': request.headers.authorization
+          Authorization: request.headers.authorization
         }
       })
       .then((response) => {
