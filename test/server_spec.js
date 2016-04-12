@@ -10,9 +10,7 @@ describe('Route: equipment', () => {
         'Authorization': authenticationHeader
       }
     };
-    const expectedResponse = {
-      'equipments': []
-    };
+
     const telemetryRequest = {
       method: 'GET',
       json: true,
@@ -22,7 +20,7 @@ describe('Route: equipment', () => {
       }
     };
 
-    respondWithSuccess(httpClient(telemetryRequest), expectedResponse);
+    respondWithSuccess(httpClient(telemetryRequest), {});
 
     server.inject(options, (res) => {
       expect(res.statusCode).to.be.eql(200);
