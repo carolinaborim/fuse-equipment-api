@@ -1,6 +1,7 @@
 # FUSE Equipamente API
 
 [![Build Status](https://travis-ci.org/agco-fuse/fuse-equipment-api.svg?branch=master)](https://travis-ci.org/agco-fuse/fuse-equipment-api)
+[![Code Climate](https://codeclimate.com/github/agco-fuse/fuse-equipment-api/badges/gpa.svg)](https://codeclimate.com/github/agco-fuse/fuse-equipment-api)
 
 This is an API that consumes the AGCO's Telemetry API, and exposes the Equipament information as a JSON RESTful endpoint.
 It is developed on top of [node.js](https://nodejs.org).
