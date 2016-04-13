@@ -1,12 +1,9 @@
-import Equipment from '../models/equipment';
-import Joi from 'joi';
-
 const responseWithError = (request, reply) => (err) => {
   const response = reply({
     errors: [
       {
         status: err.response.statusCode,
-        title:  err.response.body
+        title: err.response.body
       }
     ]
   });
@@ -50,23 +47,21 @@ const parseEquipment = (equipment) => {
 };
 
 const responseWithSingleEquipment = (request, reply) => (equipments) => {
-  let parsedEquipment = parseEquipment(equipments.equipment[0]);
+  const parsedEquipment = parseEquipment(equipments.equipment[0]);
   return reply({
     data: parsedEquipment
   });
 };
 
 const responseWithEquipments = (request, reply) => (equipments) => {
-  let data = equipments.equipment.map((equipment) => {
+  const equipmentData = equipments.equipment.map((equipment) => {
     return parseEquipment(equipment);
   });
 
   return reply({
-    data: data
+    data: equipmentData
   });
 };
-
-const equipment = new Equipment();
 
 const EquipmentController = (httpClient, telemetryAPI) => {
   EquipmentController.httpClient = httpClient;
