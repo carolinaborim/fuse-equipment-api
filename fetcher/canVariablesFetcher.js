@@ -12,8 +12,7 @@ const defaultCanVariableNames = [
 'DRIVING_DIRECTION',
 ];
 
-const createSearchUrl = () => {
-  let equipmentId = 'ce88a25c-14b0-4eaa-88cc-0bee1c6f1025';
+const createSearchUrl = (equipmentId) => {
   let canVariableNames = defaultCanVariableNames.join(',');
   let requestUri = `${config.TELEMETRY_API_URL}/trackingData/search?include=trackingPoint`+
   `&links.canVariable.name=${canVariableNames}`+
@@ -39,7 +38,7 @@ class CanVariablesFetcher {
 
   fetchByEquipmentId(id, authorizationBearer) {
     let options = Object.assign({
-      uri: createSearchUrl(),
+      uri: createSearchUrl(id),
       headers: {
         Authorization: authorizationBearer
       }
