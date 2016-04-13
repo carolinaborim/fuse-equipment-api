@@ -1,12 +1,20 @@
 const responseWithError = (request, reply) => (err) => {
-  const response = reply({
-    errors: [
-      {
-        status: err.response.statusCode,
-        title: err.response.body
-      }
-    ]
-  });
+  let errors = {};
+  if (err.response.statusCode === 401) {
+    errors = {
+      errors: [
+        {
+          status: err.response.statusCode,
+          title: err.response.body
+        }
+      ]
+    };
+  } else if (err.response.statusCode === 404) {
+    Object.assign(errors, err.response.body);
+    delete errors.errors[0].href;
+    delete errors.errors[0].detail;
+  }
+  const response = reply(errors);
   response.statusCode = err.response.statusCode;
   return response;
 };

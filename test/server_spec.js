@@ -225,5 +225,52 @@ describe('EquipmentController', () => {
         done();
       });
     });
+
+    it('get request equipment id that does not exist', (done) => {
+      const authenticationHeader = 'Bearer VALID_TOKEN';
+      const options = {
+        url: '/equipment/1-2-3',
+        method: 'GET',
+        headers: {
+          Authorization: authenticationHeader
+        }
+      };
+      const expectedResponse = {
+        errors: [
+          {
+            status: 404,
+            title: 'Resource not found.',
+          }
+        ]
+      };
+      const telemetryRequest = {
+        method: 'GET',
+        json: true,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment/1-2-3`,
+        headers: {
+          Authorization: authenticationHeader
+        }
+      };
+
+      respondWithFailure(httpClient(telemetryRequest), {
+        response: {
+          statusCode: 404,
+          body: {
+            errors: [{
+              status: 404,
+              href: 'about:blank',
+              title: 'Resource not found.',
+              detail: ''
+            }]
+          }
+        }
+      });
+
+      server.inject(options, (res) => {
+        expect(res.statusCode).to.be.eql(404);
+        expect(JSON.parse(res.payload)).to.be.eql(expectedResponse);
+        done();
+      });
+    });
   });
 });
