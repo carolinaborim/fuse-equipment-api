@@ -205,5 +205,29 @@ describe('EquipmentController', () => {
         done();
       });
     });
+
+    it('get request status code diferent from any mapped error', (done) => {
+      const expectedResponse = {
+        errors: [
+          {
+            status: 500,
+            title: 'An unhandle error happened',
+          }
+        ]
+      };
+
+      respondWithFailure(httpClient(telemetryRequest), {
+        response: {
+          statusCode: 123,
+          body: 'Error'
+        }
+      });
+
+      server.inject(options, (res) => {
+        expect(res.statusCode).to.be.eql(500);
+        expect(JSON.parse(res.payload)).to.be.eql(expectedResponse);
+        done();
+      });
+    });
   });
 });
