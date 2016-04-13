@@ -7,9 +7,9 @@ const defaultRequestOptions = {
 };
 
 const defaultCanVariableNames = [
-  'ENGINE_HOURS',
-  'ENGINE_SPEED',
-  'DRIVING_DIRECTION',
+'ENGINE_HOURS',
+'ENGINE_SPEED',
+'DRIVING_DIRECTION',
 ];
 
 const createSearchUrl = () => {
@@ -29,32 +29,36 @@ const createSearchUrl = () => {
   '&tp_latest_ag.include=trackingPoint'+
   `&links.trackingPoint.equipment.id=${equipmentId}`;
 
-   return requestUri;
+  return requestUri;
 }
 
-const CanVariablesFetcher = (param) => {
-  console.log('hereee',this);
-};
+class CanVariablesFetcher {
+  constructor(httpClient) {
+    this.httpClient = httpClient;
+  }
 
-CanVariablesFetcher.prototype.fetchByEquipmentId = (id) => {
-  let options = Object.assign({
-    uri: createSearchUrl(),
-    headers: {
-      Authorization: 'Bearer a4d767dc-2d8f-4bea-ac26-4d009b43af88'
-    }
-  }, defaultRequestOptions);
-  rp(options)
-    .then((data) => {
-      return { 
-        'engine_hours': '123123123',
-        'engine_speed': '123123123123',
-        'driving_direction': '12321312'
+  fetchByEquipmentId(id, authorizationBearer) {
+    let options = Object.assign({
+      uri: createSearchUrl(),
+      headers: {
+        Authorization: authorizationBearer
       }
-    })
-    .catch(function (err) {
-        console.log(err.error);
-    });
+    }, defaultRequestOptions);
+    
+    return this.httpClient(options)
+      .then((data) => {
+        let canVariables = {};
+        data.meta.aggregations.equip_agg[0].spn_ag.forEach((data, index) => {
+          canVariables[data.key] = data.spn_latest_ag[0].value;
+        });
 
+        return canVariables;
+      })
+      .catch(function (err) {
+        console.log(err.error);
+      });
+  }
 }
+
 
 module.exports = CanVariablesFetcher;
