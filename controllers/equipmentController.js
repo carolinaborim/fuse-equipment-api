@@ -62,9 +62,7 @@ const responseWithSingleEquipment = (request, reply) => (equipments) => {
 };
 
 const responseWithEquipments = (request, reply) => (equipments) => {
-  const equipmentData = equipments.equipment.map((equipment) => {
-    return parseEquipment(equipment);
-  });
+  const equipmentData = equipments.equipment.map(parseEquipment);
 
   return reply({
     data: equipmentData
