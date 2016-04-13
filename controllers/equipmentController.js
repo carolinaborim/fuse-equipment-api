@@ -1,3 +1,11 @@
+import Equipment from '../models/equipment';
+
+const EquipmentController = (httpClient, telemetryAPI) => {
+  EquipmentController.httpClient = httpClient;
+  EquipmentController.telemetryAPI = telemetryAPI;
+  EquipmentController.equipmentModel = new Equipment();
+};
+
 const responseWithError = (request, reply) => (err) => {
   let errors = {};
   if (err.response.statusCode === 401) {
@@ -19,59 +27,23 @@ const responseWithError = (request, reply) => (err) => {
   return response;
 };
 
-const parseEquipment = (equipment) => {
-  return {
-    type: 'equipment',
-    id: equipment.id,
-    attributes: {
-      description: equipment.description,
-      serviceLevel: equipment.serviceLevel,
-      identificationNumber: equipment.identificationNumber,
-      manufacturingDate: equipment.manufacturingDate
-    },
-    relationships: {
-      dealer: {
-        links: {
-          self: '',
-          related: ''
-        },
-        data: {
-          type: 'dealer',
-          id: equipment.links.dealer
-        }
-      },
-      model: {
-        links: {
-          self: '',
-          related: ''
-        },
-        data: {
-          type: 'model',
-          id: equipment.links.model
-        }
-      }
-    }
-  };
-};
-
 const responseWithSingleEquipment = (request, reply) => (equipments) => {
-  const parsedEquipment = parseEquipment(equipments.equipment[0]);
+  const parsedEquipment = EquipmentController.equipmentModel.parseEquipment(
+    equipments.equipment[0]
+  );
   return reply({
     data: parsedEquipment
   });
 };
 
 const responseWithEquipments = (request, reply) => (equipments) => {
-  const equipmentData = equipments.equipment.map(parseEquipment);
+  const equipmentData = equipments.equipment.map(
+    EquipmentController.equipmentModel.parseEquipment
+  );
 
   return reply({
     data: equipmentData
   });
-};
-
-const EquipmentController = (httpClient, telemetryAPI) => {
-  EquipmentController.httpClient = httpClient;
-  EquipmentController.telemetryAPI = telemetryAPI;
 };
 
 EquipmentController.prototype.findAll = (request, reply) => {
