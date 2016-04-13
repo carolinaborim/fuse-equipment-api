@@ -4,7 +4,7 @@ const EquipmentValidator = () => {};
 
 EquipmentValidator.prototype.validateGetParams = () => {
   return {
-    id: Joi.number().integer()
+    id: Joi.string()
   };
 };
 
