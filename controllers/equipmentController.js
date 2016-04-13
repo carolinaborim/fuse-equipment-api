@@ -9,38 +9,42 @@ const EquipmentController = (httpClient, telemetryAPI) => {
 const errorHadler = {
   401: (err) => {
     return {
-      errors: [
-        {
+      statusCode: 401,
+      response: {
+        errors: [{
           status: err.response.statusCode,
           title: err.response.body
-        }
-      ]
+        }]
+      }
     };
   },
   404: (err) => {
     const errors = Object.assign({}, err.response.body);
     delete errors.errors[0].href;
     delete errors.errors[0].detail;
-    return errors;
-  },
-  unhandleError: (err) => {
-    err.response.statusCode = 500;
     return {
-      errors: [
-        {
-          status: err.response.statusCode,
+      statusCode: 404,
+      response: errors
+    };
+  },
+  unhandleError: () => {
+    return {
+      statusCode: 500,
+      response: {
+        errors: [{
+          status: 500,
           title: 'An unhandle error happened'
-        }
-      ]
+        }]
+      }
     };
   }
 };
 
 const responseWithError = (request, reply) => (err) => {
   const handler = errorHadler[err.response.statusCode] || errorHadler.unhandleError;
-  const errors = handler(err);
-  const response = reply(errors);
-  response.statusCode = err.response.statusCode;
+  const handledErrors = handler(err);
+  const response = reply(handledErrors.response);
+  response.statusCode = handledErrors.statusCode;
   return response;
 };
 
