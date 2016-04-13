@@ -6,7 +6,7 @@ const EquipmentController = (httpClient, telemetryAPI) => {
   EquipmentController.equipmentModel = new Equipment();
 };
 
-const errorHadler = {
+const errorHandler = {
   401: (err) => {
     return {
       statusCode: 401,
@@ -41,7 +41,7 @@ const errorHadler = {
 };
 
 const responseWithError = (request, reply) => (err) => {
-  const handler = errorHadler[err.response.statusCode] || errorHadler.unhandleError;
+  const handler = errorHandler[err.response.statusCode] || errorHandler.unhandleError;
   const handledErrors = handler(err);
   const response = reply(handledErrors.response);
   response.statusCode = handledErrors.statusCode;
