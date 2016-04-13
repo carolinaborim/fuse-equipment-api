@@ -12,42 +12,53 @@ const responseWithError = (request, reply) => (err) => {
   });
   response.statusCode = err.response.statusCode;
   return response;
-}
+};
+
+const parseEquipment = (equipment) => {
+  return {
+    type: 'equipment',
+    id: equipment.id,
+    attributes: {
+      description: equipment.description,
+      serviceLevel: equipment.serviceLevel,
+      identificationNumber: equipment.identificationNumber,
+      manufacturingDate: equipment.manufacturingDate
+    },
+    relationships: {
+      dealer: {
+        links: {
+          self: '',
+          related: ''
+        },
+        data: {
+          type: 'dealer',
+          id: equipment.links.dealer
+        }
+      },
+      model: {
+        links: {
+          self: '',
+          related: ''
+        },
+        data: {
+          type: 'model',
+          id: equipment.links.model
+        }
+      }
+    }
+  };
+};
+
+const responseWithSingleEquipment = (request, reply) => (equipments) => {
+  let parsedEquipment = parseEquipment(equipments.equipment[0]);
+  return reply({
+    data: parsedEquipment
+  });
+};
 
 const responseWithEquipments = (request, reply) => (equipments) => {
   let data = equipments.equipment.map((equipment) => {
-    return {
-      type: 'equipment',
-      id: equipment.id,
-      attributes: {
-        description: equipment.description,
-        serviceLevel: equipment.serviceLevel,
-        identificationNumber: equipment.identificationNumber,
-        manufacturingDate: equipment.manufacturingDate
-      },
-      relationships: {
-        dealer: {
-          links: {
-            self: '',
-            related: ''
-          },
-          data: {
-            type: 'dealer',
-            id: equipment.links.dealer
-          }
-        },
-        model: {
-          links: {
-            self: '',
-            related: ''
-          },
-          data: {
-            type: 'model',
-            id: equipment.links.model
-          }
-        }
-      }
-    };
+    return parseEquipment(equipment);
   });
 
   return reply({
@@ -60,21 +71,6 @@ const equipment = new Equipment();
 const EquipmentController = (httpClient, telemetryAPI) => {
   EquipmentController.httpClient = httpClient;
   EquipmentController.telemetryAPI = telemetryAPI;
-  EquipmentController.defaultEquipment = {
-    equipment: [
-      {
-        id: '6c8a1f3b-94aa-447a-8168-a3c10cbec9ba',
-        description: 'Sandbox Equipment 1',
-        serviceLevel: 1,
-        identificationNumber: '1460401079344',
-        manufacturingDate: '2014-06-30T15:18:51.000Z',
-        links: {
-          dealer: 'a6d1ccee-6a54-4086-aec9-3ea4f075a760',
-          model: 'ffbfa8e6-aa5e-4572-8820-32adc97c8dc4'
-        }
-      }
-    ]
-  };
 };
 
 EquipmentController.prototype.findAll = (request, reply) => {
@@ -91,20 +87,16 @@ EquipmentController.prototype.findAll = (request, reply) => {
 };
 
 EquipmentController.prototype.findById = (request, reply) => {
-  const defaultEquipment = EquipmentController.defaultEquipment;
-  const validatedEquipment = Joi.validate(
-    defaultEquipment,
-    equipment.schema,
-    (err, validatedEntity) => {
-      if (err) {
-        console.log(err);
-        return null;
-      }
-
-      return validatedEntity;
-    });
-
-  return reply(validatedEquipment);
+  return EquipmentController.httpClient({
+    method: 'GET',
+    json: true,
+    url: `${EquipmentController.telemetryAPI}/equipment/${request.params.id}`,
+    headers: {
+      Authorization: request.headers.authorization
+    }
+  })
+  .then(responseWithSingleEquipment(request, reply))
+  .catch(responseWithError(request, reply));
 };
 
 module.exports = EquipmentController;
