@@ -3,6 +3,41 @@ describe('EquipmentController', () => {
   let options = {};
   let telemetryRequest = {};
 
+  const generateEquipment = (equipmentId) => {
+    return {
+      type: 'equipment',
+      id: equipmentId,
+      attributes: {
+        description: 'Equipment 1',
+        serviceLevel: 1,
+        identificationNumber: 'a-identification-number',
+        manufacturingDate: '2014-06-30T15:18:51.000Z',
+      },
+      relationships: {
+        dealer: {
+          links: {
+            self: '',
+            related: ''
+          },
+          data: {
+            type: 'dealer',
+            id: 'a-dealer-id'
+          }
+        },
+        model: {
+          links: {
+            self: '',
+            related: ''
+          },
+          data: {
+            type: 'model',
+            id: 'a-model-id'
+          }
+        }
+      }
+    };
+  };
+
   before(() => {
     authenticationHeader = 'Bearer VALID_TOKEN';
   });
@@ -42,51 +77,20 @@ describe('EquipmentController', () => {
 
     it('request telemetry api and receiving at least one equipment', (done) => {
       const expectedResponse = {
-        data: [{
-          type: 'equipment',
-          id: 'a-equipment-id',
-          attributes: {
-            description: "Equipment 1",
-            serviceLevel: 1,
-            identificationNumber: "a-identification-number",
-            manufacturingDate: "2014-06-30T15:18:51.000Z",
-          },
-          relationships: {
-            dealer: {
-              links: {
-                self: '',
-                related: ''
-              },
-              data: {
-                type: 'dealer',
-                id: 'a-dealer-id'
-              }
-            },
-            model: {
-              links: {
-                self: '',
-                related: ''
-              },
-              data: {
-                type: 'model',
-                id: 'a-model-id'
-              }
-            }
-          }
-        }]
+        data: [generateEquipment('a-equipment-id')]
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           {
-            id: "a-equipment-id",
-            description: "Equipment 1",
+            id: 'a-equipment-id',
+            description: 'Equipment 1',
             serviceLevel: 1,
-            identificationNumber: "a-identification-number",
-            manufacturingDate: "2014-06-30T15:18:51.000Z",
+            identificationNumber: 'a-identification-number',
+            manufacturingDate: '2014-06-30T15:18:51.000Z',
             links: {
-              dealer: "a-dealer-id",
-              model: "a-model-id"
+              dealer: 'a-dealer-id',
+              model: 'a-model-id'
             }
           }
         ],
@@ -148,51 +152,20 @@ describe('EquipmentController', () => {
 
     it('get request equipment by id with successful authorization header', (done) => {
       const expectedResponse = {
-        data: {
-          type: 'equipment',
-          id: equipmentId,
-          attributes: {
-            description: "Equipment 1",
-            serviceLevel: 1,
-            identificationNumber: "a-identification-number",
-            manufacturingDate: "2014-06-30T15:18:51.000Z",
-          },
-          relationships: {
-            dealer: {
-              links: {
-                self: '',
-                related: ''
-              },
-              data: {
-                type: 'dealer',
-                id: 'a-dealer-id'
-              }
-            },
-            model: {
-              links: {
-                self: '',
-                related: ''
-              },
-              data: {
-                type: 'model',
-                id: 'a-model-id'
-              }
-            }
-          }
-        }
+        data: generateEquipment(equipmentId)
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           {
             id: equipmentId,
-            description: "Equipment 1",
+            description: 'Equipment 1',
             serviceLevel: 1,
-            identificationNumber: "a-identification-number",
-            manufacturingDate: "2014-06-30T15:18:51.000Z",
+            identificationNumber: 'a-identification-number',
+            manufacturingDate: '2014-06-30T15:18:51.000Z',
             links: {
-              dealer: "a-dealer-id",
-              model: "a-model-id"
+              dealer: 'a-dealer-id',
+              model: 'a-model-id'
             }
           }
         ],
