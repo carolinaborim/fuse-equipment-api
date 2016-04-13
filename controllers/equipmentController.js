@@ -1,10 +1,5 @@
 import Equipment from '../models/equipment';
 
-const EquipmentController = (httpClient, telemetryAPI) => {
-  EquipmentController.httpClient = httpClient;
-  EquipmentController.telemetryAPI = telemetryAPI;
-};
-
 const errorHandler = {
   401: (err) => {
     return {
@@ -66,30 +61,37 @@ const responseWithEquipments = (request, reply) => (equipments) => {
   });
 };
 
-EquipmentController.prototype.findAll = (request, reply) => {
-  return EquipmentController.httpClient({
-    method: 'GET',
-    json: true,
-    url: `${EquipmentController.telemetryAPI}/equipment`,
-    headers: {
-      Authorization: request.headers.authorization
-    }
-  })
-  .then(responseWithEquipments(request, reply))
-  .catch(responseWithError(request, reply));
-};
+class EquipmentController {
+  constructor(httpClient, telemetryAPI) {
+    this.httpClient = httpClient;
+    this.telemetryAPI = telemetryAPI;
+  }
 
-EquipmentController.prototype.findById = (request, reply) => {
-  return EquipmentController.httpClient({
-    method: 'GET',
-    json: true,
-    url: `${EquipmentController.telemetryAPI}/equipment/${request.params.id}`,
-    headers: {
-      Authorization: request.headers.authorization
-    }
-  })
-  .then(responseWithSingleEquipment(request, reply))
-  .catch(responseWithError(request, reply));
-};
+  findAll(request, reply) {
+    return this.httpClient({
+      method: 'GET',
+      json: true,
+      url: `${this.telemetryAPI}/equipment`,
+      headers: {
+        Authorization: request.headers.authorization
+      }
+    })
+    .then(responseWithEquipments(request, reply))
+    .catch(responseWithError(request, reply));
+  }
+
+  findById(request, reply) {
+    return this.httpClient({
+      method: 'GET',
+      json: true,
+      url: `${this.telemetryAPI}/equipment/${request.params.id}`,
+      headers: {
+        Authorization: request.headers.authorization
+      }
+    })
+    .then(responseWithSingleEquipment(request, reply))
+    .catch(responseWithError(request, reply));
+  }
+}
 
 module.exports = EquipmentController;
