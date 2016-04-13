@@ -1,6 +1,7 @@
 describe('EquipmentController', () => {
   let authenticationHeader = null;
   let options = {};
+  let telemetryRequest = {};
 
   before(() => {
     authenticationHeader = 'Bearer VALID_TOKEN';
@@ -15,10 +16,8 @@ describe('EquipmentController', () => {
           Authorization: authenticationHeader
         }
       };
-    });
 
-    it('request telemetry api with same authorization header', (done) => {
-      const telemetryRequest = {
+      telemetryRequest = {
         method: 'GET',
         json: true,
         url: `${FUSE_TELEMETRY_API_URL}/equipment`,
@@ -26,7 +25,9 @@ describe('EquipmentController', () => {
           Authorization: authenticationHeader
         }
       };
+    });
 
+    it('request telemetry api with same authorization header', (done) => {
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [],
         links: {}
@@ -40,14 +41,6 @@ describe('EquipmentController', () => {
     });
 
     it('request telemetry api and receiving at least one equipment', (done) => {
-      const telemetryRequest = {
-        method: 'GET',
-        json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment`,
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
       const expectedResponse = {
         data: [{
           type: 'equipment',
@@ -108,15 +101,6 @@ describe('EquipmentController', () => {
     });
 
     it('request telemetry api with same authorization header and get an error', (done) => {
-      const telemetryRequest = {
-        method: 'GET',
-        json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment`,
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
-
       respondWithFailure(httpClient(telemetryRequest), {
         response: {
           statusCode: 401,
@@ -147,6 +131,15 @@ describe('EquipmentController', () => {
       options = {
         url: `/equipment/${equipmentId}`,
         method: 'GET',
+        headers: {
+          Authorization: authenticationHeader
+        }
+      };
+
+      telemetryRequest = {
+        method: 'GET',
+        json: true,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment/${equipmentId}`,
         headers: {
           Authorization: authenticationHeader
         }
@@ -189,15 +182,6 @@ describe('EquipmentController', () => {
         }
       };
 
-      const telemetryRequest = {
-        method: 'GET',
-        json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment/${equipmentId}`,
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
-
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           {
@@ -230,14 +214,6 @@ describe('EquipmentController', () => {
             title: 'Resource not found.',
           }
         ]
-      };
-      const telemetryRequest = {
-        method: 'GET',
-        json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment/${equipmentId}`,
-        headers: {
-          Authorization: authenticationHeader
-        }
       };
 
       respondWithFailure(httpClient(telemetryRequest), {
