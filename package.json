@@ -32,7 +32,6 @@
     "mocha-bamboo-reporter": "^1.1.0",
     "request": "^2.69.0",
     "request-promise": "^2.0.1",
-    "snyk": "^1.13.2",
     "vision": "^4.1.0"
   },
   "devDependencies": {
