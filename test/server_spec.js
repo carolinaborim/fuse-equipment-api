@@ -3,7 +3,7 @@ describe('EquipmentController', () => {
   let options = {};
   let telemetryRequest = {};
 
-  const generateEquipment = (equipmentId) => {
+  const generateFacadeEquipment = (equipmentId) => {
     return {
       type: 'equipment',
       id: equipmentId,
@@ -34,6 +34,20 @@ describe('EquipmentController', () => {
             id: 'a-model-id'
           }
         }
+      }
+    };
+  };
+
+  const generateTelemetryEquipment = (equipmentId) => {
+    return {
+      id: equipmentId,
+      description: 'Equipment 1',
+      serviceLevel: 1,
+      identificationNumber: 'a-identification-number',
+      manufacturingDate: '2014-06-30T15:18:51.000Z',
+      links: {
+        dealer: 'a-dealer-id',
+        model: 'a-model-id'
       }
     };
   };
@@ -75,24 +89,18 @@ describe('EquipmentController', () => {
       });
     });
 
-    it('request telemetry api and receiving at least one equipment', (done) => {
+    it('request telemetry api and receiving equipments', (done) => {
       const expectedResponse = {
-        data: [generateEquipment('a-equipment-id')]
+        data: [
+          generateFacadeEquipment('a-equipment-id-1'),
+          generateFacadeEquipment('a-equipment-id-2')
+        ]
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
-          {
-            id: 'a-equipment-id',
-            description: 'Equipment 1',
-            serviceLevel: 1,
-            identificationNumber: 'a-identification-number',
-            manufacturingDate: '2014-06-30T15:18:51.000Z',
-            links: {
-              dealer: 'a-dealer-id',
-              model: 'a-model-id'
-            }
-          }
+          generateTelemetryEquipment('a-equipment-id-1'),
+          generateTelemetryEquipment('a-equipment-id-2')
         ],
         links: {}
       });
@@ -152,23 +160,11 @@ describe('EquipmentController', () => {
 
     it('get request equipment by id with successful authorization header', (done) => {
       const expectedResponse = {
-        data: generateEquipment(equipmentId)
+        data: generateFacadeEquipment(equipmentId)
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
-        equipment: [
-          {
-            id: equipmentId,
-            description: 'Equipment 1',
-            serviceLevel: 1,
-            identificationNumber: 'a-identification-number',
-            manufacturingDate: '2014-06-30T15:18:51.000Z',
-            links: {
-              dealer: 'a-dealer-id',
-              model: 'a-model-id'
-            }
-          }
-        ],
+        equipment: [generateTelemetryEquipment(equipmentId)],
         links: {}
       });
 
