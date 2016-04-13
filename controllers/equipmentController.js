@@ -3,7 +3,6 @@ import Equipment from '../models/equipment';
 const EquipmentController = (httpClient, telemetryAPI) => {
   EquipmentController.httpClient = httpClient;
   EquipmentController.telemetryAPI = telemetryAPI;
-  EquipmentController.equipmentModel = new Equipment();
 };
 
 const errorHandler = {
@@ -49,7 +48,7 @@ const responseWithError = (request, reply) => (err) => {
 };
 
 const responseWithSingleEquipment = (request, reply) => (equipments) => {
-  const parsedEquipment = EquipmentController.equipmentModel.parseEquipment(
+  const parsedEquipment = Equipment.parseEquipment(
     equipments.equipment[0]
   );
   return reply({
@@ -59,7 +58,7 @@ const responseWithSingleEquipment = (request, reply) => (equipments) => {
 
 const responseWithEquipments = (request, reply) => (equipments) => {
   const equipmentData = equipments.equipment.map(
-    EquipmentController.equipmentModel.parseEquipment
+    Equipment.parseEquipment
   );
 
   return reply({

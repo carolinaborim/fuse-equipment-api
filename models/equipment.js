@@ -18,7 +18,7 @@ Equipment.prototype.schema = Joi.object().keys({
   )
 });
 
-Equipment.prototype.parseEquipment = (telemetryEquipment) => {
+Equipment.parseEquipment = (telemetryEquipment) => {
   return {
     type: 'equipment',
     id: telemetryEquipment.id,
