@@ -1,14 +1,23 @@
 describe('EquipmentController', () => {
+  let authenticationHeader = null;
+  let options = {};
+
+  before(() => {
+    authenticationHeader = 'Bearer VALID_TOKEN';
+  });
+
   describe('Route: equipment', () => {
-    it('request telemetry api with same authorization header', (done) => {
-      const authenticationHeader = 'Bearer VALID_TOKEN';
-      const options = {
+    before(() => {
+      options = {
         url: '/equipment',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
         }
       };
+    });
+
+    it('request telemetry api with same authorization header', (done) => {
       const telemetryRequest = {
         method: 'GET',
         json: true,
@@ -31,14 +40,6 @@ describe('EquipmentController', () => {
     });
 
     it('request telemetry api and receiving at least one equipment', (done) => {
-      const authenticationHeader = 'Bearer VALID_TOKEN';
-      const options = {
-        url: '/equipment',
-        method: 'GET',
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
       const telemetryRequest = {
         method: 'GET',
         json: true,
@@ -107,14 +108,6 @@ describe('EquipmentController', () => {
     });
 
     it('request telemetry api with same authorization header and get an error', (done) => {
-      const authenticationHeader = 'Bearer INVALID_TOKEN';
-      const options = {
-        url: '/equipment',
-        method: 'GET',
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
       const telemetryRequest = {
         method: 'GET',
         json: true,
@@ -148,20 +141,23 @@ describe('EquipmentController', () => {
   });
 
   describe('Route: equipment/<id>', () => {
-    it('get request equipment by id with successful authorization header', (done) => {
-      const authenticationHeader = 'Bearer VALID_TOKEN';
-      const options = {
-        url: '/equipment/1-2-3',
+    let equipmentId = '1-2-3-a';
+
+    before(() => {
+      options = {
+        url: `/equipment/${equipmentId}`,
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
         }
       };
+    });
 
+    it('get request equipment by id with successful authorization header', (done) => {
       const expectedResponse = {
         data: {
           type: 'equipment',
-          id: '1-2-3',
+          id: equipmentId,
           attributes: {
             description: "Equipment 1",
             serviceLevel: 1,
@@ -196,7 +192,7 @@ describe('EquipmentController', () => {
       const telemetryRequest = {
         method: 'GET',
         json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment/1-2-3`,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment/${equipmentId}`,
         headers: {
           Authorization: authenticationHeader
         }
@@ -205,7 +201,7 @@ describe('EquipmentController', () => {
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           {
-            id: "1-2-3",
+            id: equipmentId,
             description: "Equipment 1",
             serviceLevel: 1,
             identificationNumber: "a-identification-number",
@@ -227,14 +223,6 @@ describe('EquipmentController', () => {
     });
 
     it('get request equipment id that does not exist', (done) => {
-      const authenticationHeader = 'Bearer VALID_TOKEN';
-      const options = {
-        url: '/equipment/1-2-3',
-        method: 'GET',
-        headers: {
-          Authorization: authenticationHeader
-        }
-      };
       const expectedResponse = {
         errors: [
           {
@@ -246,7 +234,7 @@ describe('EquipmentController', () => {
       const telemetryRequest = {
         method: 'GET',
         json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment/1-2-3`,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment/${equipmentId}`,
         headers: {
           Authorization: authenticationHeader
         }
