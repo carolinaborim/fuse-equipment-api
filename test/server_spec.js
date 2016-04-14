@@ -196,7 +196,7 @@ describe('EquipmentController', () => {
             }
           ]
         });
-        td.verify(httpClient(telemetryRequest));
+
         done();
       });
     });
