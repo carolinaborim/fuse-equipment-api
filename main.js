@@ -1,8 +1,8 @@
 import app from './app';
 import rp from 'request-promise';
+import config from './config.js';
 
-const FUSE_TELEMETRY_API_URL = process.env.FUSE_TELEMTRY_API_URL || 'https://agco-fuse-trackers-sandbox.herokuapp.com';
-const server = app(rp, FUSE_TELEMETRY_API_URL);
+const server = app(rp, config.TELEMETRY_API_URL);
 
 server.start((err) => {
   if (err) {

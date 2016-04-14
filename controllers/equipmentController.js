@@ -63,16 +63,16 @@ const responseWithSingleEquipment = (request, reply) => (equipments, equipmentIn
   const parsedEquipment = Equipment.parseEquipment(
     equipments.equipment[0],
     equipmentInformations[equipments.equipment[0].id]
-  );
+    );
   return reply({
     data: parsedEquipment
   });
 };
 
-const responseWithEquipments = (request, reply) => (equipments) => {
+const responseWithEquipments = (request, reply) => (equipments, equipmentsInformations) => {
   const equipmentData = equipments.equipment.map((data) => {
-      return  Equipment.parseEquipment(data);
-    }
+    return Equipment.parseEquipment(data, equipmentsInformations[data.id]);
+  }
   );
 
   return reply({
@@ -96,7 +96,17 @@ class EquipmentController {
         Authorization: request.headers.authorization
       }
     })
-    .then(responseWithEquipments(request, reply))
+    .then((equipments) => {
+      const equipmentIds = equipments.equipment.map((equipment) => equipment.id);
+      return this.canVariablesFetcher.fetchByEquipmentId(
+        equipmentIds,
+        request.headers.authorization
+        )
+      .then((canVariables) => {
+        return [equipments, canVariables];
+      });
+    })
+    .spread(responseWithEquipments(request, reply))
     .catch(responseWithError(request, reply));
   }
 
@@ -113,9 +123,9 @@ class EquipmentController {
       return this.canVariablesFetcher.fetchByEquipmentId(
         [equipments.equipment[0].id],
         request.headers.authorization
-      )
+        )
       .then((canVariables) => {
-        return [equipments, canVariables]
+        return [equipments, canVariables];
       });
     })
     .spread(responseWithSingleEquipment(request, reply))
