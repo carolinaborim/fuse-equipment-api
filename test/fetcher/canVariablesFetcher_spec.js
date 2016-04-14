@@ -8,7 +8,30 @@ describe('CanVariablesFetcher', () => {
         "aggregations": {
           "equip_agg": [
             {
-              "key": "ce88a25c-14b0-4eaa-88cc-0bee1c6f1025",
+              "key": "equipment-id-1",
+              "spn_ag": [
+                {
+                  "key": "ENGINE_HOURS",
+                  "spn_latest_ag": [
+                    {
+                      "raw": 94774,
+                      "value": "17059320"
+                    }
+                  ]
+                },
+                {
+                  "key": "ENGINE_SPEED",
+                  "spn_latest_ag": [
+                    {
+                      "raw": 13279,
+                      "value": "1659.875"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "key": "equipment-id-2",
               "spn_ag": [
                 {
                   "key": "ENGINE_HOURS",
@@ -35,12 +58,18 @@ describe('CanVariablesFetcher', () => {
       }
     }
 
-    let expectedResponse = { 
-      'ENGINE_HOURS': '17059320',
-      'ENGINE_SPEED': '1659.875'
-    }
+    let expectedResponse = {
+      'equipment-id-1': {
+        'ENGINE_HOURS': '17059320',
+        'ENGINE_SPEED': '1659.875'
+      },
+      'equipment-id-2': {
+        'ENGINE_HOURS': '17059320',
+        'ENGINE_SPEED': '1659.875'
+      }
+    };
 
-    let mockedSearchUri = 'http://agco-fuse-trackers-dev.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=fake-equipment-id';
+    let mockedSearchUri = 'http://agco-fuse-trackers-dev.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
     let mockedAuthorizationBearer = 'fake-bearer';
 
     respondWithSuccess(httpClient({
@@ -53,7 +82,7 @@ describe('CanVariablesFetcher', () => {
     }), telemetryReponse);
 
     let canVariablesFetcher = new CanVariablesFetcher(httpClient);
-    canVariablesFetcher.fetchByEquipmentId('fake-equipment-id', mockedAuthorizationBearer)
+    canVariablesFetcher.fetchByEquipmentId(['equipment-id-1','equipment-id-2'], mockedAuthorizationBearer)
     .then((response) => {
       expect(response).to.be.eql(expectedResponse);
       done();

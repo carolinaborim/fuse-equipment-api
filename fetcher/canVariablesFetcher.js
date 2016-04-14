@@ -11,8 +11,9 @@ const defaultCanVariableNames = [
 'DRIVING_DIRECTION',
 ];
 
-const createSearchUrl = (equipmentId) => {
+const createSearchUrl = (equipmentIds) => {
   let canVariableNames = defaultCanVariableNames.join(',');
+  let ids = equipmentIds.join(',');
   let requestUri = `${config.TELEMETRY_API_URL}/trackingData/search?include=trackingPoint`+
   `&links.canVariable.name=${canVariableNames}`+
   '&aggregations=equip_agg'+
@@ -25,7 +26,7 @@ const createSearchUrl = (equipmentId) => {
   '&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence'+
   '&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint'+
   '&tp_latest_ag.include=trackingPoint'+
-  `&links.trackingPoint.equipment.id=${equipmentId}`;
+  `&links.trackingPoint.equipment.id=${ids}`;
 
   return requestUri;
 }
@@ -35,9 +36,9 @@ class CanVariablesFetcher {
     this.httpClient = httpClient;
   }
 
-  fetchByEquipmentId(id, authorizationBearer) {
+  fetchByEquipmentId(equipmentIds, authorizationBearer) {
     let options = Object.assign({
-      uri: createSearchUrl(id),
+      uri: createSearchUrl(equipmentIds),
       headers: {
         Authorization: authorizationBearer
       }
@@ -46,10 +47,12 @@ class CanVariablesFetcher {
     return this.httpClient(options)
       .then((data) => {
         let canVariables = {};
-        data.meta.aggregations.equip_agg[0].spn_ag.forEach((data, index) => {
-          canVariables[data.key] = data.spn_latest_ag[0].value;
+        data.meta.aggregations.equip_agg.forEach((data, index) => {
+          canVariables[data.key] = {};
+          data.spn_ag.forEach((aggData, index) => {
+            canVariables[data.key][aggData.key] = aggData.spn_latest_ag[0].value;
+          });
         });
-
         return canVariables;
       })
       .catch(function (err) {

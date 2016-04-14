@@ -62,7 +62,7 @@ const responseWithError = (request, reply) => (err) => {
 const responseWithSingleEquipment = (request, reply) => (equipments, equipmentInformations) => {
   const parsedEquipment = Equipment.parseEquipment(
     equipments.equipment[0],
-    equipmentInformations
+    equipmentInformations[equipments.equipment[0].id]
   );
   return reply({
     data: parsedEquipment
@@ -111,7 +111,7 @@ class EquipmentController {
     })
     .then((equipments) => {
       return this.canVariablesFetcher.fetchByEquipmentId(
-        equipments.equipment[0].id,
+        [equipments.equipment[0].id],
         request.headers.authorization
       )
       .then((canVariables) => {
