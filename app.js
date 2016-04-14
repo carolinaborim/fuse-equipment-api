@@ -6,10 +6,10 @@ import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 
-const server = new Hapi.Server();
 const PORT = process.env.PORT || 9090;
 
 const app = (httpClient, telemetryAPI) => {
+  const server = new Hapi.Server();
   const equipmentController = new EquipmentController(httpClient, telemetryAPI);
   const equipmentValidator = new EquipmentValidator();
 

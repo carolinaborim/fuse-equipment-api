@@ -1,3 +1,5 @@
+import './helpers.js';
+
 describe('EquipmentController', () => {
   let authenticationHeader = null;
   let options = {};
