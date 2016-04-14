@@ -3,7 +3,7 @@ import CanVariablesFetcher from '../../fetcher/canVariablesFetcher.js';
 describe('CanVariablesFetcher', () => {
   it('fetches can variables data by equipment id', (done) => {
 
-    let expetecRequestReponse = {
+    let telemetryReponse = {
       "meta": {
         "aggregations": {
           "equip_agg": [
@@ -50,7 +50,7 @@ describe('CanVariablesFetcher', () => {
       headers: {
         'Authorization': mockedAuthorizationBearer
       }
-    }), expetecRequestReponse);
+    }), telemetryReponse);
 
     let canVariablesFetcher = new CanVariablesFetcher(httpClient);
     canVariablesFetcher.fetchByEquipmentId('fake-equipment-id', mockedAuthorizationBearer)
