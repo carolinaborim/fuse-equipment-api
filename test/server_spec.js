@@ -3,7 +3,7 @@ describe('EquipmentController', () => {
   let options = {};
   let telemetryRequest = {};
 
-  const generateFacadeEquipment = (equipmentId) => {
+  const generateFacadeEquipment = (equipmentId, informations) => {
     return {
       type: 'equipment',
       id: equipmentId,
@@ -11,7 +11,11 @@ describe('EquipmentController', () => {
         description: 'Equipment 1',
         serviceLevel: 1,
         identificationNumber: 'a-identification-number',
-        manufacturingDate: '2014-06-30T15:18:51.000Z'
+        manufacturingDate: '2014-06-30T15:18:51.000Z',
+        informations: {
+          ENGINE_HOURS: '100',
+          ENGINE_SPEED: '100'
+        }
       },
       relationships: {
         dealer: {
@@ -156,6 +160,54 @@ describe('EquipmentController', () => {
           Authorization: authenticationHeader
         }
       };
+
+      let telemetryReponse = {
+        "meta": {
+          "aggregations": {
+            "equip_agg": [
+              {
+                "key": "ce88a25c-14b0-4eaa-88cc-0bee1c6f1025",
+                "spn_ag": [
+                  {
+                    "key": "ENGINE_HOURS",
+                    "spn_latest_ag": [
+                      {
+                        "raw": 94774,
+                        "value": "100"
+                      }
+                    ]
+                  },
+                  {
+                    "key": "ENGINE_SPEED",
+                    "spn_latest_ag": [
+                      {
+                        "raw": 13279,
+                        "value": "100"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+
+      let expectedResponse = { 
+        'ENGINE_HOURS': '17059320',
+        'ENGINE_SPEED': '1659.875'
+      }
+
+      let mockedSearchUri = 'http://agco-fuse-trackers-dev.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=1-2-3-a';
+
+      respondWithSuccess(httpClient({
+        method: 'GET',
+        json: true,
+        uri: mockedSearchUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      }), telemetryReponse);
     });
 
     it('get request equipment by id with successful authorization header', (done) => {

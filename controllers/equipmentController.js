@@ -1,4 +1,5 @@
 import Equipment from '../models/equipment';
+import CanVariablesFetcher from '../fetcher/canVariablesFetcher.js';
 
 const errorHandler = {
   401: (err) => {
@@ -58,9 +59,10 @@ const responseWithError = (request, reply) => (err) => {
   return response;
 };
 
-const responseWithSingleEquipment = (request, reply) => (equipments) => {
+const responseWithSingleEquipment = (request, reply) => (equipments, equipmentInformations) => {
   const parsedEquipment = Equipment.parseEquipment(
-    equipments.equipment[0]
+    equipments.equipment[0],
+    equipmentInformations
   );
   return reply({
     data: parsedEquipment
@@ -68,8 +70,9 @@ const responseWithSingleEquipment = (request, reply) => (equipments) => {
 };
 
 const responseWithEquipments = (request, reply) => (equipments) => {
-  const equipmentData = equipments.equipment.map(
-    Equipment.parseEquipment
+  const equipmentData = equipments.equipment.map((data) => {
+      return  Equipment.parseEquipment(data);
+    }
   );
 
   return reply({
@@ -81,6 +84,7 @@ class EquipmentController {
   constructor(httpClient, telemetryAPI) {
     this.httpClient = httpClient;
     this.telemetryAPI = telemetryAPI;
+    this.canVariablesFetcher = new CanVariablesFetcher(httpClient);
   }
 
   findAll(request, reply) {
@@ -105,7 +109,16 @@ class EquipmentController {
         Authorization: request.headers.authorization
       }
     })
-    .then(responseWithSingleEquipment(request, reply))
+    .then((equipments) => {
+      return this.canVariablesFetcher.fetchByEquipmentId(
+        equipments.equipment[0].id,
+        request.headers.authorization
+      )
+      .then((canVariables) => {
+        return [equipments, canVariables]
+      });
+    })
+    .spread(responseWithSingleEquipment(request, reply))
     .catch(responseWithError(request, reply));
   }
 }

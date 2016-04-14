@@ -1,8 +1,6 @@
-import Joi from 'joi';
-
 const Equipment = () => {};
 
-Equipment.parseEquipment = (telemetryEquipment) => {
+Equipment.parseEquipment = (telemetryEquipment, canVariablesInformations) => {
   return {
     type: 'equipment',
     id: telemetryEquipment.id,
@@ -10,7 +8,8 @@ Equipment.parseEquipment = (telemetryEquipment) => {
       description: telemetryEquipment.description,
       serviceLevel: telemetryEquipment.serviceLevel,
       identificationNumber: telemetryEquipment.identificationNumber,
-      manufacturingDate: telemetryEquipment.manufacturingDate
+      manufacturingDate: telemetryEquipment.manufacturingDate,
+      informations: canVariablesInformations
     },
     relationships: {
       dealer: {
