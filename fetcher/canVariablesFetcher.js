@@ -1,5 +1,4 @@
 import config from '../config';
-import rp from 'request-promise';
 
 const defaultRequestOptions = {
   method: 'GET',
