@@ -50,12 +50,14 @@ const errorHandler = {
   }
 };
 
-ResponseHandler.responseWithError = (request, reply) => (err) => {
+ResponseHandler.responseWithError = (reply) => (err) => {
   const handler = errorHandler[err.response.statusCode] || errorHandler.unhandleError;
   const handledErrors = handler(err);
   const response = reply(handledErrors.response);
   response.statusCode = handledErrors.statusCode;
   return response;
 };
+
+ResponseHandler.responseData = (reply, responseData) => reply({ data: responseData });
 
 module.exports = ResponseHandler;

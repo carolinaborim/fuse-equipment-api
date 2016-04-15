@@ -1,26 +1,21 @@
 import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 import Equipment from '../models/equipment';
-import ReponseHandler from '../handlers/responseHandler';
+import ResponseHandler from '../handlers/responseHandler';
 
-const responseWithSingleEquipment = (request, reply) => (equipments, equipmentInformations) => {
-  const parsedEquipment = Equipment.parseEquipment(
-    equipments.equipment[0],
-    equipmentInformations[equipments.equipment[0].id]
-    );
-  return reply({
-    data: parsedEquipment
+const parseEquipments = (equipments, equipmentsInformations) => {
+  return equipments.equipment.map((data) => {
+    return Equipment.parseEquipment(data, equipmentsInformations[data.id]);
   });
 };
 
-const responseWithEquipments = (request, reply) => (equipments, equipmentsInformations) => {
-  const equipmentData = equipments.equipment.map((data) => {
-    return Equipment.parseEquipment(data, equipmentsInformations[data.id]);
-  }
-  );
+const responseWithSingleEquipment = (reply) => (equipments, equipmentsInformations) => {
+  const parsedEquipment = parseEquipments(equipments, equipmentsInformations)[0];
+  return ResponseHandler.responseData(reply, parsedEquipment);
+};
 
-  return reply({
-    data: equipmentData
-  });
+const responseWithEquipments = (reply) => (equipments, equipmentsInformations) => {
+  const parsedEquipments = parseEquipments(equipments, equipmentsInformations);
+  return ResponseHandler.responseData(reply, parsedEquipments);
 };
 
 class EquipmentController {
@@ -49,8 +44,8 @@ class EquipmentController {
         return [equipments, canVariables];
       });
     })
-    .spread(responseWithEquipments(request, reply))
-    .catch(ReponseHandler.responseWithError(request, reply));
+    .spread(responseWithEquipments(reply))
+    .catch(ResponseHandler.responseWithError(reply));
   }
 
   findById(request, reply) {
@@ -71,8 +66,8 @@ class EquipmentController {
         return [equipments, canVariables];
       });
     })
-    .spread(responseWithSingleEquipment(request, reply))
-    .catch(ReponseHandler.responseWithError(request, reply));
+    .spread(responseWithSingleEquipment(reply))
+    .catch(ResponseHandler.responseWithError(reply));
   }
 }
 
