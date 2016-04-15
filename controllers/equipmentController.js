@@ -13,9 +13,25 @@ const errorHandler = {
     };
   },
   404: (err) => {
-    const errors = Object.assign({}, err.response.body);
-    delete errors.errors[0].href;
-    delete errors.errors[0].detail;
+    const getErrors = (response) => {
+      if (response.headers &&
+          response.headers['content-type'] &&
+          response.headers['content-type'] === 'application/json') {
+        const errors = Object.assign({}, response.body);
+
+        if (errors.errors && errors.errors.length > 0) {
+          delete errors.errors[0].href;
+          delete errors.errors[0].details;
+        }
+
+        return errors;
+      }
+
+      return response.body;
+    };
+
+    const errors = getErrors(err.response);
+
     return {
       statusCode: 404,
       response: errors
@@ -27,7 +43,7 @@ const errorHandler = {
       response: {
         errors: [{
           status: 500,
-          title: 'An unhandle error happened'
+          title: 'An unhandled error occurred'
         }]
       }
     };

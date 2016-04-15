@@ -11,7 +11,7 @@ describe('EquipmentController', () => {
         description: 'Equipment 1',
         serviceLevel: 1,
         identificationNumber: 'a-identification-number',
-        manufacturingDate: '2014-06-30T15:18:51.000Z',
+        manufacturingDate: '2014-06-30T15:18:51.000Z'
       },
       relationships: {
         dealer: {
@@ -175,14 +175,76 @@ describe('EquipmentController', () => {
       });
     });
 
+    it('handles an integration point failure smoothly even if it is an HTML page', (done) => {
+      const expectedResponse = {
+        errors: [{
+          status: 404,
+          href: 'about:blank',
+          details: 'details...',
+          title: '<!DOCTYPE html>\n<html>\n<body>\nHeroku App Not Found!\n</body>\n</html>'
+        }]
+      };
+
+      respondWithFailure(httpClient(telemetryRequest), {
+        response: {
+          statusCode: 404,
+          headers: { 'content-type': 'text/html' },
+          body: {
+            errors: [{
+              status: 404,
+              href: 'about:blank',
+              details: 'details...',
+              title: '<!DOCTYPE html>\n<html>\n<body>\nHeroku App Not Found!\n</body>\n</html>'
+            }]
+          }
+        }
+      });
+
+      server.inject(options, (res) => {
+        expect(res.statusCode).to.be.eql(404);
+        expect(JSON.parse(res.payload)).to.be.eql(expectedResponse);
+        done();
+      });
+    });
+
+    it('handles an integration point failure smoothly even if it is a JSON object', (done) => {
+      const expectedResponse = {
+        errors: [{
+          status: 404,
+          title: '{ errors: [{ status: 404 }] }'
+        }]
+      };
+
+      respondWithFailure(httpClient(telemetryRequest), {
+        response: {
+          statusCode: 404,
+          headers: { 'content-type': 'application/json' },
+          body: {
+            errors: [{
+              status: 404,
+              details: 'details...',
+              href: 'about:blank',
+              title: '{ errors: [{ status: 404 }] }'
+            }]
+          }
+        }
+      });
+
+      server.inject(options, (res) => {
+        expect(res.statusCode).to.be.eql(404);
+        expect(JSON.parse(res.payload)).to.be.eql(expectedResponse);
+        done();
+      });
+
+    });
+
     it('get request equipment id that does not exist', (done) => {
       const expectedResponse = {
-        errors: [
-          {
-            status: 404,
-            title: 'Resource not found.',
-          }
-        ]
+        errors: [{
+          status: 404,
+          href: 'about:blank',
+          title: 'Resource not found.'
+        }]
       };
 
       respondWithFailure(httpClient(telemetryRequest), {
@@ -192,8 +254,7 @@ describe('EquipmentController', () => {
             errors: [{
               status: 404,
               href: 'about:blank',
-              title: 'Resource not found.',
-              detail: ''
+              title: 'Resource not found.'
             }]
           }
         }
@@ -211,7 +272,7 @@ describe('EquipmentController', () => {
         errors: [
           {
             status: 500,
-            title: 'An unhandle error happened',
+            title: 'An unhandled error occurred'
           }
         ]
       };
