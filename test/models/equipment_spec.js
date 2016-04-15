@@ -1,4 +1,4 @@
-import Equipment from '../../models/equipment.js';
+import EquipmentParser from '../../parser/equipmentParser.js';
 
 describe('Equipment model', () => {
   it('should parse equipment with informations', () => {
@@ -57,7 +57,7 @@ describe('Equipment model', () => {
       }
     }
 
-    let parsedEquipment = Equipment.parseEquipment(telemetryEquipment, fetchedCanVariables);
+    let parsedEquipment = EquipmentParser.parse(telemetryEquipment, fetchedCanVariables);
     expect(parsedEquipment).to.be.eql(expectedParsedEquipment);
   });
 });

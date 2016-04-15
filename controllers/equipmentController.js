@@ -1,10 +1,10 @@
 import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
-import Equipment from '../models/equipment';
+import EquipmentParser from '../parser/equipmentParser';
 import ResponseHandler from '../handlers/responseHandler';
 
 const parseEquipments = (equipments, equipmentsInformations) => {
   return equipments.equipment.map((data) => {
-    return Equipment.parseEquipment(data, equipmentsInformations[data.id]);
+    return EquipmentParser.parse(data, equipmentsInformations[data.id]);
   });
 };
 

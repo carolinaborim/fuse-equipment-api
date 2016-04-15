@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "aggregations": {
+      "equip_agg": [
+      {
+        "key": "a-equipment-id-1",
+        "spn_ag": [
+        {
+          "key": "ENGINE_HOURS",
+          "spn_latest_ag": [
+          {
+            "raw": 94774,
+            "value": "100"
+          }
+          ]
+        },
+        {
+          "key": "ENGINE_SPEED",
+          "spn_latest_ag": [
+          {
+            "raw": 13279,
+            "value": "100"
+          }
+          ]
+        }
+        ]
+      },
+      {
+        "key": "a-equipment-id-2",
+        "spn_ag": [
+        {
+          "key": "ENGINE_HOURS",
+          "spn_latest_ag": [
+          {
+            "raw": 94774,
+            "value": "100"
+          }
+          ]
+        },
+        {
+          "key": "ENGINE_SPEED",
+          "spn_latest_ag": [
+          {
+            "raw": 13279,
+            "value": "100"
+          }
+          ]
+        }
+        ]
+      }
+      ]
+    }
+  }
+}

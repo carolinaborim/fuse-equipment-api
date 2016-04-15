@@ -3,60 +3,13 @@ import CanVariablesFetcher from '../../fetcher/canVariablesFetcher.js';
 describe('CanVariablesFetcher', () => {
   it('fetches can variables data by equipment id', (done) => {
 
-    let telemetryReponse = {
-      "meta": {
-        "aggregations": {
-          "equip_agg": [
-            {
-              "key": "equipment-id-1",
-              "spn_ag": [
-                {
-                  "key": "ENGINE_HOURS",
-                  "spn_latest_ag": [
-                    {
-                      "raw": 94774,
-                      "value": "17059320"
-                    }
-                  ]
-                },
-                {
-                  "key": "ENGINE_SPEED",
-                  "spn_latest_ag": [
-                    {
-                      "raw": 13279,
-                      "value": "1659.875"
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "key": "equipment-id-2",
-              "spn_ag": [
-                {
-                  "key": "ENGINE_HOURS",
-                  "spn_latest_ag": [
-                    {
-                      "raw": 94774,
-                      "value": "17059320"
-                    }
-                  ]
-                },
-                {
-                  "key": "ENGINE_SPEED",
-                  "spn_latest_ag": [
-                    {
-                      "raw": 13279,
-                      "value": "1659.875"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
+    let telemetryResponse = readFixture('telemetrySearch');
+    telemetryResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
+    telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[0].spn_latest_ag[0].value = '17059320';
+    telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[1].spn_latest_ag[0].value = '1659.875';
+    telemetryResponse.meta.aggregations.equip_agg[1].key = 'equipment-id-2';
+    telemetryResponse.meta.aggregations.equip_agg[1].spn_ag[0].spn_latest_ag[0].value = '17059320';
+    telemetryResponse.meta.aggregations.equip_agg[1].spn_ag[1].spn_latest_ag[0].value = '1659.875';
 
     let expectedResponse = {
       'equipment-id-1': {
@@ -79,7 +32,7 @@ describe('CanVariablesFetcher', () => {
       headers: {
         'Authorization': mockedAuthorizationBearer
       }
-    }), telemetryReponse);
+    }), telemetryResponse);
 
     let canVariablesFetcher = new CanVariablesFetcher(httpClient);
     canVariablesFetcher.fetchByEquipmentId(['equipment-id-1','equipment-id-2'], mockedAuthorizationBearer)
