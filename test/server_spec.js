@@ -6,42 +6,7 @@ describe('EquipmentController', () => {
   let telemetryRequest = {};
 
   const generateFacadeEquipment = (equipmentId) => {
-    return {
-      type: 'equipment',
-      id: equipmentId,
-      attributes: {
-        description: 'Equipment 1',
-        serviceLevel: 1,
-        identificationNumber: 'a-identification-number',
-        manufacturingDate: '2014-06-30T15:18:51.000Z',
-        informations: {
-          ENGINE_HOURS: '100',
-          ENGINE_SPEED: '100'
-        }
-      },
-      relationships: {
-        dealer: {
-          links: {
-            self: '',
-            related: ''
-          },
-          data: {
-            type: 'dealer',
-            id: 'a-dealer-id'
-          }
-        },
-        model: {
-          links: {
-            self: '',
-            related: ''
-          },
-          data: {
-            type: 'model',
-            id: 'a-model-id'
-          }
-        }
-      }
-    };
+    return readFixture('facadeEquipment', { id: equipmentId});
   };
 
   const generateTelemetryEquipment = (equipmentId) => {
@@ -92,60 +57,9 @@ describe('EquipmentController', () => {
         }
       };
 
-      let telemetryReponse = {
-        "meta": {
-          "aggregations": {
-            "equip_agg": [
-              {
-                "key": "a-equipment-id-1",
-                "spn_ag": [
-                  {
-                    "key": "ENGINE_HOURS",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 94774,
-                        "value": "100"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "ENGINE_SPEED",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 13279,
-                        "value": "100"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "key": "a-equipment-id-2",
-                "spn_ag": [
-                  {
-                    "key": "ENGINE_HOURS",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 94774,
-                        "value": "100"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "ENGINE_SPEED",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 13279,
-                        "value": "100"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
+      let telemetryReponse = readFixture('telemetrySearch', {});
+      telemetryReponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      telemetryReponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
 
       let mockedSearchUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=a-equipment-id-1,a-equipment-id-2';
 
@@ -224,38 +138,10 @@ describe('EquipmentController', () => {
           Authorization: authenticationHeader
         }
       };
-
-      let telemetryReponse = {
-        "meta": {
-          "aggregations": {
-            "equip_agg": [
-              {
-                "key": "1-2-3-a",
-                "spn_ag": [
-                  {
-                    "key": "ENGINE_HOURS",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 94774,
-                        "value": "100"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "ENGINE_SPEED",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 13279,
-                        "value": "100"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      }
+      
+      let telemetryResponse = readFixture('telemetrySearch', {});
+      telemetryResponse.meta.aggregations.equip_agg[0].key = '1-2-3-a';
+      delete telemetryResponse.meta.aggregations.equip_agg[1];
 
       let expectedResponse = {
         '1-2-3-a': {
@@ -273,7 +159,7 @@ describe('EquipmentController', () => {
         headers: {
           'Authorization': authenticationHeader
         }
-      }), telemetryReponse);
+      }), telemetryResponse);
     });
 
     it('get request equipment by id with successful authorization header', (done) => {

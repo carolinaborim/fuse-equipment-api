@@ -1,0 +1,36 @@
+{
+  "type": "equipment",
+  "id": "equipmentId",
+  "attributes": {
+    "description": "Equipment 1",
+    "serviceLevel": 1,
+    "identificationNumber": "a-identification-number",
+    "manufacturingDate": "2014-06-30T15:18:51.000Z",
+    "informations": {
+      "ENGINE_HOURS": "100",
+      "ENGINE_SPEED": "100"
+    }
+  },
+  "relationships": {
+    "dealer": {
+      "links": {
+        "self": "",
+        "related": ""
+      },
+      "data": {
+        "type": "dealer",
+        "id": "a-dealer-id"
+      }
+    },
+    "model": {
+      "links": {
+        "self": "",
+        "related": ""
+      },
+      "data": {
+        "type": "model",
+        "id": "a-model-id"
+      }
+    }
+  }
+}
