@@ -276,23 +276,6 @@ describe('EquipmentController', () => {
       }), telemetryReponse);
     });
 
-    it('get request equipment by id with successful authorization header', (done) => {
-      const expectedResponse = {
-        data: generateFacadeEquipment(equipmentId)
-      };
-
-      respondWithSuccess(httpClient(telemetryRequest), {
-        equipment: [generateTelemetryEquipment(equipmentId)],
-        links: {}
-      });
-
-      server.inject(options, (res) => {
-        expect(res.statusCode).to.be.eql(200);
-        expect(JSON.parse(res.payload)).to.be.eql(expectedResponse);
-        done();
-      });
-    });
-
     it('handles an integration point failure smoothly even if it is an HTML page', (done) => {
       const expectedResponse = {
         errors: [{
