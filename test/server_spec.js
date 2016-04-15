@@ -57,7 +57,7 @@ describe('EquipmentController', () => {
         }
       };
 
-      let telemetryReponse = readFixture('telemetrySearch', {});
+      let telemetryReponse = readFixture('telemetrySearch');
       telemetryReponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
       telemetryReponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
 
@@ -139,7 +139,7 @@ describe('EquipmentController', () => {
         }
       };
       
-      let telemetryResponse = readFixture('telemetrySearch', {});
+      let telemetryResponse = readFixture('telemetrySearch');
       telemetryResponse.meta.aggregations.equip_agg[0].key = '1-2-3-a';
       delete telemetryResponse.meta.aggregations.equip_agg[1];
 

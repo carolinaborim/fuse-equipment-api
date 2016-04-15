@@ -3,7 +3,7 @@ import CanVariablesFetcher from '../../fetcher/canVariablesFetcher.js';
 describe('CanVariablesFetcher', () => {
   it('fetches can variables data by equipment id', (done) => {
 
-    let telemetryResponse = readFixture('telemetrySearch', {});
+    let telemetryResponse = readFixture('telemetrySearch');
     telemetryResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
     telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[0].spn_latest_ag[0].value = '17059320';
     telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[1].spn_latest_ag[0].value = '1659.875';
