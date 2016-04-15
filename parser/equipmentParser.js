@@ -1,6 +1,6 @@
-const Equipment = () => {};
+const EquipmentParser = () => {};
 
-Equipment.parseEquipment = (telemetryEquipment, canVariablesInformations) => {
+EquipmentParser.parse = (telemetryEquipment, canVariablesInformations) => {
   return {
     type: 'equipment',
     id: telemetryEquipment.id,
@@ -36,4 +36,4 @@ Equipment.parseEquipment = (telemetryEquipment, canVariablesInformations) => {
   };
 };
 
-module.exports = Equipment;
+module.exports = EquipmentParser;
