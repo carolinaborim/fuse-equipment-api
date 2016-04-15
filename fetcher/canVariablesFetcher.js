@@ -1,4 +1,5 @@
 import config from '../config';
+import ResponseHandler from '../handlers/responseHandler';
 
 const defaultRequestOptions = {
   method: 'GET',
@@ -56,7 +57,7 @@ class CanVariablesFetcher {
         return canVariables;
       })
       .catch(function (err) {
-        console.log(err.error);
+        throw new Error(err);
       });
   }
 }
