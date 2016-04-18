@@ -65,7 +65,7 @@ class CanVariablesFetcher {
             trackingData: {}
           };
           data.spn_ag.forEach((aggData, index) => {
-            canVariables[data.key].trackingData[aggData.key] = aggData.spn_latest_ag[0].value;
+            canVariables[data.key].trackingData[aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
         return canVariables;
