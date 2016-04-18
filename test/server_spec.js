@@ -34,7 +34,7 @@ describe('EquipmentController', () => {
   describe('Route: equipment', () => {
     before(() => {
       options = {
-        url: '/equipment',
+        url: '/equipments',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
@@ -90,7 +90,7 @@ describe('EquipmentController', () => {
         ]
       };
       const equipmentOffsetRequest = {
-        url: '/equipment?offset=11&limit=50',
+        url: '/equipments?offset=11&limit=50',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
@@ -179,7 +179,7 @@ describe('EquipmentController', () => {
 
     before(() => {
       options = {
-        url: `/equipment/${equipmentId}`,
+        url: `/equipments/${equipmentId}`,
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
