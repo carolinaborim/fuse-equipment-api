@@ -56,6 +56,8 @@ describe('EquipmentController', () => {
       searchResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
       searchResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
       const mockedSearchUri = generateSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']);
+      const mockedSearchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=a-equipment-id-1,a-equipment-id-2';
+      
       const searchRequest = {
         method: 'GET',
         json: true,
@@ -64,8 +66,41 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       };
-      respondWithSuccess(httpClient(searchRequest), searchResponse);
-
+      
+      let telemetryReponse = readFixture('telemetrySearch');
+      telemetryReponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      telemetryReponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
+      respondWithSuccess(httpClient(searchRequest), telemetryReponse);
+      
+      const trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = 'a-equipment-id-1';
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      trackingPointResponse.linked.trackingPoints[1].links.equipment = 'a-equipment-id-2';
+      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
+      
+      const searchTrackingPointRequest = {
+        method: 'GET',
+        json: true,
+        uri: mockedSearchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      };
+      respondWithSuccess(httpClient(searchTrackingPointRequest), trackingPointResponse);
+    
+      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
+      equipmentTwo.attributes.trackingPoint = {
+          "location": {
+            "coordinates": [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            "type": "Point"
+          },
+          "status": "STOPPEDIDLE"
+        };
+    
       const equipmentResponse = {
         equipment: [
           generateTelemetryEquipment('a-equipment-id-1'),
@@ -73,6 +108,7 @@ describe('EquipmentController', () => {
         ],
         links: {}
       };
+      
       const equipmentRequest = {
         method: 'GET',
         json: true,
@@ -86,7 +122,7 @@ describe('EquipmentController', () => {
       const expectedResponse = {
         data: [
           generateFacadeEquipment('a-equipment-id-1'),
-          generateFacadeEquipment('a-equipment-id-2')
+          equipmentTwo
         ]
       };
       const equipmentOffsetRequest = {
@@ -123,7 +159,7 @@ describe('EquipmentController', () => {
       trackingPointResponse.linked.trackingPoints[0].links.equipment = 'a-equipment-id-1';
       trackingPointResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
       trackingPointResponse.linked.trackingPoints[1].links.equipment = 'a-equipment-id-2';
-      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';    
+      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
       
       let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=a-equipment-id-1,a-equipment-id-2';
     
