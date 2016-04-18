@@ -16,9 +16,22 @@ describe('Equipment model', () => {
     };
 
     let fetchedCanVariables = {
-      ENGINE_HOURS: '100',
-      ENGINE_SPEED: '100'
-    }
+      trackingData: {
+        ENGINE_HOURS: '100',
+        ENGINE_SPEED: '100'
+      },
+      trackingPoint: {
+        location: {
+            coordinates: [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            type: 'Point'
+        },
+        status: 'WORKING'
+      }
+    };
 
     let expectedParsedEquipment = {
       type: 'equipment',
@@ -28,10 +41,21 @@ describe('Equipment model', () => {
         serviceLevel: 'a-equipment-service-level',
         identificationNumber: 'a-equipment-identificationNumber',
         manufacturingDate: 'a-equipment-manufacturing-date',
-        informations: {
+        trackingData: {
           ENGINE_HOURS: '100',
           ENGINE_SPEED: '100'
-        }
+        },
+        trackingPoint: {
+          location: {
+            coordinates: [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            type: 'Point'
+          },
+          status: 'WORKING'
+        },
       },
       relationships: {
         dealer: {

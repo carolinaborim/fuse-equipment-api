@@ -1,6 +1,7 @@
 const EquipmentParser = () => {};
 
-EquipmentParser.parse = (telemetryEquipment, canVariablesInformations) => {
+EquipmentParser.parse = (telemetryEquipment, canVariablesInformations = {}) => {
+
   return {
     type: 'equipment',
     id: telemetryEquipment.id,
@@ -9,7 +10,8 @@ EquipmentParser.parse = (telemetryEquipment, canVariablesInformations) => {
       serviceLevel: telemetryEquipment.serviceLevel,
       identificationNumber: telemetryEquipment.identificationNumber,
       manufacturingDate: telemetryEquipment.manufacturingDate,
-      informations: canVariablesInformations
+      trackingPoint: canVariablesInformations.trackingPoint || {},
+      trackingData: canVariablesInformations.trackingData || {}
     },
     relationships: {
       dealer: {

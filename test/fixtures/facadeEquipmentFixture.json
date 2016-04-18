@@ -6,7 +6,18 @@
     "serviceLevel": 1,
     "identificationNumber": "a-identification-number",
     "manufacturingDate": "2014-06-30T15:18:51.000Z",
-    "informations": {
+    "trackingPoint": {
+      "location": {
+        "coordinates": [
+          8.173922222222222,
+          51.7213528,
+          116
+        ],
+        "type": "Point"
+      },
+      "status": "WORKING"
+    },
+    "trackingData": {
       "ENGINE_HOURS": "100",
       "ENGINE_SPEED": "100"
     }

@@ -119,6 +119,14 @@ describe('EquipmentController', () => {
 
       let mockedSearchUri = generateSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']);
 
+      let trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = 'a-equipment-id-1';
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      trackingPointResponse.linked.trackingPoints[1].links.equipment = 'a-equipment-id-2';
+      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';    
+      
+      let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=a-equipment-id-1,a-equipment-id-2';
+    
       respondWithSuccess(httpClient({
         method: 'GET',
         json: true,
@@ -127,18 +135,40 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       }), telemetryReponse);
-
+      
+      respondWithSuccess(httpClient({
+        method: 'GET',
+        json: true,
+        uri: mockedSerchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      }), trackingPointResponse);
+      
+      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
+      equipmentTwo.attributes.trackingPoint = {
+          "location": {
+            "coordinates": [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            "type": "Point"
+          },
+          "status": "STOPPEDIDLE"
+        };
+    
       const expectedResponse = {
         data: [
           generateFacadeEquipment('a-equipment-id-1'),
-          generateFacadeEquipment('a-equipment-id-2')
+          equipmentTwo
         ]
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           generateTelemetryEquipment('a-equipment-id-1'),
-          generateTelemetryEquipment('a-equipment-id-2')
+          generateTelemetryEquipment('a-equipment-id-2'),
         ],
         links: {}
       });
@@ -283,7 +313,12 @@ describe('EquipmentController', () => {
         }
       };
 
+      let trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = equipmentId;
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = equipmentId;
+      delete trackingPointResponse.meta.aggregations.equip_agg[1];
       let mockedSearchUri = generateSearchUrl([equipmentId]);
+      let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=' + equipmentId;
 
       respondWithSuccess(httpClient({
         method: 'GET',
@@ -293,6 +328,15 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       }), telemetryReponse);
+      
+      respondWithSuccess(httpClient({
+        method: 'GET',
+        json: true,
+        uri: mockedSerchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      }), trackingPointResponse);
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(200);
