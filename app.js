@@ -32,15 +32,19 @@ const app = (httpClient, telemetryAPI) => {
 
   server.route([{
     method: 'GET',
-    path: '/equipment',
-    handler: equipmentController.findAll.bind(equipmentController),
+    path: '/equipments',
+    handler: (request, reply) => {
+      return equipmentController.findAll(request, reply);
+    },
     config: {
       tags: ['api']
     }
   }, {
     method: 'GET',
-    path: '/equipment/{id}',
-    handler: equipmentController.findById.bind(equipmentController),
+    path: '/equipments/{id}',
+    handler: (request, reply) => {
+      return equipmentController.findById(request, reply);
+    },
     config: {
       tags: ['api'],
       validate: {
