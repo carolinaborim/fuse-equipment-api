@@ -51,7 +51,7 @@ describe('EquipmentController', () => {
       };
     });
 
-    it('should allow offset pagination parameter', (done) => {
+    it('should allow offset and limit pagination parameters', (done) => {
       const searchResponse = readFixture('telemetrySearch');
       searchResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
       searchResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
@@ -76,7 +76,7 @@ describe('EquipmentController', () => {
       const equipmentRequest = {
         method: 'GET',
         json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=11`,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=11&limit=50`,
         headers: {
           Authorization: authenticationHeader
         }
@@ -90,7 +90,7 @@ describe('EquipmentController', () => {
         ]
       };
       const equipmentOffsetRequest = {
-        url: '/equipment?offset=11',
+        url: '/equipment?offset=11&limit=50',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
@@ -107,7 +107,7 @@ describe('EquipmentController', () => {
       telemetryRequest = {
         method: 'GET',
         json: true,
-        url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=0`,
+        url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=0&limit=100`,
         headers: {
           Authorization: authenticationHeader
         }

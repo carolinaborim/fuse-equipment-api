@@ -26,16 +26,13 @@ class EquipmentController {
   }
 
   findAll(request, reply) {
-    let offset = 0;
-    
-    if (request.query && request.query.offset) {
-      offset = request.query.offset;
-    }
+    const offset = request.query.offset || 0;
+    const limit = request.query.limit || 100;
 
     return this.httpClient({
       method: 'GET',
       json: true,
-      url: `${this.telemetryAPI}/equipment?offset=${offset}`,
+      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
       headers: {
         Authorization: request.headers.authorization
       }
