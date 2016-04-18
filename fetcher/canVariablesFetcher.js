@@ -80,14 +80,7 @@ class CanVariablesFetcher {
             data.meta.aggregations.equip_agg.forEach((data, index) => {
               let trackingPointId = _.first(data.tp_latest_ag).links.trackingPoint;
               let trackingPoint = _.find(trackingPoints, { id: trackingPointId });
-              trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status;
-              delete trackingPoint.links;
-              delete trackingPoint.id;
-              delete trackingPoint.externalId;
-              delete trackingPoint.heading;
-              delete trackingPoint.timeOfReception;
-              delete trackingPoint.timeOfOccurrence;
-
+              trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status; 
               canVariables[data.key].trackingPoint = trackingPoint;
             });
           });
