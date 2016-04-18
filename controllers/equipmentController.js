@@ -2,6 +2,9 @@ import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 import EquipmentParser from '../parser/equipmentParser';
 import ResponseHandler from '../handlers/responseHandler';
 
+const DEFAULT_OFFSET = 0;
+const DEFAULT_LIMIT = 100;
+
 const parseEquipments = (equipments, equipmentsInformations) => {
   return equipments.equipment.map((data) => {
     return EquipmentParser.parse(data, equipmentsInformations[data.id]);
@@ -26,10 +29,13 @@ class EquipmentController {
   }
 
   findAll(request, reply) {
+    const offset = request.query.offset || DEFAULT_OFFSET;
+    const limit = request.query.limit || DEFAULT_LIMIT;
+
     return this.httpClient({
       method: 'GET',
       json: true,
-      url: `${this.telemetryAPI}/equipment`,
+      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
       headers: {
         Authorization: request.headers.authorization
       }
