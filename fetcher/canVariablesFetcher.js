@@ -57,34 +57,35 @@ class CanVariablesFetcher {
       }
     }, defaultRequestOptions);
 
+    let equipments = {};
+
     return this.httpClient(options)
       .then((data) => {
-        let canVariables = {};
         data.meta.aggregations.equip_agg.forEach((data, index) => {
-          canVariables[data.key] = {
+          equipments[data.key] = {
             trackingData: {}
           };
           data.spn_ag.forEach((aggData, index) => {
-            canVariables[data.key].trackingData[aggData.key] = _.first(aggData.spn_latest_ag).value;
+            equipments[data.key].trackingData[aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
-        return canVariables;
-      })
-      .then((canVariables) => {
-        options.uri = createSearchTrackingPointUrl(equipmentIds);
-        this.httpClient(options)
-          .then((data) => {
-            let trackingPoints = data.linked.trackingPoints;
-            let duties = data.linked.duties;
 
-            data.meta.aggregations.equip_agg.forEach((data, index) => {
-              let trackingPointId = _.first(data.tp_latest_ag).links.trackingPoint;
-              let trackingPoint = _.find(trackingPoints, { id: trackingPointId });
-              trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status; 
-              canVariables[data.key].trackingPoint = trackingPoint;
-            });
-          });
-        return canVariables;
+        options.uri = createSearchTrackingPointUrl(equipmentIds);
+
+        return this.httpClient(options);
+      })
+      .then((data) => {
+        let trackingPoints = data.linked.trackingPoints;
+        let duties = data.linked.duties;
+
+        data.meta.aggregations.equip_agg.forEach((data, index) => {
+          let trackingPointId = _.first(data.tp_latest_ag).links.trackingPoint;
+          let trackingPoint = _.find(trackingPoints, { id: trackingPointId });
+          trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status; 
+          equipments[data.key].trackingPoint = trackingPoint;
+        });
+
+        return equipments;
       })
       .catch(function (err) {
         throw new Error(err);
