@@ -1,12 +1,11 @@
 import EquipmentController from './controllers/equipmentController';
 import EquipmentValidator from './validators/equipment';
+import config from './config';
 
 import Inert from 'inert';
 import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
-
-const PORT = process.env.PORT || 9090;
 
 const app = (httpClient, telemetryAPI) => {
   const server = new Hapi.Server();
@@ -15,7 +14,7 @@ const app = (httpClient, telemetryAPI) => {
 
   server.connection({
     host: '0.0.0.0',
-    port: PORT
+    port: config.PORT
   });
 
   server.register([
