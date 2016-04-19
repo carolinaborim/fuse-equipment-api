@@ -7,14 +7,8 @@ const defaultRequestOptions = {
   json: true
 };
 
-const defaultCanVariableNames = [
-  'ENGINE_HOURS',
-  'ENGINE_SPEED',
-  'DRIVING_DIRECTION',
-];
-
 const createSearchUrl = (equipmentIds) => {
-  let canVariableNames = defaultCanVariableNames.join(',');
+  let canVariableNames = config.DEFAULT_CAN_VARIABLES.join(',');
   let ids = equipmentIds.join(',');
 
   return `${config.TELEMETRY_API_URL}/trackingData/search?include=trackingPoint` +
