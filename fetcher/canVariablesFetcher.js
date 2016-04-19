@@ -8,8 +8,8 @@ const defaultRequestOptions = {
 };
 
 const createSearchUrl = (equipmentIds) => {
-  let canVariableNames = config.DEFAULT_CAN_VARIABLES.join(',');
-  let ids = equipmentIds.join(',');
+  const canVariableNames = config.DEFAULT_CAN_VARIABLES.join(',');
+  const ids = equipmentIds.join(',');
 
   return `${config.TELEMETRY_API_URL}/trackingData/search?include=trackingPoint` +
     `&links.canVariable.name=${canVariableNames}` +
@@ -27,14 +27,14 @@ const createSearchUrl = (equipmentIds) => {
 };
 
 const createSearchTrackingPointUrl = (equipmentIds) => {
-  let ids = equipmentIds.join(',');
+  const ids = equipmentIds.join(',');
 
   return `${config.TELEMETRY_API_URL}/trackingData/search` +
-    `?include=trackingPoint,trackingPoint.duty` +
-    `&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id` +
-    `&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits` +
-    `&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1` +
-    `&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint` +
+    '?include=trackingPoint,trackingPoint.duty' +
+    '&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id' +
+    '&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits' +
+    '&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1' +
+    '&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint' +
     `&links.trackingPoint.equipment.id=${ids}`;
 };
 
