@@ -4,6 +4,7 @@ import app from '../app';
 import td from 'testdouble';
 import Bluebird from 'bluebird';
 import fs from 'fs';
+import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 
 global.FUSE_TELEMETRY_API_URL = 'http://localhost:9000';
 global.expect = chai.expect;
@@ -24,5 +25,6 @@ global.readFixture = (fixtureName, partialObject) => {
 
 beforeEach(() => {
   global.httpClient = td.function();
-  global.server = app(httpClient, FUSE_TELEMETRY_API_URL);
+  const canVariablesFetcher = new CanVariablesFetcher(httpClient);
+  global.server = app(httpClient, FUSE_TELEMETRY_API_URL, canVariablesFetcher);
 });
