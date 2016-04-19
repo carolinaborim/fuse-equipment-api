@@ -1,6 +1,18 @@
+const parseTrackingPoint = (data) => {
+  if(!data.trackingPoint) {
+    return {};
+  }
+
+  return {
+    location: data.trackingPoint.location,
+    status: data.trackingPoint.status
+  }
+};
+
 const EquipmentParser = () => {};
 
-EquipmentParser.parse = (telemetryEquipment, canVariablesInformations) => {
+EquipmentParser.parse = (telemetryEquipment, canVariablesInformations = {}) => {
+
   return {
     type: 'equipment',
     id: telemetryEquipment.id,
@@ -9,7 +21,8 @@ EquipmentParser.parse = (telemetryEquipment, canVariablesInformations) => {
       serviceLevel: telemetryEquipment.serviceLevel,
       identificationNumber: telemetryEquipment.identificationNumber,
       manufacturingDate: telemetryEquipment.manufacturingDate,
-      informations: canVariablesInformations
+      trackingPoint: parseTrackingPoint(canVariablesInformations),
+      trackingData: canVariablesInformations.trackingData || {}
     },
     relationships: {
       dealer: {

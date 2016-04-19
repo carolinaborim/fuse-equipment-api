@@ -8,7 +8,11 @@ describe('EquipmentController', () => {
   const generateSearchUrl = (equipmentIds) => {
     return `https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=${equipmentIds.join(',')}`;
   };
-
+  
+  const generateTrackingPointSearchUrl = (equipmentIds) => {
+    return `https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=${equipmentIds.join(',')}`  
+  };
+  
   const generateFacadeEquipment = (equipmentId) => {
     return readFixture('facadeEquipment', { id: equipmentId});
   };
@@ -56,6 +60,8 @@ describe('EquipmentController', () => {
       searchResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
       searchResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
       const mockedSearchUri = generateSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']);
+      const mockedSearchTrackingPointUri = generateTrackingPointSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']); 
+      
       const searchRequest = {
         method: 'GET',
         json: true,
@@ -64,8 +70,29 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       };
-      respondWithSuccess(httpClient(searchRequest), searchResponse);
-
+      
+      let telemetryReponse = readFixture('telemetrySearch');
+      telemetryReponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      telemetryReponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
+      respondWithSuccess(httpClient(searchRequest), telemetryReponse);
+      
+      const trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = 'a-equipment-id-1';
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      trackingPointResponse.linked.trackingPoints[1].links.equipment = 'a-equipment-id-2';
+      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
+      
+      const searchTrackingPointRequest = {
+        method: 'GET',
+        json: true,
+        uri: mockedSearchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      };
+      respondWithSuccess(httpClient(searchTrackingPointRequest), trackingPointResponse);
+    
+    
       const equipmentResponse = {
         equipment: [
           generateTelemetryEquipment('a-equipment-id-1'),
@@ -73,6 +100,7 @@ describe('EquipmentController', () => {
         ],
         links: {}
       };
+      
       const equipmentRequest = {
         method: 'GET',
         json: true,
@@ -82,13 +110,28 @@ describe('EquipmentController', () => {
         }
       };
       respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
-
+      
+      const equipmentOne = generateFacadeEquipment('a-equipment-id-1');      
+      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
+      equipmentTwo.attributes.trackingPoint = {
+          "location": {
+            "coordinates": [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            "type": "Point"
+          },
+          "status": "STOPPEDIDLE"
+        };
+      
       const expectedResponse = {
         data: [
-          generateFacadeEquipment('a-equipment-id-1'),
-          generateFacadeEquipment('a-equipment-id-2')
+          equipmentOne,
+          equipmentTwo
         ]
       };
+      
       const equipmentOffsetRequest = {
         url: '/equipments?offset=11&limit=50',
         method: 'GET',
@@ -119,6 +162,14 @@ describe('EquipmentController', () => {
 
       let mockedSearchUri = generateSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']);
 
+      let trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = 'a-equipment-id-1';
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = 'a-equipment-id-1';
+      trackingPointResponse.linked.trackingPoints[1].links.equipment = 'a-equipment-id-2';
+      trackingPointResponse.meta.aggregations.equip_agg[1].key = 'a-equipment-id-2';
+      
+      let mockedSearchTrackingPointUri = generateTrackingPointSearchUrl(['a-equipment-id-1', 'a-equipment-id-2']); 
+
       respondWithSuccess(httpClient({
         method: 'GET',
         json: true,
@@ -127,18 +178,40 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       }), telemetryReponse);
-
+      
+      respondWithSuccess(httpClient({
+        method: 'GET',
+        json: true,
+        uri: mockedSearchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      }), trackingPointResponse);
+      const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
+      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
+      equipmentTwo.attributes.trackingPoint = {
+          "location": {
+            "coordinates": [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            "type": "Point"
+          },
+          "status": "STOPPEDIDLE"
+        };
+    
       const expectedResponse = {
         data: [
-          generateFacadeEquipment('a-equipment-id-1'),
-          generateFacadeEquipment('a-equipment-id-2')
+          equipmentOne,
+          equipmentTwo
         ]
       };
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [
           generateTelemetryEquipment('a-equipment-id-1'),
-          generateTelemetryEquipment('a-equipment-id-2')
+          generateTelemetryEquipment('a-equipment-id-2'),
         ],
         links: {}
       });
@@ -283,7 +356,12 @@ describe('EquipmentController', () => {
         }
       };
 
+      let trackingPointResponse = readFixture('trackingPoint');
+      trackingPointResponse.linked.trackingPoints[0].links.equipment = equipmentId;
+      trackingPointResponse.meta.aggregations.equip_agg[0].key = equipmentId;
+      delete trackingPointResponse.meta.aggregations.equip_agg[1];
       let mockedSearchUri = generateSearchUrl([equipmentId]);
+      const mockedSearchTrackingPointUri = generateTrackingPointSearchUrl([equipmentId]); 
 
       respondWithSuccess(httpClient({
         method: 'GET',
@@ -293,6 +371,15 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       }), telemetryReponse);
+      
+      respondWithSuccess(httpClient({
+        method: 'GET',
+        json: true,
+        uri: mockedSearchTrackingPointUri,
+        headers: {
+          'Authorization': authenticationHeader
+        }
+      }), trackingPointResponse);
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(200);
