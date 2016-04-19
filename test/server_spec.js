@@ -92,18 +92,6 @@ describe('EquipmentController', () => {
       };
       respondWithSuccess(httpClient(searchTrackingPointRequest), trackingPointResponse);
     
-      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
-      equipmentTwo.attributes.trackingPoint = {
-          "location": {
-            "coordinates": [
-              0.9392138888888889,
-              52.6362222,
-              116
-            ],
-            "type": "Point"
-          },
-          "status": "STOPPEDIDLE"
-        };
     
       const equipmentResponse = {
         equipment: [
@@ -122,13 +110,28 @@ describe('EquipmentController', () => {
         }
       };
       respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
-
+      
+      const equipmentOne = generateFacadeEquipment('a-equipment-id-1');      
+      let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
+      equipmentTwo.attributes.trackingPoint = {
+          "location": {
+            "coordinates": [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            "type": "Point"
+          },
+          "status": "STOPPEDIDLE"
+        };
+      
       const expectedResponse = {
         data: [
-          generateFacadeEquipment('a-equipment-id-1'),
+          equipmentOne,
           equipmentTwo
         ]
       };
+      
       const equipmentOffsetRequest = {
         url: '/equipments?offset=11&limit=50',
         method: 'GET',
@@ -184,7 +187,7 @@ describe('EquipmentController', () => {
           'Authorization': authenticationHeader
         }
       }), trackingPointResponse);
-      
+      const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
       let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
       equipmentTwo.attributes.trackingPoint = {
           "location": {
@@ -200,7 +203,7 @@ describe('EquipmentController', () => {
     
       const expectedResponse = {
         data: [
-          generateFacadeEquipment('a-equipment-id-1'),
+          equipmentOne,
           equipmentTwo
         ]
       };
