@@ -1,8 +1,10 @@
 import app from './app';
 import rp from 'request-promise';
 import config from './config.js';
+import CanVariablesFetcher from './fetcher/canVariablesFetcher';
 
-const server = app(rp, config.TELEMETRY_API_URL);
+const canVariablesFetcher = new CanVariablesFetcher(rp);
+const server = app(rp, config.TELEMETRY_API_URL, canVariablesFetcher);
 
 server.start((err) => {
   if (err) {

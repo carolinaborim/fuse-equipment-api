@@ -1,4 +1,3 @@
-import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 import EquipmentParser from '../parser/equipmentParser';
 import ResponseHandler from '../handlers/responseHandler';
 
@@ -22,10 +21,10 @@ const responseWithEquipments = (reply) => (equipments, equipmentsInformations) =
 };
 
 class EquipmentController {
-  constructor(httpClient, telemetryAPI) {
+  constructor(httpClient, telemetryAPI, canVariablesFetcher) {
     this.httpClient = httpClient;
     this.telemetryAPI = telemetryAPI;
-    this.canVariablesFetcher = new CanVariablesFetcher(httpClient);
+    this.canVariablesFetcher = canVariablesFetcher;
   }
 
   findAll(request, reply) {
