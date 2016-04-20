@@ -77,15 +77,15 @@ describe('EquipmentController', () => {
       const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
       let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
       equipmentTwo.attributes.trackingPoint = {
-        "location": {
-          "coordinates": [
+        'location': {
+          'coordinates': [
             0.9392138888888889,
             52.6362222,
             116
           ],
-          "type": "Point"
+          'type': 'Point'
         },
-        "status": "STOPPEDIDLE"
+        'status': 'STOPPEDIDLE'
       };
 
       respondWithSuccess(
@@ -122,15 +122,15 @@ describe('EquipmentController', () => {
       const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
       let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
       equipmentTwo.attributes.trackingPoint = {
-        "location": {
-          "coordinates": [
+        'location': {
+          'coordinates': [
             0.9392138888888889,
             52.6362222,
             116
           ],
-          "type": "Point"
+          'type': 'Point'
         },
-        "status": "STOPPEDIDLE"
+        'status': 'STOPPEDIDLE'
       };
 
       respondWithSuccess(
