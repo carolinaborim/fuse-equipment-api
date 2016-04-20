@@ -25,6 +25,6 @@ global.readFixture = (fixtureName, partialObject) => {
 
 beforeEach(() => {
   global.httpClient = td.function();
-  const canVariablesFetcher = new CanVariablesFetcher(httpClient);
+  global.canVariablesFetcher = td.object(CanVariablesFetcher);
   global.server = app(httpClient, FUSE_TELEMETRY_API_URL, canVariablesFetcher);
 });
