@@ -216,119 +216,26 @@ describe('EquipmentController', () => {
           Authorization: authenticationHeader
         }
       };
-
-      let telemetryResponse = readFixture('telemetrySearch');
-      telemetryResponse.meta.aggregations.equip_agg[0].key = '1-2-3-a';
-      delete telemetryResponse.meta.aggregations.equip_agg[1];
-
-      let expectedResponse = {
-        '1-2-3-a': {
-          'ENGINE_HOURS': '17059320',
-          'ENGINE_SPEED': '1659.875'
-        }
-      };
-
-      let mockedSearchUri = generateSearchUrl(['1-2-3-a']);
-
-      respondWithSuccess(httpClient({
-        method: 'GET',
-        json: true,
-        uri: mockedSearchUri,
-        headers: {
-          'Authorization': authenticationHeader
-        }
-      }), telemetryResponse);
     });
 
     it('get request equipment by id with successful authorization header', (done) => {
-      const expectedResponse = {
-        data: generateFacadeEquipment(equipmentId)
-      };
+      const expectedEquipment = generateFacadeEquipment(equipmentId);
+
+      respondWithSuccess(
+        canVariablesFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
+        {
+          '1-2-3-a': { trackingData: expectedEquipment.attributes.trackingData, trackingPoint: expectedEquipment.attributes.trackingPoint },
+        }
+      );
 
       respondWithSuccess(httpClient(telemetryRequest), {
         equipment: [generateTelemetryEquipment(equipmentId)],
         links: {}
       });
 
-      let telemetryReponse = {
-        "meta": {
-          "aggregations": {
-            "equip_agg": [
-              {
-                "key": equipmentId,
-                "spn_ag": [
-                  {
-                    "key": "ENGINE_HOURS",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 94774,
-                        "value": "100"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "ENGINE_SPEED",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 13279,
-                        "value": "100"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "key": "a-equipment-id-2",
-                "spn_ag": [
-                  {
-                    "key": "ENGINE_HOURS",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 94774,
-                        "value": "100"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "ENGINE_SPEED",
-                    "spn_latest_ag": [
-                      {
-                        "raw": 13279,
-                        "value": "100"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        }
+      const expectedResponse = {
+        data: expectedEquipment
       };
-
-      let trackingPointResponse = readFixture('trackingPoint');
-      trackingPointResponse.linked.trackingPoints[0].links.equipment = equipmentId;
-      trackingPointResponse.meta.aggregations.equip_agg[0].key = equipmentId;
-      delete trackingPointResponse.meta.aggregations.equip_agg[1];
-      let mockedSearchUri = generateSearchUrl([equipmentId]);
-      const mockedSearchTrackingPointUri = generateTrackingPointSearchUrl([equipmentId]); 
-
-      respondWithSuccess(httpClient({
-        method: 'GET',
-        json: true,
-        uri: mockedSearchUri,
-        headers: {
-          'Authorization': authenticationHeader
-        }
-      }), telemetryReponse);
-      
-      respondWithSuccess(httpClient({
-        method: 'GET',
-        json: true,
-        uri: mockedSearchTrackingPointUri,
-        headers: {
-          'Authorization': authenticationHeader
-        }
-      }), trackingPointResponse);
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(200);
