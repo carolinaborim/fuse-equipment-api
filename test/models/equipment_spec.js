@@ -22,12 +22,12 @@ describe('Equipment model', () => {
       },
       trackingPoint: {
         location: {
-            coordinates: [
-              0.9392138888888889,
-              52.6362222,
-              116
-            ],
-            type: 'Point'
+          coordinates: [
+            0.9392138888888889,
+            52.6362222,
+            116
+          ],
+          type: 'Point'
         },
         status: 'WORKING'
       }

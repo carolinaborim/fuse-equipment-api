@@ -1,10 +1,8 @@
 import supertest from 'supertest';
 import chai from 'chai';
-import app from '../app';
 import td from 'testdouble';
 import Bluebird from 'bluebird';
 import fs from 'fs';
-import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 
 global.FUSE_TELEMETRY_API_URL = 'http://localhost:9000';
 global.expect = chai.expect;
@@ -22,9 +20,3 @@ global.readFixture = (fixtureName, partialObject) => {
   const fixture = JSON.parse(fs.readFileSync(`${__dirname}/fixtures/${fixtureName}Fixture.json`, 'utf8'));
   return Object.assign({}, fixture, partialObject);
 };
-
-beforeEach(() => {
-  global.httpClient = td.function();
-  global.canVariablesFetcher = td.object(CanVariablesFetcher);
-  global.server = app(httpClient, FUSE_TELEMETRY_API_URL, canVariablesFetcher);
-});
