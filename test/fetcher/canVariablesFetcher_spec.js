@@ -21,59 +21,59 @@ describe('CanVariablesFetcher', () => {
     trackingPointResponse.linked.trackingPoints[0].links.equipment = 'equipment-id-1';
     trackingPointResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
     trackingPointResponse.linked.trackingPoints[1].links.equipment = 'equipment-id-2';
-    trackingPointResponse.meta.aggregations.equip_agg[1].key = 'equipment-id-2';    
+    trackingPointResponse.meta.aggregations.equip_agg[1].key = 'equipment-id-2';
 
     let expectedResponse = {
       'equipment-id-1': {
-        'trackingPoint': {
-        'timeOfOccurrence': '2015-11-08T02:27:45.000Z',
-        'timeOfReception': '2015-11-17T23:05:04.000Z',
-        'heading': 102,
-        'externalId': '50ac7e8e8e118d15c19cdbbd9d976eed_8',
-        'location': {
-          'coordinates': [
-            8.173922222222222,
-            51.7213528,
-            116
-          ],
-          'type': 'Point'
+        trackingPoint: {
+          timeOfOccurrence: '2015-11-08T02:27:45.000Z',
+          timeOfReception: '2015-11-17T23:05:04.000Z',
+          heading: 102,
+          externalId: '50ac7e8e8e118d15c19cdbbd9d976eed_8',
+          location: {
+            coordinates: [
+              8.173922222222222,
+              51.7213528,
+              116
+            ],
+            type: 'Point'
+          },
+          status: 'WORKING',
+          id: '97c21b73-22ff-4e5e-aa6d-46178c8e7460',
+          links: {
+            equipment: 'equipment-id-1',
+            duty: '20de95dc-0b28-4f89-812d-e7ffb4581e74'
+          }
         },
-        'status': 'WORKING',
-        'id': '97c21b73-22ff-4e5e-aa6d-46178c8e7460',
-        'links': {
-          'equipment': 'equipment-id-1',
-          'duty': '20de95dc-0b28-4f89-812d-e7ffb4581e74'
-        }
-      },
-        'trackingData': {
-          'ENGINE_HOURS': '17059320',
-          'ENGINE_SPEED': '1659.875'
+        trackingData: {
+          ENGINE_HOURS: '17059320',
+          ENGINE_SPEED: '1659.875'
         }
       },
       'equipment-id-2': {
-        'trackingPoint': {
-        'timeOfOccurrence': '2015-11-08T02:27:45.000Z',
-        'timeOfReception': '2015-11-17T22:54:10.000Z',
-        'heading': 102,
-        'externalId': '14c746f8acf0d2f5e76c3cb913751074_8',
-        'location': {
-          'coordinates': [
-            0.9392138888888889,
-            52.6362222,
-            116
-          ],
-          'type': 'Point'
+        trackingPoint: {
+          timeOfOccurrence: '2015-11-08T02:27:45.000Z',
+          timeOfReception: '2015-11-17T22:54:10.000Z',
+          heading: 102,
+          externalId: '14c746f8acf0d2f5e76c3cb913751074_8',
+          location: {
+            coordinates: [
+              0.9392138888888889,
+              52.6362222,
+              116
+            ],
+            type: 'Point'
+          },
+          status: 'STOPPEDIDLE',
+          id: '0c760770-13c2-4bb4-b161-9e9845df1eeb',
+          links: {
+            equipment: 'equipment-id-2',
+            duty: '17d87b74-831a-4f27-acc1-0a965bc8578a'
+          }
         },
-        'status': 'STOPPEDIDLE',
-        'id': '0c760770-13c2-4bb4-b161-9e9845df1eeb',
-        'links': {
-          'equipment': 'equipment-id-2',
-          'duty': '17d87b74-831a-4f27-acc1-0a965bc8578a'
-        }
-      },
-        'trackingData': {
-          'ENGINE_HOURS': '17059320',
-          'ENGINE_SPEED': '1659.875'
+        trackingData: {
+          ENGINE_HOURS: '17059320',
+          ENGINE_SPEED: '1659.875'
         }
       }
     };
@@ -88,7 +88,7 @@ describe('CanVariablesFetcher', () => {
       json: true,
       uri: mockedSearchUri,
       headers: {
-        'Authorization': mockedAuthorizationBearer
+        Authorization: mockedAuthorizationBearer
       }
     }), telemetryResponse);
 
@@ -97,7 +97,7 @@ describe('CanVariablesFetcher', () => {
       json: true,
       uri: mockedSerchTrackingPointUri,
       headers: {
-        'Authorization': mockedAuthorizationBearer
+        Authorization: mockedAuthorizationBearer
       }
     }), trackingPointResponse);
 
@@ -129,7 +129,7 @@ describe('CanVariablesFetcher', () => {
       json: true,
       uri: mockedSearchUri,
       headers: {
-        'Authorization': mockedAuthorizationBearer
+        Authorization: mockedAuthorizationBearer
       }
     }), telemetryResponse);
 
@@ -138,7 +138,7 @@ describe('CanVariablesFetcher', () => {
       json: true,
       uri: mockedSerchTrackingPointUri,
       headers: {
-        'Authorization': mockedAuthorizationBearer
+        Authorization: mockedAuthorizationBearer
       }
     }), trackingPointResponse);
 
