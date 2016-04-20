@@ -1,5 +1,6 @@
 import EquipmentController from './controllers/equipmentController';
 import EquipmentValidator from './validators/equipment';
+import EquipmentSchema from './schemas/equipmentSchema';
 import config from './config';
 
 import Inert from 'inert';
@@ -10,7 +11,6 @@ import HapiSwagger from 'hapi-swagger';
 const app = (httpClient, telemetryAPI) => {
   const server = new Hapi.Server();
   const equipmentController = new EquipmentController(httpClient, telemetryAPI);
-  const equipmentValidator = new EquipmentValidator();
 
   server.connection({
     host: '0.0.0.0',
@@ -22,33 +22,30 @@ const app = (httpClient, telemetryAPI) => {
     Vision,
     {
       register: HapiSwagger,
-      options: {
-        info: {
-          version: '1.0.0'
-        }
-      }
+      options: config.HAPI_SWAGGER_CONFIG
     }]);
 
   server.route([{
     method: 'GET',
     path: '/equipments',
-    handler: (request, reply) => {
-      return equipmentController.findAll(request, reply);
-    },
     config: {
-      tags: ['api']
+      handler: (request, reply) => {
+        equipmentController.findAll(request, reply);
+      },
+      tags: ['api'],
+      validate: EquipmentValidator.findAll,
+      plugins: EquipmentSchema.findAll
     }
   }, {
     method: 'GET',
     path: '/equipments/{id}',
-    handler: (request, reply) => {
-      return equipmentController.findById(request, reply);
-    },
     config: {
+      handler: (request, reply) => {
+        equipmentController.findById(request, reply);
+      },
       tags: ['api'],
-      validate: {
-        params: equipmentValidator.validateGetParams()
-      }
+      validate: EquipmentValidator.findById,
+      plugins: EquipmentSchema.findById
     }
   }]);
 
