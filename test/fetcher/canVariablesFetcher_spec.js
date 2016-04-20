@@ -1,6 +1,12 @@
 import CanVariablesFetcher from '../../fetcher/canVariablesFetcher.js';
 
 describe('CanVariablesFetcher', () => {
+  let httpClient;
+
+  beforeEach(() => {
+    httpClient = td.function();
+  });
+
   it('fetches can variables data by equipment id', (done) => {
 
     let telemetryResponse = readFixture('telemetrySearch');
