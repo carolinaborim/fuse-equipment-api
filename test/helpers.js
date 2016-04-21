@@ -4,7 +4,7 @@ import td from 'testdouble';
 import Bluebird from 'bluebird';
 import fs from 'fs';
 
-global.FUSE_TELEMETRY_API_URL = 'http://localhost:9000';
+global.FUSE_TELEMETRY_API_URL = 'https://agco-fuse-trackers-sandbox.herokuapp.com';
 global.expect = chai.expect;
 global.td = td;
 
