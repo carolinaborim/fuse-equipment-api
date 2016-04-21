@@ -1,5 +1,5 @@
 import config from '../config';
-import ResponseHandler from '../handlers/responseHandler';
+import TrackingPointFetcher from './trackingPointFetcher';
 import _ from 'lodash';
 
 const defaultRequestOptions = {
@@ -23,18 +23,6 @@ const createSearchUrl = (equipmentIds) => {
     '&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence' +
     '&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint' +
     '&tp_latest_ag.include=trackingPoint' +
-    `&links.trackingPoint.equipment.id=${ids}`;
-};
-
-const createSearchTrackingPointUrl = (equipmentIds) => {
-  const ids = equipmentIds.join(',');
-
-  return `${config.TELEMETRY_API_URL}/trackingData/search` +
-    '?include=trackingPoint,trackingPoint.duty' +
-    '&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id' +
-    '&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits' +
-    '&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1' +
-    '&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint' +
     `&links.trackingPoint.equipment.id=${ids}`;
 };
 
@@ -63,23 +51,14 @@ class CanVariablesFetcher {
             equipments[data.key].trackingData[aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
-
-        options.uri = createSearchTrackingPointUrl(equipmentIds);
-
-        return this.httpClient(options);
+      })
+      .then(() => {
+        return new TrackingPointFetcher(this.httpClient).fetchByEquipmentId(equipmentIds, authorizationBearer);
       })
       .then((data) => {
-        if(data.linked) {
-          let trackingPoints = data.linked.trackingPoints;
-          let duties = data.linked.duties;
-
-          data.meta.aggregations.equip_agg.forEach((data, index) => {
-            let trackingPointId = _.first(data.tp_latest_ag).links.trackingPoint;
-            let trackingPoint = _.find(trackingPoints, { id: trackingPointId });
-            trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status; 
-            equipments[data.key].trackingPoint = trackingPoint;
-          });
-        }      
+        _.forEach(equipments, (value, key) => {
+          value.trackingPoint = data[key];
+        });
         return equipments;
       })
       .catch(function (err) {
