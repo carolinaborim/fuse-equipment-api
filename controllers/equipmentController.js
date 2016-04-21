@@ -1,5 +1,6 @@
 import EquipmentParser from '../parser/equipmentParser';
 import ResponseHandler from '../handlers/responseHandler';
+import EquipmentFetcher from '../fetcher/equipmentFetcher';
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 100;
@@ -24,6 +25,7 @@ class EquipmentController {
   constructor(httpClient, telemetryAPI, canVariablesFetcher) {
     this.httpClient = httpClient;
     this.telemetryAPI = telemetryAPI;
+    this.equipmentFetcher = new EquipmentFetcher(httpClient);
     this.canVariablesFetcher = canVariablesFetcher;
   }
 
