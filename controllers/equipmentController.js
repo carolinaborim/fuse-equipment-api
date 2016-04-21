@@ -1,6 +1,5 @@
 import EquipmentParser from '../parser/equipmentParser';
 import ResponseHandler from '../handlers/responseHandler';
-import EquipmentFetcher from '../fetcher/equipmentFetcher';
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 100;
@@ -28,8 +27,8 @@ class EquipmentController {
   }
 
   findAll(request, reply) {
-    const offset = parseInt(request.query.offset) || DEFAULT_OFFSET;
-    const limit = parseInt(request.query.limit) || DEFAULT_LIMIT;
+    const offset = parseInt(request.query.offset, 10) || DEFAULT_OFFSET;
+    const limit = parseInt(request.query.limit, 10) || DEFAULT_LIMIT;
 
     this.equipmentFetcher
       .findAll(
