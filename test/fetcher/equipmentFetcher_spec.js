@@ -4,20 +4,6 @@ describe('EquipmentFetcher', () => {
   let httpClient, equipmentFetcher;
   const authenticationHeader = 'This is a Bearer token';
 
-  const generateTelemetryEquipment = (equipmentId) => {
-    return {
-      id: equipmentId,
-      description: 'Equipment 1',
-      serviceLevel: 1,
-      identificationNumber: 'a-identification-number',
-      manufacturingDate: '2014-06-30T15:18:51.000Z',
-      links: {
-        dealer: 'a-dealer-id',
-        model: 'a-model-id'
-      }
-    };
-  };
-
   beforeEach(() => {
     httpClient = td.function();
     equipmentFetcher = new EquipmentFetcher(httpClient);
