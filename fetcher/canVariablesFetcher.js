@@ -44,24 +44,14 @@ class CanVariablesFetcher {
     return this.httpClient(options)
       .then((data) => {
         data.meta.aggregations.equip_agg.forEach((data, index) => {
-          equipments[data.key] = {
-            trackingData: {}
-          };
+          equipments[data.key] = {};
           data.spn_ag.forEach((aggData, index) => {
-            equipments[data.key].trackingData[aggData.key] = _.first(aggData.spn_latest_ag).value;
+            equipments[data.key][aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
-      })
-      .then(() => {
-        return new TrackingPointFetcher(this.httpClient).fetchByEquipmentId(equipmentIds, authorizationBearer);
-      })
-      .then((data) => {
-        _.forEach(equipments, (value, key) => {
-          value.trackingPoint = data[key];
-        });
+
         return equipments;
-      })
-      .catch(function (err) {
+      }).catch(function (err) {
         throw new Error(err);
       });
   }
