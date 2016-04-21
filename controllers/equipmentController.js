@@ -28,8 +28,8 @@ class EquipmentController {
   }
 
   findAll(request, reply) {
-    const offset = request.query.offset || DEFAULT_OFFSET;
-    const limit = request.query.limit || DEFAULT_LIMIT;
+    const offset = parseInt(request.query.offset) || DEFAULT_OFFSET;
+    const limit = parseInt(request.query.limit) || DEFAULT_LIMIT;
 
     this.equipmentFetcher
       .findAll(
