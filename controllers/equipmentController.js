@@ -33,48 +33,43 @@ class EquipmentController {
     const offset = request.query.offset || DEFAULT_OFFSET;
     const limit = request.query.limit || DEFAULT_LIMIT;
 
-    return this.httpClient({
-      method: 'GET',
-      json: true,
-      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
-      headers: {
-        Authorization: request.headers.authorization
-      }
-    })
-    .then((equipments) => {
-      const equipmentIds = equipments.equipment.map((equipment) => equipment.id);
-      return this.canVariablesFetcher.fetchByEquipmentId(
-        equipmentIds,
+    this.equipmentFetcher
+      .findAll(
+        offset,
+        limit,
         request.headers.authorization
+      )
+      .then((equipments) => {
+        const equipmentIds = equipments.equipment.map((equipment) => equipment.id);
+        return this.canVariablesFetcher.fetchByEquipmentId(
+          equipmentIds,
+          request.headers.authorization
         )
-      .then((canVariables) => {
-        return [equipments, canVariables];
-      });
-    })
-    .spread(responseWithEquipments(reply))
-    .catch(ResponseHandler.responseWithError(reply));
+        .then((canVariables) => {
+          return [equipments, canVariables];
+        });
+      })
+      .spread(responseWithEquipments(reply))
+      .catch(ResponseHandler.responseWithError(reply));
   }
 
   findById(request, reply) {
-    return this.httpClient({
-      method: 'GET',
-      json: true,
-      url: `${this.telemetryAPI}/equipment/${request.params.id}`,
-      headers: {
-        Authorization: request.headers.authorization
-      }
-    })
-    .then((equipments) => {
-      return this.canVariablesFetcher.fetchByEquipmentId(
-        [equipments.equipment[0].id],
+    this.equipmentFetcher
+      .findById(
+        request.params.id,
         request.headers.authorization
+      )
+      .then((equipments) => {
+        return this.canVariablesFetcher.fetchByEquipmentId(
+          [equipments.equipment[0].id],
+          request.headers.authorization
         )
-      .then((canVariables) => {
-        return [equipments, canVariables];
-      });
-    })
-    .spread(responseWithSingleEquipment(reply))
-    .catch(ResponseHandler.responseWithError(reply));
+        .then((canVariables) => {
+          return [equipments, canVariables];
+        });
+      })
+      .spread(responseWithSingleEquipment(reply))
+      .catch(ResponseHandler.responseWithError(reply));
   }
 }
 
