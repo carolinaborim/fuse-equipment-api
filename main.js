@@ -4,7 +4,8 @@ import config from './config.js';
 import CanVariablesFetcher from './fetcher/canVariablesFetcher';
 
 const canVariablesFetcher = new CanVariablesFetcher(rp);
-const server = app(rp, config.TELEMETRY_API_URL, canVariablesFetcher);
+const equipmentFetcher = new EquipmentFetcher(rp);
+const server = app(equipmentFetcher, canVariablesFetcher);
 
 server.start((err) => {
   if (err) {

@@ -1,6 +1,7 @@
 import './helpers.js';
 import app from '../app';
 import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
+import EquipmentFetcher from '../fetcher/equipmentFetcher';
 
 describe('EquipmentController', () => {
   let canVariablesFetcher, httpClient, server;
@@ -11,7 +12,7 @@ describe('EquipmentController', () => {
   beforeEach(() => {
     httpClient = td.function();
     canVariablesFetcher = td.object(CanVariablesFetcher);
-    server = app(httpClient, FUSE_TELEMETRY_API_URL, canVariablesFetcher);
+    server = app(new EquipmentFetcher(httpClient), canVariablesFetcher);
   });
 
   const generateFacadeEquipment = (equipmentId) => {

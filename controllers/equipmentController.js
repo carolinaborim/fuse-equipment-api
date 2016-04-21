@@ -22,10 +22,8 @@ const responseWithEquipments = (reply) => (equipments, equipmentsInformations) =
 };
 
 class EquipmentController {
-  constructor(httpClient, telemetryAPI, canVariablesFetcher) {
-    this.httpClient = httpClient;
-    this.telemetryAPI = telemetryAPI;
-    this.equipmentFetcher = new EquipmentFetcher(httpClient);
+  constructor(equipmentFetcher, canVariablesFetcher) {
+    this.equipmentFetcher = equipmentFetcher;
     this.canVariablesFetcher = canVariablesFetcher;
   }
 
