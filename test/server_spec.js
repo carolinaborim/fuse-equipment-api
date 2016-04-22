@@ -2,9 +2,10 @@ import './helpers.js';
 import app from '../app';
 import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 import EquipmentFetcher from '../fetcher/equipmentFetcher';
+import TrackingPointFetcher from '../fetcher/trackingPointFetcher';
 
 describe('EquipmentController', () => {
-  let canVariablesFetcher, equipmentFetcher, httpClient, server;
+  let canVariablesFetcher, equipmentFetcher, trackingPointFetcher, httpClient, server;
   let options = {};
   let authenticationHeader = 'Bearer VALID_TOKEN';
 
@@ -13,8 +14,9 @@ describe('EquipmentController', () => {
 
     canVariablesFetcher = td.object(CanVariablesFetcher);
     equipmentFetcher = td.object(EquipmentFetcher);
+    trackingPointFetcher = td.object(TrackingPointFetcher);
 
-    server = app(equipmentFetcher, canVariablesFetcher);
+    server = app(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
   });
 
   const generateFacadeEquipment = (equipmentId) => {
@@ -61,8 +63,16 @@ describe('EquipmentController', () => {
       respondWithSuccess(
         canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
-          'a-equipment-id-1': { trackingData: equipmentOne.attributes.trackingData, trackingPoint: equipmentOne.attributes.trackingPoint },
-          'a-equipment-id-2': { trackingData: equipmentTwo.attributes.trackingData, trackingPoint: equipmentTwo.attributes.trackingPoint }
+          'a-equipment-id-1': equipmentOne.attributes.trackingData,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+        }
+      );
+
+      respondWithSuccess(
+        trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+        {
+          'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
         }
       );
 
@@ -106,8 +116,16 @@ describe('EquipmentController', () => {
       respondWithSuccess(
         canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
-          'a-equipment-id-1': { trackingData: equipmentOne.attributes.trackingData, trackingPoint: equipmentOne.attributes.trackingPoint },
-          'a-equipment-id-2': { trackingData: equipmentTwo.attributes.trackingData, trackingPoint: equipmentTwo.attributes.trackingPoint }
+          'a-equipment-id-1': equipmentOne.attributes.trackingData,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+        }
+      );
+
+      respondWithSuccess(
+        trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+        {
+          'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
         }
       );
 
@@ -181,9 +199,12 @@ describe('EquipmentController', () => {
 
       respondWithSuccess(
         canVariablesFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
-        {
-          '1-2-3-a': { trackingData: expectedEquipment.attributes.trackingData, trackingPoint: expectedEquipment.attributes.trackingPoint },
-        }
+        { '1-2-3-a': expectedEquipment.attributes.trackingData }
+      );
+
+      respondWithSuccess(
+        trackingPointFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
+        { '1-2-3-a': expectedEquipment.attributes.trackingPoint }
       );
 
       respondWithSuccess(

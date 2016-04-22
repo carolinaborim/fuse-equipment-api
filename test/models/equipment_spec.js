@@ -15,22 +15,21 @@ describe('Equipment model', () => {
       }
     };
 
-    let fetchedCanVariables = {
-      trackingData: {
-        ENGINE_HOURS: '100',
-        ENGINE_SPEED: '100'
+    let fetchedTrackingData = {
+      ENGINE_HOURS: '100',
+      ENGINE_SPEED: '100'
+    };
+
+    let fetchedTrackingPoint = {
+      location: {
+        coordinates: [
+          0.9392138888888889,
+          52.6362222,
+          116
+        ],
+        type: 'Point'
       },
-      trackingPoint: {
-        location: {
-          coordinates: [
-            0.9392138888888889,
-            52.6362222,
-            116
-          ],
-          type: 'Point'
-        },
-        status: 'WORKING'
-      }
+      status: 'WORKING'
     };
 
     let expectedParsedEquipment = {
@@ -81,7 +80,11 @@ describe('Equipment model', () => {
       }
     }
 
-    let parsedEquipment = EquipmentParser.parse(telemetryEquipment, fetchedCanVariables);
+    let parsedEquipment = EquipmentParser.parse(
+      telemetryEquipment,
+      fetchedTrackingData,
+      fetchedTrackingPoint
+    );
     expect(parsedEquipment).to.be.eql(expectedParsedEquipment);
   });
 });
