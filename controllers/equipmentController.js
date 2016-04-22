@@ -66,23 +66,23 @@ class EquipmentController {
     return equipmentPromise
       .then((equipments) => {
         equipmentIds = equipments.equipment.map((equipment) => equipment.id);
-        information.push(equipments)
+        information.push(equipments);
       })
       .then(() => {
         return this.canVariablesFetcher.fetchByEquipmentId(
           equipmentIds,
           authorizationBearer
-        )
+        );
       })
       .then((trackingData) => information.push(trackingData))
       .then(() => {
         return this.trackingPointFetcher.fetchByEquipmentId(
           equipmentIds,
           authorizationBearer
-        )
+        );
       })
       .then((trackingPoint) => information.push(trackingPoint))
-      .then(() => information)
+      .then(() => information);
   }
 }
 
