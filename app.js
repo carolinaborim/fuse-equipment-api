@@ -8,9 +8,9 @@ import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 
-const app = (equipmentFetcher, canVariablesFetcher) => {
+const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
   const server = new Hapi.Server();
-  const equipmentController = new EquipmentController(equipmentFetcher, canVariablesFetcher);
+  const equipmentController = new EquipmentController(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
 
   server.connection({
     host: '0.0.0.0',
