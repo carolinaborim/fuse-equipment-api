@@ -10,11 +10,15 @@ import HapiSwagger from 'hapi-swagger';
 
 const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
   const server = new Hapi.Server();
+
   const equipmentController = new EquipmentController(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
 
   server.connection({
     host: '0.0.0.0',
-    port: config.PORT
+    port: config.PORT,
+    routes: {
+      cors: true
+    }
   });
 
   server.register([
@@ -51,5 +55,6 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
 
   return server;
 };
+
 
 module.exports = app;
