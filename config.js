@@ -11,7 +11,10 @@ module.exports = {
     'MOISTURE_AVERAGE',
     'YIELD_AVERAGE',
     'CAPACITY_Average',
-    'TEST_WEIGHT'
+    'TEST_WEIGHT',
+    'HARVES_HOURS',
+    'RATE',
+    'UNLOAD_AUGER'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
