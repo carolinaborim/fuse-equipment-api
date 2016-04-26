@@ -12,6 +12,10 @@ describe('EquipmentController', () => {
   beforeEach(() => {
     httpClient = td.function();
 
+    const generateFacadeEquipment = (equipmentId) => {
+      return readFixture('facadeEquipment', { id: equipmentId});
+    };
+
     canVariablesFetcher = td.object(CanVariablesFetcher);
     equipmentFetcher = td.object(EquipmentFetcher);
     trackingPointFetcher = td.object(TrackingPointFetcher);
@@ -36,15 +40,15 @@ describe('EquipmentController', () => {
 
     it('should allow offset and limit pagination parameters', (done) => {
       respondWithSuccess(
-        equipmentFetcher.findAll(11, 50, authenticationHeader),
-        {
-          equipment: [
-            generateTelemetryEquipment('a-equipment-id-1'),
-            generateTelemetryEquipment('a-equipment-id-2'),
-          ],
-          links: {}
-        }
-      );
+          equipmentFetcher.findAll(11, 50, authenticationHeader),
+          {
+            equipment: [
+              generateTelemetryEquipment('a-equipment-id-1'),
+              generateTelemetryEquipment('a-equipment-id-2'),
+            ],
+            links: {}
+          }
+          );
 
       const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
       let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
@@ -61,20 +65,20 @@ describe('EquipmentController', () => {
       };
 
       respondWithSuccess(
-        canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
-        {
-          'a-equipment-id-1': equipmentOne.attributes.trackingData,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
-        }
-      );
+          canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+          {
+            'a-equipment-id-1': equipmentOne.attributes.trackingData,
+            'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+          }
+          );
 
       respondWithSuccess(
-        trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
-        {
-          'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
-        }
-      );
+          trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+          {
+            'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
+            'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
+          }
+          );
 
       const expectedResponse = {
         data: [
@@ -114,31 +118,31 @@ describe('EquipmentController', () => {
       };
 
       respondWithSuccess(
-        canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
-        {
-          'a-equipment-id-1': equipmentOne.attributes.trackingData,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
-        }
-      );
+          canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+          {
+            'a-equipment-id-1': equipmentOne.attributes.trackingData,
+            'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+          }
+          );
 
       respondWithSuccess(
-        trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
-        {
-          'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
-        }
-      );
+          trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
+          {
+            'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
+            'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
+          }
+          );
 
       respondWithSuccess(
-        equipmentFetcher.findAll(0, 100, authenticationHeader),
-        {
-          equipment: [
-            generateTelemetryEquipment('a-equipment-id-1'),
-            generateTelemetryEquipment('a-equipment-id-2'),
-          ],
-          links: {}
-        }
-      );
+          equipmentFetcher.findAll(0, 100, authenticationHeader),
+          {
+            equipment: [
+              generateTelemetryEquipment('a-equipment-id-1'),
+              generateTelemetryEquipment('a-equipment-id-2'),
+            ],
+            links: {}
+          }
+          );
 
       const expectedResponse = {
         data: [
@@ -156,23 +160,23 @@ describe('EquipmentController', () => {
 
     it('request telemetry api with same authorization header and get an error', (done) => {
       respondWithFailure(
-        equipmentFetcher.findAll(0, 100, authenticationHeader),
-        {
-          response: {
-            statusCode: 401,
-            body: 'Unauthorized'
+          equipmentFetcher.findAll(0, 100, authenticationHeader),
+          {
+            response: {
+              statusCode: 401,
+              body: 'Unauthorized'
+            }
           }
-        }
-      );
+          );
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(401);
         expect(JSON.parse(res.payload)).to.be.eql({
           errors: [
-            {
-              status: 401,
-              title:  'Unauthorized'
-            }
+          {
+            status: 401,
+            title:  'Unauthorized'
+          }
           ]
         });
 
@@ -198,22 +202,22 @@ describe('EquipmentController', () => {
       const expectedEquipment = generateFacadeEquipment(equipmentId);
 
       respondWithSuccess(
-        canVariablesFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
-        { '1-2-3-a': expectedEquipment.attributes.trackingData }
-      );
+          canVariablesFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
+          { '1-2-3-a': expectedEquipment.attributes.trackingData }
+          );
 
       respondWithSuccess(
-        trackingPointFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
-        { '1-2-3-a': expectedEquipment.attributes.trackingPoint }
-      );
+          trackingPointFetcher.fetchByEquipmentId(['1-2-3-a'], authenticationHeader),
+          { '1-2-3-a': expectedEquipment.attributes.trackingPoint }
+          );
 
       respondWithSuccess(
-        equipmentFetcher.findById(equipmentId, authenticationHeader),
-        {
-          equipment: [generateTelemetryEquipment(equipmentId)],
-          links: {}
-        }
-      );
+          equipmentFetcher.findById(equipmentId, authenticationHeader),
+          {
+            equipment: [generateTelemetryEquipment(equipmentId)],
+            links: {}
+          }
+          );
 
       const expectedResponse = {
         data: expectedEquipment
@@ -237,22 +241,22 @@ describe('EquipmentController', () => {
       };
 
       respondWithFailure(
-        equipmentFetcher.findById(equipmentId, authenticationHeader),
-        {
-          response: {
-            statusCode: 404,
-            headers: { 'content-type': 'text/html' },
-            body: {
-              errors: [{
-                status: 404,
-                href: 'about:blank',
-                details: 'details...',
-                title: '<!DOCTYPE html>\n<html>\n<body>\nHeroku App Not Found!\n</body>\n</html>'
-              }]
+          equipmentFetcher.findById(equipmentId, authenticationHeader),
+          {
+            response: {
+              statusCode: 404,
+              headers: { 'content-type': 'text/html' },
+              body: {
+                errors: [{
+                  status: 404,
+                  href: 'about:blank',
+                  details: 'details...',
+                  title: '<!DOCTYPE html>\n<html>\n<body>\nHeroku App Not Found!\n</body>\n</html>'
+                }]
+              }
             }
           }
-        }
-      );
+          );
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(404);
@@ -270,22 +274,22 @@ describe('EquipmentController', () => {
       };
 
       respondWithFailure(
-        equipmentFetcher.findById(equipmentId, authenticationHeader),
-        {
-          response: {
-            statusCode: 404,
-            headers: { 'content-type': 'application/json' },
-            body: {
-              errors: [{
-                status: 404,
-                details: 'details...',
-                href: 'about:blank',
-                title: '{ errors: [{ status: 404 }] }'
-              }]
+          equipmentFetcher.findById(equipmentId, authenticationHeader),
+          {
+            response: {
+              statusCode: 404,
+              headers: { 'content-type': 'application/json' },
+              body: {
+                errors: [{
+                  status: 404,
+                  details: 'details...',
+                  href: 'about:blank',
+                  title: '{ errors: [{ status: 404 }] }'
+                }]
+              }
             }
           }
-        }
-      );
+          );
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(404);
@@ -305,20 +309,20 @@ describe('EquipmentController', () => {
       };
 
       respondWithFailure(
-        equipmentFetcher.findById(equipmentId, authenticationHeader),
-        {
-          response: {
-            statusCode: 404,
-            body: {
-              errors: [{
-                status: 404,
-                href: 'about:blank',
-                title: 'Resource not found.'
-              }]
+          equipmentFetcher.findById(equipmentId, authenticationHeader),
+          {
+            response: {
+              statusCode: 404,
+              body: {
+                errors: [{
+                  status: 404,
+                  href: 'about:blank',
+                  title: 'Resource not found.'
+                }]
+              }
             }
           }
-        }
-      );
+          );
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(404);
@@ -330,22 +334,22 @@ describe('EquipmentController', () => {
     it('get request status code diferent from any mapped error', (done) => {
       const expectedResponse = {
         errors: [
-          {
-            status: 500,
-            title: 'An unhandled error occurred'
-          }
+        {
+          status: 500,
+          title: 'An unhandled error occurred'
+        }
         ]
       };
 
       respondWithFailure(
-        equipmentFetcher.findById(equipmentId, authenticationHeader),
-        {
-          response: {
-            statusCode: 123,
-            body: 'Error'
+          equipmentFetcher.findById(equipmentId, authenticationHeader),
+          {
+            response: {
+              statusCode: 123,
+              body: 'Error'
+            }
           }
-        }
-      );
+          );
 
       server.inject(options, (res) => {
         expect(res.statusCode).to.be.eql(500);

@@ -3,7 +3,11 @@ module.exports = {
   DEFAULT_CAN_VARIABLES: [
     'ENGINE_HOURS',
     'ENGINE_SPEED',
-    'DRIVING_DIRECTION'
+    'DRIVING_DIRECTION',
+    'MASTER_APPLY',
+    'FUEL_LEVEL',
+    'FUEL_RATE',
+    'ENGINE_LOAD'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
