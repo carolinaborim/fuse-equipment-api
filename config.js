@@ -14,7 +14,12 @@ module.exports = {
     'TEST_WEIGHT',
     'HARVES_HOURS',
     'RATE',
-    'UNLOAD_AUGER'
+    'UNLOAD_AUGER',
+    'BALE_WEIGHT',
+    'BALE_WEIGHT_AVERAGE',
+    'BALE_FLAKES_AVERAGE',
+    'COUNTER_Bale_Cut',
+    'COUNTER_Bale_Uncut'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
