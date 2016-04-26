@@ -8,6 +8,22 @@ describe('CanVariablesFetcher', () => {
     canVariablesFetcher = new CanVariablesFetcher(httpClient);
   });
 
+  const generateSearchUri = (equipmentIds, canVariableNames = DEFAULT_CAN_VARIABLES.join(',')) => {
+    return 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint' +
+      `&links.canVariable.name=${canVariableNames}` +
+      '&aggregations=equip_agg' +
+      '&equip_agg.property=links.trackingPoint.equipment.id' +
+      '&equip_agg.aggregations=spn_ag%2Ctp_latest_ag' +
+      '&spn_ag.property=links.canVariable.name' +
+      '&spn_ag.aggregations=spn_latest_ag' +
+      '&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence' +
+      '&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit' +
+      '&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence' +
+      '&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint' +
+      '&tp_latest_ag.include=trackingPoint' +
+      `&links.trackingPoint.equipment.id=${equipmentIds}`;
+  };
+
   it('fetches can variables data by equipment id', (done) => {
     let telemetryResponse = readFixture('telemetrySearch');
     telemetryResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
@@ -28,8 +44,8 @@ describe('CanVariablesFetcher', () => {
       }
     };
 
+    let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
     let mockedAuthorizationBearer = 'fake-bearer';
-    let mockedSearchUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
 
     respondWithSuccess(httpClient({
       method: 'GET',
@@ -41,9 +57,9 @@ describe('CanVariablesFetcher', () => {
     }), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
-      ['equipment-id-1', 'equipment-id-2'],
-      mockedAuthorizationBearer
-    ).then((response) => {
+        ['equipment-id-1', 'equipment-id-2'],
+        mockedAuthorizationBearer
+        ).then((response) => {
       expect(response).to.be.eql(expectedResponse);
       done();
     });
@@ -54,9 +70,8 @@ describe('CanVariablesFetcher', () => {
     telemetryResponse.meta.aggregations.equip_agg = [];
 
     let expectedResponse = {};
-
+    let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
     let mockedAuthorizationBearer = 'fake-bearer';
-    let mockedSearchUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint&links.canVariable.name=ENGINE_HOURS,ENGINE_SPEED,DRIVING_DIRECTION&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=spn_ag%2Ctp_latest_ag&spn_ag.property=links.canVariable.name&spn_ag.aggregations=spn_latest_ag&spn_latest_ag.type=top_hits&spn_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&spn_latest_ag.limit=1&spn_latest_ag.include=canVariable%2CcanVariable.standardUnit&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
 
     respondWithSuccess(httpClient({
       method: 'GET',
@@ -68,9 +83,9 @@ describe('CanVariablesFetcher', () => {
     }), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
-      ['equipment-id-1', 'equipment-id-2'],
-      mockedAuthorizationBearer
-    ).then((response) => {
+        ['equipment-id-1', 'equipment-id-2'],
+        mockedAuthorizationBearer
+        ).then((response) => {
       expect(response).to.be.eql(expectedResponse);
       done();
     });
