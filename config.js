@@ -7,7 +7,11 @@ module.exports = {
     'MASTER_APPLY',
     'FUEL_LEVEL',
     'FUEL_RATE',
-    'ENGINE_LOAD'
+    'ENGINE_LOAD',
+    'MOISTURE_AVERAGE',
+    'YIELD_AVERAGE',
+    'CAPACITY_Average',
+    'TEST_WEIGHT'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
