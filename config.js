@@ -19,7 +19,9 @@ module.exports = {
     'BALE_WEIGHT_AVERAGE',
     'BALE_FLAKES_AVERAGE',
     'COUNTER_Bale_Cut',
-    'COUNTER_Bale_Uncut'
+    'COUNTER_Bale_Uncut',
+    'GRAIN_LOSS_Shaker',
+    'GRAIN_LOSS_Rotor'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
