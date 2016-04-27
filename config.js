@@ -26,7 +26,10 @@ module.exports = {
     'PRIMARY_EXTRACTOR_ENGAGE',
     'SIEVE_POSITION_Upper_Right',
     'STROKE_PER_FLAKE',
-    'TOPPER_DRIVE_ENGAGE'
+    'TOPPER_DRIVE_ENGAGE',
+    'CAPACITY',
+    'MOISTURE',
+    'BALE_WIGHT_TOTAL'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
