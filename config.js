@@ -29,7 +29,7 @@ module.exports = {
     'TOPPER_DRIVE_ENGAGE',
     'CAPACITY',
     'MOISTURE',
-    'BALE_WIGHT_TOTAL'
+    'BALE_WEIGHT_Total'
   ],
   HAPI_SWAGGER_CONFIG: {
     schemes: ['https'],
