@@ -15,11 +15,7 @@ const Equipment = Joi.object().keys({
       }),
       status: Joi.string()
     }),
-    trackingData: Joi.object().keys({
-      ENGINE_HOURS: Joi.string(),
-      ENGINE_SPEED: Joi.string(),
-      MACHINE_DIRECTION: Joi.string()
-    })
+    trackingData: Joi.object()
   }),
   relationships: Joi.object().keys({
     dealer: Joi.object().keys({
