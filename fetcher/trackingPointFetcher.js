@@ -20,14 +20,17 @@ class TrackingPointFetcher {
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {
-    return this.httpClient({
+    const request = {
+      url: this.urlFor(equipmentIds),
       method: 'GET',
       json: true,
-      uri: this.urlFor(equipmentIds),
       headers: {
         Authorization: authorizationBearer
-      }
-    }).then((data) => {
+      },
+      timeout: config.TIMEOUT
+    };
+
+    return this.httpClient(request).then((data) => {
       let equipments = {};
 
       if(data.linked) {

@@ -53,5 +53,6 @@ module.exports = {
       version: '1.0.0'
     }
   },
-  PORT: process.env.PORT || 9090
+  PORT: process.env.PORT || 9090,
+  TIMEOUT: 10000
 };

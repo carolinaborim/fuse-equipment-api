@@ -1,4 +1,5 @@
-import TrackingPointFetcher from '../../fetcher/trackingPointFetcher.js';
+import config from '../../config';
+import TrackingPointFetcher from '../../fetcher/trackingPointFetcher';
 
 describe('TrackingPointFetcher', () => {
   let httpClient, trackingPointFetcher;
@@ -61,14 +62,16 @@ describe('TrackingPointFetcher', () => {
     let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
     let mockedAuthorizationBearer = 'fake-bearer';
 
-    respondWithSuccess(httpClient({
+    const trackingPointRequest = {
+      url: mockedSerchTrackingPointUri,
       method: 'GET',
       json: true,
-      uri: mockedSerchTrackingPointUri,
       headers: {
         Authorization: mockedAuthorizationBearer
-      }
-    }), trackingPointResponse);
+      },
+      timeout: config.TIMEOUT
+    };
+    respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
 
     trackingPointFetcher.fetchByEquipmentId(
       ['equipment-id-1', 'equipment-id-2'],
@@ -88,14 +91,16 @@ describe('TrackingPointFetcher', () => {
     let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
     let mockedAuthorizationBearer = 'fake-bearer';
 
-    respondWithSuccess(httpClient({
+    const trackingPointRequest = {
+      url: mockedSerchTrackingPointUri,
       method: 'GET',
       json: true,
-      uri: mockedSerchTrackingPointUri,
       headers: {
         Authorization: mockedAuthorizationBearer
-      }
-    }), trackingPointResponse);
+      },
+      timeout: config.TIMEOUT
+    };
+    respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
 
     trackingPointFetcher.fetchByEquipmentId(
       ['equipment-id-1', 'equipment-id-2'],
