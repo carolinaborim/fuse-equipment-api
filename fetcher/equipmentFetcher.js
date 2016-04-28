@@ -7,25 +7,31 @@ class EquipmentFetcher {
   }
 
   findAll(offset, limit, authorizationBearer) {
-    return this.httpClient({
+    const request = {
+      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
       method: 'GET',
       json: true,
-      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
       headers: {
         Authorization: authorizationBearer
-      }
-    })
+      },
+      timeout: config.TIMEOUT
+    };
+
+    return this.httpClient(request);
   }
 
   findById(id, authorizationBearer) {
-    return this.httpClient({
+    const request = {
+      url: `${this.telemetryAPI}/equipment/${id}`,
       method: 'GET',
       json: true,
-      url: `${this.telemetryAPI}/equipment/${id}`,
       headers: {
         Authorization: authorizationBearer
-      }
-    })
+      },
+      timeout: config.TIMEOUT
+    };
+
+    return this.httpClient(request);
   }
 }
 

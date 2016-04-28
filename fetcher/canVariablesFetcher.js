@@ -26,18 +26,19 @@ class CanVariablesFetcher {
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {
-    let options = {
-      uri: this.urlFor(equipmentIds),
+    let request = {
+      url: this.urlFor(equipmentIds),
       method: 'GET',
       json: true,
       headers: {
         Authorization: authorizationBearer
-      }
+      },
+      timeout: config.TIMEOUT
     };
 
     let equipments = {};
 
-    return this.httpClient(options)
+    return this.httpClient(request)
       .then((data) => {
         data.meta.aggregations.equip_agg.forEach((data, index) => {
           equipments[data.key] = {};

@@ -1,4 +1,5 @@
-import CanVariablesFetcher from '../../fetcher/canVariablesFetcher.js';
+import config from '../../config';
+import CanVariablesFetcher from '../../fetcher/canVariablesFetcher';
 
 describe('CanVariablesFetcher', () => {
   let httpClient, canVariablesFetcher;
@@ -47,14 +48,16 @@ describe('CanVariablesFetcher', () => {
     let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
     let mockedAuthorizationBearer = 'fake-bearer';
 
-    respondWithSuccess(httpClient({
+    const canVariableRequest = {
+      url: mockedSearchUri,
       method: 'GET',
       json: true,
-      uri: mockedSearchUri,
       headers: {
         Authorization: mockedAuthorizationBearer
-      }
-    }), telemetryResponse);
+      },
+      timeout: config.TIMEOUT
+    };
+    respondWithSuccess(httpClient(canVariableRequest), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
         ['equipment-id-1', 'equipment-id-2'],
@@ -73,14 +76,16 @@ describe('CanVariablesFetcher', () => {
     let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
     let mockedAuthorizationBearer = 'fake-bearer';
 
-    respondWithSuccess(httpClient({
+    const equipmentRequest = {
+      url: mockedSearchUri,
       method: 'GET',
       json: true,
-      uri: mockedSearchUri,
       headers: {
         Authorization: mockedAuthorizationBearer
-      }
-    }), telemetryResponse);
+      },
+      timeout: config.TIMEOUT
+    };
+    respondWithSuccess(httpClient(equipmentRequest), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
         ['equipment-id-1', 'equipment-id-2'],

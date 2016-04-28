@@ -1,4 +1,5 @@
-import EquipmentFetcher from '../../fetcher/equipmentFetcher.js';
+import config from '../../config';
+import EquipmentFetcher from '../../fetcher/equipmentFetcher';
 
 describe('EquipmentFetcher', () => {
   let httpClient, equipmentFetcher;
@@ -24,7 +25,8 @@ describe('EquipmentFetcher', () => {
       url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=11&limit=50`,
       headers: {
         Authorization: authenticationHeader
-      }
+      },
+      timeout: config.TIMEOUT
     };
     respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
 
@@ -44,12 +46,13 @@ describe('EquipmentFetcher', () => {
     };
 
     const equipmentRequest = {
+      url: `${FUSE_TELEMETRY_API_URL}/equipment/a-equipment-id-1`,
       method: 'GET',
       json: true,
-      url: `${FUSE_TELEMETRY_API_URL}/equipment/a-equipment-id-1`,
       headers: {
         Authorization: authenticationHeader
-      }
+      },
+      timeout: config.TIMEOUT
     };
     respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
 

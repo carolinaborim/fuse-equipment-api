@@ -1,4 +1,4 @@
-import './helpers.js';
+import './helpers';
 import app from '../app';
 import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
 import EquipmentFetcher from '../fetcher/equipmentFetcher';
