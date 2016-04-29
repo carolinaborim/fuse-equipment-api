@@ -30,7 +30,7 @@ describe('EquipmentController', () => {
   describe('Route: equipment', () => {
     before(() => {
       options = {
-        url: '/equipments',
+        url: '/equipment',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
@@ -86,7 +86,7 @@ describe('EquipmentController', () => {
       };
 
       const equipmentOffsetRequest = {
-        url: '/equipments?offset=11&limit=50',
+        url: '/equipment?offset=11&limit=50',
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
@@ -100,7 +100,7 @@ describe('EquipmentController', () => {
       });
     });
 
-    it('request telemetry api and receiving equipments', (done) => {
+    it('request telemetry api and receiving equipment', (done) => {
       const equipmentOne = generateFacadeEquipment('a-equipment-id-1');
       let equipmentTwo = generateFacadeEquipment('a-equipment-id-2');
       equipmentTwo.attributes.trackingPoint = {
@@ -184,7 +184,7 @@ describe('EquipmentController', () => {
 
     before(() => {
       options = {
-        url: `/equipments/${equipmentId}`,
+        url: `/equipment/${equipmentId}`,
         method: 'GET',
         headers: {
           Authorization: authenticationHeader
