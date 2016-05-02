@@ -31,7 +31,7 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
 
   server.route([{
     method: 'GET',
-    path: '/equipments',
+    path: '/equipment',
     config: {
       handler: (request, reply) => {
         equipmentController.findAll(request, reply);
@@ -42,7 +42,7 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
     }
   }, {
     method: 'GET',
-    path: '/equipments/{id}',
+    path: '/equipment/{id}',
     config: {
       handler: (request, reply) => {
         equipmentController.findById(request, reply);

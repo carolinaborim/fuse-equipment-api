@@ -22,7 +22,11 @@ describe('EquipmentFetcher', () => {
     const equipmentRequest = {
       method: 'GET',
       json: true,
-      url: `${FUSE_TELEMETRY_API_URL}/equipment?offset=11&limit=50`,
+      url: `${FUSE_TELEMETRY_API_URL}/equipment`,
+      qs: {
+        offset: 11,
+        limit: 50
+      },
       headers: {
         Authorization: authenticationHeader
       },

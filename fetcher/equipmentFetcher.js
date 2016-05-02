@@ -8,9 +8,13 @@ class EquipmentFetcher {
 
   findAll(offset, limit, authorizationBearer) {
     const request = {
-      url: `${this.telemetryAPI}/equipment?offset=${offset}&limit=${limit}`,
+      url: `${this.telemetryAPI}/equipment`,
       method: 'GET',
       json: true,
+      qs: {
+        offset,
+        limit
+      },
       headers: {
         Authorization: authorizationBearer
       },
