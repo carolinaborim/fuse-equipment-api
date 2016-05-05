@@ -31,22 +31,23 @@ class TrackingPointFetcher {
     };
 
     return this.httpClient(request).then((data) => {
-      let equipments = {};
+      const equipments = {};
 
-      if(data.linked) {
-        let trackingPoints = data.linked.trackingPoints;
-        let duties = data.linked.duties;
+      if (data.linked) {
+        const trackingPoints = data.linked.trackingPoints;
+        const duties = data.linked.duties;
 
-        data.meta.aggregations.equip_agg.forEach((data, index) => {
-          let trackingPointId = _.first(data.tp_latest_ag).links.trackingPoint;
-          let trackingPoint = _.find(trackingPoints, { id: trackingPointId });
+        data.meta.aggregations.equip_agg.forEach((aggEquipment) => {
+          const trackingPointId = _.first(aggEquipment.tp_latest_ag).links.trackingPoint;
+          const trackingPoint = _.find(trackingPoints, { id: trackingPointId });
           trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status;
-          equipments[data.key] = trackingPoint;
+          equipments[aggEquipment.key] = trackingPoint;
         });
       }
 
       return equipments;
-    }).catch(function (err) {
+    })
+    .catch((err) => {
       throw new Error(err);
     });
   }
