@@ -4,8 +4,8 @@ import ResponseHandler from '../handlers/responseHandler';
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 100;
 
-const parseEquipments = (equipments, trackingData, trackingPoint) => {
-  return equipments.equipment.map((data) => {
+const parseEquipment = (equipment, trackingData, trackingPoint) => {
+  return equipment.equipment.map((data) => {
     return EquipmentParser.parse(
       data,
       trackingData[data.id],
@@ -14,14 +14,14 @@ const parseEquipments = (equipments, trackingData, trackingPoint) => {
   });
 };
 
-const responseWithSingleEquipment = (reply) => (equipments, trackingData, trackingPoint) => {
-  const parsedEquipment = parseEquipments(equipments, trackingData, trackingPoint)[0];
+const responseWithSingleEquipment = (reply) => (equipment, trackingData, trackingPoint) => {
+  const parsedEquipment = parseEquipment(equipment, trackingData, trackingPoint)[0];
   return ResponseHandler.responseData(reply, parsedEquipment);
 };
 
-const responseWithEquipments = (reply) => (equipments, trackingData, trackingPoint) => {
-  const parsedEquipments = parseEquipments(equipments, trackingData, trackingPoint);
-  return ResponseHandler.responseData(reply, parsedEquipments);
+const responseWithEquipment = (reply) => (equipment, trackingData, trackingPoint) => {
+  const parsedEquipment = parseEquipment(equipment, trackingData, trackingPoint);
+  return ResponseHandler.responseData(reply, parsedEquipment);
 };
 
 class EquipmentController {
@@ -43,7 +43,7 @@ class EquipmentController {
       ),
       request.headers.authorization
     )
-    .spread(responseWithEquipments(reply))
+    .spread(responseWithEquipment(reply))
     .catch(ResponseHandler.responseWithError(reply));
   }
 
@@ -61,12 +61,12 @@ class EquipmentController {
 
   enrich(equipmentPromise, authorizationBearer) {
     const information = [];
-    let equipmentIds = undefined;
+    let equipmentIds = null;
 
     return equipmentPromise
-      .then((equipments) => {
-        equipmentIds = equipments.equipment.map((equipment) => equipment.id);
-        information.push(equipments);
+      .then((equipment) => {
+        equipmentIds = equipment.equipment.map((anEquipment) => anEquipment.id);
+        information.push(equipment);
       })
       .then(() => {
         return this.canVariablesFetcher.fetchByEquipmentId(

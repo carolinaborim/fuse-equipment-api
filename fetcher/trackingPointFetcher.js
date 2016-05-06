@@ -31,7 +31,7 @@ class TrackingPointFetcher {
     };
 
     return this.httpClient(request).then((data) => {
-      const equipments = {};
+      const equipment = {};
 
       if (data.linked) {
         const trackingPoints = data.linked.trackingPoints;
@@ -41,11 +41,11 @@ class TrackingPointFetcher {
           const trackingPointId = _.first(aggEquipment.tp_latest_ag).links.trackingPoint;
           const trackingPoint = _.find(trackingPoints, { id: trackingPointId });
           trackingPoint.status = _.find(duties, { id: trackingPoint.links.duty }).status;
-          equipments[aggEquipment.key] = trackingPoint;
+          equipment[aggEquipment.key] = trackingPoint;
         });
       }
 
-      return equipments;
+      return equipment;
     })
     .catch((err) => {
       throw new Error(err);
