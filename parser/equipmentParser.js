@@ -1,18 +1,17 @@
 const parseTrackingPoint = (data) => {
-  if(!data) {
+  if (!data) {
     return {};
   }
 
   return {
     location: data.location,
     status: data.status
-  }
+  };
 };
 
 const EquipmentParser = () => {};
 
 EquipmentParser.parse = (telemetryEquipment, trackingData = {}, trackingPoint = {}) => {
-
   return {
     type: 'equipment',
     id: telemetryEquipment.id,

@@ -26,7 +26,7 @@ class CanVariablesFetcher {
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {
-    let request = {
+    const request = {
       url: this.urlFor(equipmentIds),
       method: 'GET',
       json: true,
@@ -36,19 +36,20 @@ class CanVariablesFetcher {
       timeout: config.TIMEOUT
     };
 
-    let equipments = {};
+    const equipments = {};
 
     return this.httpClient(request)
       .then((data) => {
-        data.meta.aggregations.equip_agg.forEach((data, index) => {
-          equipments[data.key] = {};
-          data.spn_ag.forEach((aggData, index) => {
-            equipments[data.key][aggData.key] = _.first(aggData.spn_latest_ag).value;
+        data.meta.aggregations.equip_agg.forEach((aggEquipment) => {
+          equipments[aggEquipment.key] = {};
+          aggEquipment.spn_ag.forEach((aggData) => {
+            equipments[aggEquipment.key][aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
 
         return equipments;
-      }).catch(function (err) {
+      })
+      .catch((err) => {
         throw new Error(err);
       });
   }

@@ -8,7 +8,7 @@
     "start-dev": "nodemon main.js --exec babel-node",
     "test": "snyk test && npm run lint && npm run unit-tests",
     "unit-tests": "NODE_ENV=test mocha 'test/**/*_spec.js'",
-    "lint": "eslint 'controllers/**/*.js' 'models/**/*.js' 'validators/**/*.js' *.js"
+    "lint": "eslint '**/*.js'"
   },
   "keywords": [
     "Fuse",
