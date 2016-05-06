@@ -36,18 +36,18 @@ class CanVariablesFetcher {
       timeout: config.TIMEOUT
     };
 
-    const equipments = {};
+    const equipment = {};
 
     return this.httpClient(request)
       .then((data) => {
         data.meta.aggregations.equip_agg.forEach((aggEquipment) => {
-          equipments[aggEquipment.key] = {};
+          equipment[aggEquipment.key] = {};
           aggEquipment.spn_ag.forEach((aggData) => {
-            equipments[aggEquipment.key][aggData.key] = _.first(aggData.spn_latest_ag).value;
+            equipment[aggEquipment.key][aggData.key] = _.first(aggData.spn_latest_ag).value;
           });
         });
 
-        return equipments;
+        return equipment;
       })
       .catch((err) => {
         throw new Error(err);

@@ -39,7 +39,7 @@ module.exports = {
     lang: 'en',
     info: {
       title: 'Equipment API Documentation',
-      description: 'A Telemetry API Façade that exposes Equipments as first-class citizens',
+      description: 'A Telemetry API Façade that exposes Equipment as first-class citizens',
       termsOfService: 'An example of terms of service',
       contact: {
         name: 'AGCO Fuze',
