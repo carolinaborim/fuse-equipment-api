@@ -65,7 +65,7 @@ class EquipmentController {
 
     return equipmentPromise
       .then((equipment) => {
-        equipmentIds = equipment.equipment.map((equipment) => equipment.id);
+        equipmentIds = equipment.equipment.map((anEquipment) => anEquipment.id);
         information.push(equipment);
       })
       .then(() => {
