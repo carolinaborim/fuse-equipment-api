@@ -1,35 +1,20 @@
 import Joi from 'joi';
 
 const trackingPoint = Joi.object().keys({
-  location: Joi.object().keys({
-    coordinates: Joi.array(),
-    type: Joi.string()
-  }).label('location'),
+  location: Joi.object().keys({ coordinates: Joi.array(), type: Joi.string() }).label('location'),
   status: Joi.string()
 }).label('trackingPoint');
 
 const trackingData = Joi.object().label('trackingData');
 
 const dealer = Joi.object().keys({
-  links: Joi.object().keys({
-    self: Joi.string(),
-    related: Joi.string()
-  }).label('dealerLinks'),
-  data: Joi.object().keys({
-    type: Joi.string(),
-    id: Joi.string()
-  }).label('dealerData')
+  links: Joi.object().keys({ self: Joi.string(), related: Joi.string() }).label('dealerLinks'),
+  data: Joi.object().keys({ type: Joi.string(), id: Joi.string() }).label('dealerData')
 }).label('dealer');
 
 const model = Joi.object().keys({
-  links: Joi.object().keys({
-    self: Joi.string(),
-    related: Joi.string()
-  }).label('equipmentModelLinks'),
-  data: Joi.object().keys({
-    type: Joi.string(),
-    id: Joi.string()
-  }).label('equipmentModelData')
+  links: Joi.object().keys({ self: Joi.string(), related: Joi.string() }).label('equipmentModelLinks'),
+  data: Joi.object().keys({ type: Joi.string(), id: Joi.string() }).label('equipmentModelData')
 }).label('equipmentModel');
 
 const equipmentAttributes = Joi.object().keys({
@@ -53,13 +38,9 @@ const equipment = Joi.object().keys({
   relationships: equipmentRelationships
 }).label('equipment');
 
-const findById = Joi.object().keys({
-  data: equipment
-}).label('anEquipmentData');
+const findById = Joi.object().keys({ data: equipment }).label('anEquipmentData');
 
-const findAll = Joi.object().keys({
-  data: Joi.array().items(equipment)
-}).label('equipmentData');
+const findAll = Joi.object().keys({ data: Joi.array().items(equipment) }).label('equipmentData');
 
 const unauthorized = Joi.object().keys({
   errors: Joi.array().items(
@@ -92,22 +73,10 @@ const generateSwaggerSchemas = (entitySchema) => {
   return {
     'hapi-swagger': {
       responses: {
-        200: {
-          description: 'Success',
-          schema: entitySchema
-        },
-        401: {
-          description: 'Unauthorized',
-          schema: unauthorized
-        },
-        404: {
-          description: 'Not Found',
-          schema: notFound
-        },
-        500: {
-          description: 'Unhandled Error',
-          schema: unhandledError
-        }
+        200: { description: 'Success', schema: entitySchema },
+        401: { description: 'Unauthorized', schema: unauthorized },
+        404: { description: 'Not Found', schema: notFound },
+        500: { description: 'Unhandled Error', schema: unhandledError }
       }
     }
   };
