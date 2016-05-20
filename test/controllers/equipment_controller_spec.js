@@ -1,8 +1,8 @@
-import './helpers';
-import app from '../app';
-import CanVariablesFetcher from '../fetcher/canVariablesFetcher';
-import EquipmentFetcher from '../fetcher/equipmentFetcher';
-import TrackingPointFetcher from '../fetcher/trackingPointFetcher';
+import '../helpers';
+import app from '../../app';
+import CanVariablesFetcher from '../../fetcher/canVariablesFetcher';
+import EquipmentFetcher from '../../fetcher/equipmentFetcher';
+import TrackingPointFetcher from '../../fetcher/trackingPointFetcher';
 
 describe('EquipmentController', () => {
   let canVariablesFetcher, equipmentFetcher, trackingPointFetcher, httpClient, server;
@@ -38,6 +38,22 @@ describe('EquipmentController', () => {
       };
     });
 
+    it('should return the list of allowed HTTP methods', (done) => {
+      const optionsRequest = {
+        url: '/equipment',
+        method: 'OPTIONS'
+      };
+
+      const expectedResponse = '';
+
+      server.inject(optionsRequest, (res) => {
+        expect(res.statusCode).to.be.eql(200);
+        expect(res.headers.allow).to.be.eql('GET');
+        expect(res.payload).to.be.eql(expectedResponse);
+        done();
+      });
+    });
+
     it('should allow offset and limit pagination parameters', (done) => {
       respondWithSuccess(
           equipmentFetcher.findAll(11, 50, authenticationHeader),
@@ -68,14 +84,14 @@ describe('EquipmentController', () => {
         canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
           'a-equipment-id-1': equipmentOne.attributes.trackingData,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingData
         });
 
       respondWithSuccess(
         trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
           'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint
         });
 
       const expectedResponse = {
@@ -119,14 +135,14 @@ describe('EquipmentController', () => {
         canVariablesFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
           'a-equipment-id-1': equipmentOne.attributes.trackingData,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingData,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingData
         });
 
       respondWithSuccess(
         trackingPointFetcher.fetchByEquipmentId(['a-equipment-id-1', 'a-equipment-id-2'], authenticationHeader),
         {
           'a-equipment-id-1': equipmentOne.attributes.trackingPoint,
-          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint,
+          'a-equipment-id-2': equipmentTwo.attributes.trackingPoint
         });
 
       respondWithSuccess(
@@ -134,7 +150,7 @@ describe('EquipmentController', () => {
         {
           equipment: [
             generateTelemetryEquipment('a-equipment-id-1'),
-            generateTelemetryEquipment('a-equipment-id-2'),
+            generateTelemetryEquipment('a-equipment-id-2')
           ],
           links: {}
         });

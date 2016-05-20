@@ -30,6 +30,14 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
     }]);
 
   server.route([{
+    method: 'OPTIONS',
+    path: '/equipment',
+    config: {
+      handler: (request, reply) => {
+        equipmentController.options(request, reply);
+      }
+    }
+  }, {
     method: 'GET',
     path: '/equipment',
     config: {

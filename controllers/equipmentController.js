@@ -31,6 +31,10 @@ class EquipmentController {
     this.trackingPointFetcher = trackingPointFetcher;
   }
 
+  options(request, reply) {
+    return reply().header('Allow', 'GET');
+  }
+
   findAll(request, reply) {
     const offset = parseInt(request.query.offset, 10) || DEFAULT_OFFSET;
     const limit = parseInt(request.query.limit, 10) || DEFAULT_LIMIT;
