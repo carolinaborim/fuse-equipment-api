@@ -1,3 +1,4 @@
+import RootController from './controllers/rootController';
 import EquipmentController from './controllers/equipmentController';
 import EquipmentValidator from './validators/equipment';
 import EquipmentSchema from './schemas/equipmentSchema';
@@ -11,6 +12,7 @@ import HapiSwagger from 'hapi-swagger';
 const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
   const server = new Hapi.Server();
 
+  const rootController = new RootController();
   const equipmentController = new EquipmentController(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
 
   server.connection({
@@ -30,16 +32,32 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
     }]);
 
   server.route([{
+    path: '/',
     method: 'OPTIONS',
+    config: {
+      handler: (request, reply) => {
+        rootController.options(request, reply);
+      }
+    }
+  }, {
+    path: '/',
+    method: 'GET',
+    config: {
+      handler: (request, reply) => {
+        rootController.findAll(request, reply);
+      }
+    }
+  }, {
     path: '/equipment',
+    method: 'OPTIONS',
     config: {
       handler: (request, reply) => {
         equipmentController.options(request, reply);
       }
     }
   }, {
-    method: 'GET',
     path: '/equipment',
+    method: 'GET',
     config: {
       handler: (request, reply) => {
         equipmentController.findAll(request, reply);
@@ -49,8 +67,8 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
       plugins: EquipmentSchema.findAll
     }
   }, {
-    method: 'GET',
     path: '/equipment/{id}',
+    method: 'GET',
     config: {
       handler: (request, reply) => {
         equipmentController.findById(request, reply);

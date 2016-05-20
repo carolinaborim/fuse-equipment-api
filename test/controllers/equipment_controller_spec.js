@@ -27,7 +27,7 @@ describe('EquipmentController', () => {
     return readFixture('facadeEquipment', { id: equipmentId});
   };
 
-  describe('Route: equipment', () => {
+  describe('Route: /equipment', () => {
     before(() => {
       options = {
         url: '/equipment',
@@ -195,7 +195,7 @@ describe('EquipmentController', () => {
     });
   });
 
-  describe('Route: equipment/<id>', () => {
+  describe('Route: /equipment/<id>', () => {
     let equipmentId = '1-2-3-a';
 
     before(() => {
