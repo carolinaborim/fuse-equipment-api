@@ -2,8 +2,7 @@ import EquipmentParser from '../../parser/equipmentParser';
 
 describe('Equipment model', () => {
   it('should parse equipment with informations', () => {
-
-    let telemetryEquipment = {
+    const telemetryEquipment = {
       id: 'a-equipment-id',
       description: 'a-equipment-description',
       serviceLevel: 'a-equipment-service-level',
@@ -15,12 +14,12 @@ describe('Equipment model', () => {
       }
     };
 
-    let fetchedTrackingData = {
+    const fetchedTrackingData = {
       ENGINE_HOURS: '100',
       ENGINE_SPEED: '100'
     };
 
-    let fetchedTrackingPoint = {
+    const fetchedTrackingPoint = {
       location: {
         coordinates: [
           0.9392138888888889,
@@ -32,7 +31,7 @@ describe('Equipment model', () => {
       status: 'WORKING'
     };
 
-    let expectedParsedEquipment = {
+    const expectedParsedEquipment = {
       type: 'equipment',
       id: 'a-equipment-id',
       attributes: {
@@ -54,7 +53,7 @@ describe('Equipment model', () => {
             type: 'Point'
           },
           status: 'WORKING'
-        },
+        }
       },
       relationships: {
         dealer: {
@@ -78,9 +77,9 @@ describe('Equipment model', () => {
           }
         }
       }
-    }
+    };
 
-    let parsedEquipment = EquipmentParser.parse(
+    const parsedEquipment = EquipmentParser.parse(
       telemetryEquipment,
       fetchedTrackingData,
       fetchedTrackingPoint

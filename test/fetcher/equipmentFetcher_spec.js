@@ -1,8 +1,12 @@
 import config from '../../config';
 import EquipmentFetcher from '../../fetcher/equipmentFetcher';
+import helpers from '../helpers';
+import td from 'testdouble';
 
 describe('EquipmentFetcher', () => {
-  let httpClient, equipmentFetcher;
+  let httpClient;
+  let equipmentFetcher;
+
   const authenticationHeader = 'This is a Bearer token';
 
   beforeEach(() => {
@@ -13,8 +17,8 @@ describe('EquipmentFetcher', () => {
   it('fetches an equipment list', (done) => {
     const equipmentResponse = {
       equipment: [
-        generateTelemetryEquipment('a-equipment-id-1'),
-        generateTelemetryEquipment('a-equipment-id-2'),
+        helpers.generateTelemetryEquipment('a-equipment-id-1'),
+        helpers.generateTelemetryEquipment('a-equipment-id-2')
       ],
       links: {}
     };
@@ -22,7 +26,7 @@ describe('EquipmentFetcher', () => {
     const equipmentRequest = {
       method: 'GET',
       json: true,
-      url: `${FUSE_TELEMETRY_API_URL}/equipment`,
+      url: `${helpers.FUSE_TELEMETRY_API_URL}/equipment`,
       qs: {
         offset: 11,
         limit: 50
@@ -32,7 +36,7 @@ describe('EquipmentFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
+    helpers.respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
 
     equipmentFetcher.findAll(11, 50, authenticationHeader)
       .then((data) => {
@@ -44,13 +48,13 @@ describe('EquipmentFetcher', () => {
   it('fetches an equipment by id', (done) => {
     const equipmentResponse = {
       equipment: [
-        generateTelemetryEquipment('a-equipment-id-1'),
+        helpers.generateTelemetryEquipment('a-equipment-id-1')
       ],
       links: {}
     };
 
     const equipmentRequest = {
-      url: `${FUSE_TELEMETRY_API_URL}/equipment/a-equipment-id-1`,
+      url: `${helpers.FUSE_TELEMETRY_API_URL}/equipment/a-equipment-id-1`,
       method: 'GET',
       json: true,
       headers: {
@@ -58,7 +62,7 @@ describe('EquipmentFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
+    helpers.respondWithSuccess(httpClient(equipmentRequest), equipmentResponse);
 
     equipmentFetcher.findById('a-equipment-id-1', authenticationHeader)
       .then((data) => {
