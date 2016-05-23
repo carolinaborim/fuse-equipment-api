@@ -1,8 +1,11 @@
 import config from '../../config';
+import helpers from '../helpers';
+import td from 'testdouble';
 import TrackingPointFetcher from '../../fetcher/trackingPointFetcher';
 
 describe('TrackingPointFetcher', () => {
-  let httpClient, trackingPointFetcher;
+  let httpClient;
+  let trackingPointFetcher;
 
   beforeEach(() => {
     httpClient = td.function();
@@ -10,13 +13,13 @@ describe('TrackingPointFetcher', () => {
   });
 
   it('fetches tracking point variables data by equipment id', (done) => {
-    let trackingPointResponse = readFixture('trackingPoint');
+    const trackingPointResponse = helpers.readFixture('trackingPoint');
     trackingPointResponse.linked.trackingPoints[0].links.equipment = 'equipment-id-1';
     trackingPointResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
     trackingPointResponse.linked.trackingPoints[1].links.equipment = 'equipment-id-2';
     trackingPointResponse.meta.aggregations.equip_agg[1].key = 'equipment-id-2';
 
-    let expectedResponse = {
+    const expectedResponse = {
       'equipment-id-1': {
         timeOfOccurrence: '2015-11-08T02:27:45.000Z',
         timeOfReception: '2015-11-17T23:05:04.000Z',
@@ -56,11 +59,11 @@ describe('TrackingPointFetcher', () => {
           equipment: 'equipment-id-2',
           duty: '17d87b74-831a-4f27-acc1-0a965bc8578a'
         }
-      },
+      }
     };
 
-    let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
-    let mockedAuthorizationBearer = 'fake-bearer';
+    const mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
+    const mockedAuthorizationBearer = 'fake-bearer';
 
     const trackingPointRequest = {
       url: mockedSerchTrackingPointUri,
@@ -71,7 +74,7 @@ describe('TrackingPointFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
+    helpers.respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
 
     trackingPointFetcher.fetchByEquipmentId(
       ['equipment-id-1', 'equipment-id-2'],
@@ -83,13 +86,13 @@ describe('TrackingPointFetcher', () => {
   });
 
   it('should handle when api returns no tracking point value', (done) => {
-    let trackingPointResponse = readFixture('trackingPoint');
+    const trackingPointResponse = helpers.readFixture('trackingPoint');
     delete trackingPointResponse.linked;
 
-    let expectedResponse = {};
+    const expectedResponse = {};
 
-    let mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
-    let mockedAuthorizationBearer = 'fake-bearer';
+    const mockedSerchTrackingPointUri = 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint,trackingPoint.duty&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint&links.trackingPoint.equipment.id=equipment-id-1,equipment-id-2';
+    const mockedAuthorizationBearer = 'fake-bearer';
 
     const trackingPointRequest = {
       url: mockedSerchTrackingPointUri,
@@ -100,7 +103,7 @@ describe('TrackingPointFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
+    helpers.respondWithSuccess(httpClient(trackingPointRequest), trackingPointResponse);
 
     trackingPointFetcher.fetchByEquipmentId(
       ['equipment-id-1', 'equipment-id-2'],

@@ -1,15 +1,18 @@
 import config from '../../config';
 import CanVariablesFetcher from '../../fetcher/canVariablesFetcher';
+import helpers from '../helpers';
+import td from 'testdouble';
 
 describe('CanVariablesFetcher', () => {
-  let httpClient, canVariablesFetcher;
+  let httpClient;
+  let canVariablesFetcher;
 
   beforeEach(() => {
     httpClient = td.function();
     canVariablesFetcher = new CanVariablesFetcher(httpClient);
   });
 
-  const generateSearchUri = (equipmentIds, canVariableNames = DEFAULT_CAN_VARIABLES.join(',')) => {
+  const generateSearchUri = (equipmentIds, canVariableNames = config.DEFAULT_CAN_VARIABLES.join(',')) => {
     return 'https://agco-fuse-trackers-sandbox.herokuapp.com/trackingData/search?include=trackingPoint' +
       `&links.canVariable.name=${canVariableNames}` +
       '&aggregations=equip_agg' +
@@ -26,7 +29,7 @@ describe('CanVariablesFetcher', () => {
   };
 
   it('fetches can variables data by equipment id', (done) => {
-    let telemetryResponse = readFixture('telemetrySearch');
+    const telemetryResponse = helpers.readFixture('telemetrySearch');
     telemetryResponse.meta.aggregations.equip_agg[0].key = 'equipment-id-1';
     telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[0].spn_latest_ag[0].value = '17059320';
     telemetryResponse.meta.aggregations.equip_agg[0].spn_ag[1].spn_latest_ag[0].value = '1659.875';
@@ -34,7 +37,7 @@ describe('CanVariablesFetcher', () => {
     telemetryResponse.meta.aggregations.equip_agg[1].spn_ag[0].spn_latest_ag[0].value = '17059320';
     telemetryResponse.meta.aggregations.equip_agg[1].spn_ag[1].spn_latest_ag[0].value = '1659.875';
 
-    let expectedResponse = {
+    const expectedResponse = {
       'equipment-id-1': {
         ENGINE_HOURS: '17059320',
         ENGINE_SPEED: '1659.875'
@@ -45,8 +48,8 @@ describe('CanVariablesFetcher', () => {
       }
     };
 
-    let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
-    let mockedAuthorizationBearer = 'fake-bearer';
+    const mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
+    const mockedAuthorizationBearer = 'fake-bearer';
 
     const canVariableRequest = {
       url: mockedSearchUri,
@@ -57,24 +60,24 @@ describe('CanVariablesFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(canVariableRequest), telemetryResponse);
+    helpers.respondWithSuccess(httpClient(canVariableRequest), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
-        ['equipment-id-1', 'equipment-id-2'],
-        mockedAuthorizationBearer
-        ).then((response) => {
+      ['equipment-id-1', 'equipment-id-2'],
+      mockedAuthorizationBearer
+    ).then((response) => {
       expect(response).to.be.eql(expectedResponse);
       done();
     });
   });
 
   it('should handle when telemetry api returns no tracking data', (done) => {
-    let telemetryResponse = readFixture('telemetrySearch');
+    const telemetryResponse = helpers.readFixture('telemetrySearch');
     telemetryResponse.meta.aggregations.equip_agg = [];
 
-    let expectedResponse = {};
-    let mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
-    let mockedAuthorizationBearer = 'fake-bearer';
+    const expectedResponse = {};
+    const mockedSearchUri = generateSearchUri('equipment-id-1,equipment-id-2');
+    const mockedAuthorizationBearer = 'fake-bearer';
 
     const equipmentRequest = {
       url: mockedSearchUri,
@@ -85,12 +88,12 @@ describe('CanVariablesFetcher', () => {
       },
       timeout: config.TIMEOUT
     };
-    respondWithSuccess(httpClient(equipmentRequest), telemetryResponse);
+    helpers.respondWithSuccess(httpClient(equipmentRequest), telemetryResponse);
 
     canVariablesFetcher.fetchByEquipmentId(
-        ['equipment-id-1', 'equipment-id-2'],
-        mockedAuthorizationBearer
-        ).then((response) => {
+      ['equipment-id-1', 'equipment-id-2'],
+      mockedAuthorizationBearer
+    ).then((response) => {
       expect(response).to.be.eql(expectedResponse);
       done();
     });

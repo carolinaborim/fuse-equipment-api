@@ -1,20 +1,9 @@
-import supertest from 'supertest';
-import chai from 'chai';
-import td from 'testdouble';
 import Bluebird from 'bluebird';
 import fs from 'fs';
-import config from '../config';
+import td from 'testdouble';
 
-global.FUSE_TELEMETRY_API_URL = 'https://agco-fuse-trackers-sandbox.herokuapp.com';
-global.expect = chai.expect;
-global.td = td;
-global.DEFAULT_CAN_VARIABLES = config.DEFAULT_CAN_VARIABLES;
-
-global.respondWithSuccess = (requestPromiseMock, result) => {
-  td.when(requestPromiseMock).thenDo(() => Bluebird.resolve(result));
-};
-
-global.generateTelemetryEquipment = (equipmentId) => {
+const FUSE_TELEMETRY_API_URL = 'https://agco-fuse-trackers-sandbox.herokuapp.com';
+const generateTelemetryEquipment = (equipmentId) => {
   return {
     id: equipmentId,
     description: 'Equipment 1',
@@ -27,12 +16,21 @@ global.generateTelemetryEquipment = (equipmentId) => {
     }
   };
 };
-
-global.respondWithFailure = (requestPromiseMock, result) => {
+const readFixture = (fixtureName, partialObject) => {
+  const fixture = JSON.parse(fs.readFileSync(`${__dirname}/fixtures/${fixtureName}Fixture.json`, 'utf8'));
+  return Object.assign({}, fixture, partialObject);
+};
+const respondWithSuccess = (requestPromiseMock, result) => {
+  td.when(requestPromiseMock).thenDo(() => Bluebird.resolve(result));
+};
+const respondWithFailure = (requestPromiseMock, result) => {
   td.when(requestPromiseMock).thenDo(() => Bluebird.reject(result));
 };
 
-global.readFixture = (fixtureName, partialObject) => {
-  const fixture = JSON.parse(fs.readFileSync(`${__dirname}/fixtures/${fixtureName}Fixture.json`, 'utf8'));
-  return Object.assign({}, fixture, partialObject);
+module.exports = {
+  FUSE_TELEMETRY_API_URL,
+  generateTelemetryEquipment,
+  readFixture,
+  respondWithFailure,
+  respondWithSuccess
 };

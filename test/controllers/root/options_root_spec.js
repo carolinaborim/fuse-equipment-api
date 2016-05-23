@@ -1,7 +1,8 @@
-import app from '../../app';
-import CanVariablesFetcher from '../../fetcher/canVariablesFetcher';
-import EquipmentFetcher from '../../fetcher/equipmentFetcher';
-import TrackingPointFetcher from '../../fetcher/trackingPointFetcher';
+import app from '../../../app';
+import CanVariablesFetcher from '../../../fetcher/canVariablesFetcher';
+import EquipmentFetcher from '../../../fetcher/equipmentFetcher';
+import td from 'testdouble';
+import TrackingPointFetcher from '../../../fetcher/trackingPointFetcher';
 
 describe('RootController', () => {
   let server;
