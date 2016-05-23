@@ -4,7 +4,7 @@ import EquipmentFetcher from '../../../fetcher/equipmentFetcher';
 import td from 'testdouble';
 import TrackingPointFetcher from '../../../fetcher/trackingPointFetcher';
 
-describe('EquipmentController', () => {
+describe('Asking for supported HTTP methods at (/equipment)', () => {
   let canVariablesFetcher;
   let equipmentFetcher;
   let trackingPointFetcher;
@@ -18,21 +18,19 @@ describe('EquipmentController', () => {
     server = app(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
   });
 
-  describe('OPTIONS /equipment', () => {
-    it('should return the list of allowed HTTP methods', (done) => {
-      const optionsRequest = {
-        url: '/equipment',
-        method: 'OPTIONS'
-      };
+  it('should return the list of allowed HTTP methods', (done) => {
+    const optionsRequest = {
+      url: '/equipment',
+      method: 'OPTIONS'
+    };
 
-      const expectedResponse = '';
+    const expectedResponse = '';
 
-      server.inject(optionsRequest, (res) => {
-        expect(res.statusCode).to.be.eql(200);
-        expect(res.headers.allow).to.be.eql('GET');
-        expect(res.payload).to.be.eql(expectedResponse);
-        done();
-      });
+    server.inject(optionsRequest, (res) => {
+      expect(res.statusCode).to.be.eql(200);
+      expect(res.headers.allow).to.be.eql('GET');
+      expect(res.payload).to.be.eql(expectedResponse);
+      done();
     });
   });
 });

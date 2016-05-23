@@ -4,7 +4,7 @@ import EquipmentFetcher from '../../../fetcher/equipmentFetcher';
 import td from 'testdouble';
 import TrackingPointFetcher from '../../../fetcher/trackingPointFetcher';
 
-describe('RootController', () => {
+describe('Listing root (/)', () => {
   let server;
 
   beforeEach(() => {
@@ -15,8 +15,8 @@ describe('RootController', () => {
     server = app(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
   });
 
-  describe('Route: /', () => {
-    it('should return the list of allowed HTTP methods', (done) => {
+  describe('Asking for supported HTTP methods at (/)', () => {
+    it('should return a list of allowed HTTP methods', (done) => {
       const options = {
         url: '/',
         method: 'OPTIONS'
@@ -31,8 +31,10 @@ describe('RootController', () => {
         done();
       });
     });
+  });
 
-    it('should return the list of available resources', (done) => {
+  describe('Asking for supported resources at (/)', () => {
+    it('should return a list of available resources', (done) => {
       const options = {
         url: '/',
         method: 'GET'
