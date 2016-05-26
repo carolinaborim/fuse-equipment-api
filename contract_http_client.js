@@ -1,8 +1,8 @@
 import requestPromise from 'request-promise';
 import helper from './contract_helper';
 
-const contractHttpRequest = (request, cb) => {
-  const contractRequest = request;
+const contractHttpRequest = (contractRequest, cb) => {
+  const contractRequest = contractRequest;
   helper.requestOAuthAccessToken()
   .then((accessToken) => {
     contractRequest.headers = {
