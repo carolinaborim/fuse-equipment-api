@@ -11,7 +11,9 @@ addons:
 env:
 - TRAVIS=travis CXX=g++-4.8
 after_script:
-- npm run contract-tests
+  - npm run contract-tests
+ on:
+   branch: master
 deploy:
   - provider: heroku
     api_key:
