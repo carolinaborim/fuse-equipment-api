@@ -10,6 +10,11 @@ addons:
     - g++-4.8
 env:
 - TRAVIS=travis CXX=g++-4.8
+install:
+  - npm install
+script:
+  - npm test
+  - if [ "${TRAVIS_PULL_REQUEST}" == "false" ]; then npm run contract-tests; fi
 deploy:
   - provider: heroku
     api_key:
