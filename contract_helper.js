@@ -1,5 +1,3 @@
-'use strict'; // eslint-disable-line strict
-
 import config from './contract_config';
 import requestPromise from 'request-promise';
 
