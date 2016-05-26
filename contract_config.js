@@ -1,4 +1,3 @@
-(process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0');
 const getAccessToken = () => {
   const forgeRockUser = process.env.FORGE_ROCK_USER;
   const forgeRockPassword = process.env.FORGE_ROCK_PASSWORD;
