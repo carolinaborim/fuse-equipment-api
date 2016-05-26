@@ -11,6 +11,5 @@ module.exports = {
   FORGE_ROCK_URL: process.env.FORGE_ROCK_URL || 'https://aaat.agcocorp.com',
   FORGE_ROCK_USER: process.env.FORGE_ROCK_USER,
   FORGE_ROCK_PASSWORD: process.env.FORGE_ROCK_PASSWORD,
-  FORGE_ROCK_SERVICE_SECRET: process.env.FORGE_ROCK_SERVICE_SECRET,
   ACCESS_TOKEN: getAccessToken()
 };
