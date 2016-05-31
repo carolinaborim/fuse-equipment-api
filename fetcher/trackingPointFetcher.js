@@ -1,6 +1,6 @@
-import config from '../config';
 import _ from 'lodash';
-
+import trackingDataSearchParser from '../parser/trackingDataSearchParser';
+import config from '../config';
 
 class TrackingPointFetcher {
   constructor(httpClient) {
@@ -9,14 +9,7 @@ class TrackingPointFetcher {
 
   urlFor(equipmentIds) {
     const ids = equipmentIds.join(',');
-
-    return `${config.TELEMETRY_API_URL}/trackingData/search` +
-      '?include=trackingPoint,trackingPoint.duty' +
-      '&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id' +
-      '&equip_agg.aggregations=tp_latest_ag&tp_latest_ag.type=top_hits' +
-      '&tp_latest_ag.sort=-links.trackingPoint.timeOfOccurrence&tp_latest_ag.limit=1' +
-      '&tp_latest_ag.fields=links.trackingPoint&tp_latest_ag.include=trackingPoint' +
-      `&links.trackingPoint.equipment.id=${ids}`;
+    return trackingDataSearchParser.parseLastDutyUrl(ids);
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {
