@@ -1,6 +1,6 @@
 import { Contract, Joi } from 'consumer-contracts';
 import config from '../../../../contract_config';
-import trackingDataSearchParser from '../../../../parser/trackingDataSearchParser';
+import trackingDataSearchHelper from '../../../../helper/trackingDataSearchHelper';
 import helper from '../../../../contract_helper';
 
 const canVariables = 'ENGINE_HOURS';
@@ -32,7 +32,7 @@ module.exports = new Contract({
     headers: {
       authorization: config.ACCESS_TOKEN
     },
-    url: trackingDataSearchParser.parseSearchByCANVariablesUrl(canVariables, EQUIPMENT_ID)
+    url: trackingDataSearchHelper.searchByCANVariablesUrl(canVariables, EQUIPMENT_ID)
   },
   response: {
     statusCode: 200,

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import trackingDataSearchParser from '../parser/trackingDataSearchParser';
+import trackingDataSearchHelper from '../helper/trackingDataSearchHelper';
 import config from '../config';
 
 class TrackingPointFetcher {
@@ -9,7 +9,7 @@ class TrackingPointFetcher {
 
   urlFor(equipmentIds) {
     const ids = equipmentIds.join(',');
-    return trackingDataSearchParser.parseLastDutyUrl(ids);
+    return trackingDataSearchHelper.searchLastDutyUrl(ids);
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {

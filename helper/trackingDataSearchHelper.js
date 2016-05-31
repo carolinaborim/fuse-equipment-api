@@ -1,6 +1,6 @@
 import config from '../config';
 
-const parseLastDutyUrl = (equipmentIds) => {
+const searchLastDutyUrl = (equipmentIds) => {
   return `${config.TELEMETRY_API_URL}/trackingData/search` +
     '?include=trackingPoint,trackingPoint.duty' +
     '&aggregations=equip_agg&equip_agg.property=links.trackingPoint.equipment.id' +
@@ -10,7 +10,7 @@ const parseLastDutyUrl = (equipmentIds) => {
     `&links.trackingPoint.equipment.id=${equipmentIds}`;
 };
 
-const parseSearchByCANVariablesUrl = (canVariableNames, equipmentIds) => {
+const searchByCANVariablesUrl = (canVariableNames, equipmentIds) => {
   return `${config.TELEMETRY_API_URL}/trackingData/search?include=trackingPoint` +
     `&links.canVariable.name=${canVariableNames}` +
     '&aggregations=equip_agg' +
@@ -27,6 +27,6 @@ const parseSearchByCANVariablesUrl = (canVariableNames, equipmentIds) => {
 };
 
 module.exports = {
-  parseLastDutyUrl,
-  parseSearchByCANVariablesUrl
+  searchLastDutyUrl,
+  searchByCANVariablesUrl
 };

@@ -1,6 +1,6 @@
 import config from '../config';
 import _ from 'lodash';
-import trackingDataSearchParser from '../parser/trackingDataSearchParser';
+import trackingDataSearchHelper from '../helper/trackingDataSearchHelper';
 
 class CanVariablesFetcher {
   constructor(httpClient) {
@@ -11,7 +11,7 @@ class CanVariablesFetcher {
     const canVariableNames = config.DEFAULT_CAN_VARIABLES.join(',');
     const ids = equipmentIds.join(',');
 
-    return trackingDataSearchParser.parseSearchByCANVariablesUrl(canVariableNames, ids);
+    return trackingDataSearchHelper.searchByCANVariablesUrl(canVariableNames, ids);
   }
 
   fetchByEquipmentId(equipmentIds, authorizationBearer) {

@@ -1,6 +1,6 @@
 import { Contract, Joi } from 'consumer-contracts';
 import config from '../../../../contract_config';
-import trackingDataSearchParser from '../../../../parser/trackingDataSearchParser';
+import trackingDataSearchHelper from '../../../../helper/trackingDataSearchHelper';
 import helper from '../../../../contract_helper';
 
 const EQUIPMENT_ID = '7d7ceeb8-f628-45a1-b96d-587b3979f8ef';
@@ -31,7 +31,7 @@ module.exports = new Contract({
     headers: {
       authorization: config.ACCESS_TOKEN
     },
-    url: trackingDataSearchParser.parseLastDutyUrl(EQUIPMENT_ID)
+    url: trackingDataSearchHelper.searchLastDutyUrl(EQUIPMENT_ID)
   },
   response: {
     statusCode: 200,
