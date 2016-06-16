@@ -1,5 +1,5 @@
-import config from '../../config';
-import CanVariablesFetcher from '../../fetcher/canVariablesFetcher';
+import config from '../../src/config';
+import CanVariablesFetcher from '../../src/fetcher/canVariablesFetcher';
 import helpers from '../helpers';
 import td from 'testdouble';
 

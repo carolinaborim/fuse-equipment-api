@@ -1,7 +1,7 @@
-import config from '../../config';
+import config from '../../src/config';
 import helpers from '../helpers';
 import td from 'testdouble';
-import TrackingPointFetcher from '../../fetcher/trackingPointFetcher';
+import TrackingPointFetcher from '../../src/fetcher/trackingPointFetcher';
 
 describe('TrackingPointFetcher', () => {
   let httpClient;

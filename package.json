@@ -4,7 +4,7 @@
   "description": "fuse equipment api façade",
   "main": "main.js",
   "scripts": {
-    "contract-tests": "babel-node node_modules/.bin/consumer-contracts run",
+    "contract-tests": "babel-node node_modules/.bin/consumer-contracts run ./test/consumer-contracts/contracts/**/**/**/**",
     "lint": "eslint '**/*.js'",
     "start": "babel-node main.js",
     "start-dev": "nodemon main.js --exec babel-node",

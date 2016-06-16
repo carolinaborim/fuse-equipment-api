@@ -1,4 +1,4 @@
-import EquipmentParser from '../../parser/equipmentParser';
+import EquipmentParser from '../../src/parser/equipmentParser';
 
 describe('Equipment model', () => {
   it('should parse equipment with informations', () => {

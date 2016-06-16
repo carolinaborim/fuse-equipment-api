@@ -1,9 +1,9 @@
-import app from './app';
-import config from './config';
+import app from './src/app';
+import config from './src/config';
 import httpClient from 'request-promise';
-import CanVariablesFetcher from './fetcher/canVariablesFetcher';
-import EquipmentFetcher from './fetcher/equipmentFetcher';
-import TrackingPointFetcher from './fetcher/trackingPointFetcher';
+import CanVariablesFetcher from './src/fetcher/canVariablesFetcher';
+import EquipmentFetcher from './src/fetcher/equipmentFetcher';
+import TrackingPointFetcher from './src/fetcher/trackingPointFetcher';
 
 const canVariablesFetcher = new CanVariablesFetcher(httpClient);
 const equipmentFetcher = new EquipmentFetcher(httpClient);

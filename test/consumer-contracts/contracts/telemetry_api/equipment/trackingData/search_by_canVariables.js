@@ -1,13 +1,14 @@
 import { Contract, Joi } from 'consumer-contracts';
 import config from '../../../../contract_config';
-import trackingDataSearchHelper from '../../../../helper/trackingDataSearchHelper';
+import trackingDataSearchHelper from '../../../../../../src/helper/trackingDataSearchHelper';
 import helper from '../../../../contract_helper';
 
+const canVariables = 'ENGINE_HOURS';
 const EQUIPMENT_ID = '7d7ceeb8-f628-45a1-b96d-587b3979f8ef';
 const TRACKER_ID = '5818efa2-e095-430f-aef1-aaa2db38095e';
 
 module.exports = new Contract({
-  name: 'Search by last equipment trackingPoint and duty',
+  name: 'Search by canVariables type',
   consumer: 'Telemetry API',
   before: (done) => {
     helper.deleteEquipment(EQUIPMENT_ID)
@@ -31,7 +32,7 @@ module.exports = new Contract({
     headers: {
       authorization: config.ACCESS_TOKEN
     },
-    url: trackingDataSearchHelper.searchLastDutyUrl(EQUIPMENT_ID)
+    url: trackingDataSearchHelper.searchByCANVariablesUrl(canVariables, EQUIPMENT_ID)
   },
   response: {
     statusCode: 200,
@@ -55,9 +56,10 @@ module.exports = new Contract({
           timeOfReception: Joi.string(),
           externalId: Joi.string()
         }),
-        duties: Joi.array().items({
+        canVariables: Joi.array().items({
           id: Joi.string(),
-          status: Joi.string()
+          canId: Joi.number(),
+          name: Joi.string()
         })
       }),
       meta: Joi.object().keys({
@@ -65,7 +67,12 @@ module.exports = new Contract({
           equip_agg: Joi.array().items({
             key: Joi.string(),
             count: Joi.number(),
-            tp_latest_ag: Joi.array()
+            tp_latest_ag: Joi.array(),
+            spn_ag: Joi.array().items({
+              key: Joi.string().valid(canVariables),
+              count: Joi.number(),
+              spn_latest_ag: Joi.array()
+            })
           })
         })
       })
@@ -73,9 +80,9 @@ module.exports = new Contract({
   },
   after: (done) => {
     helper.deleteEquipment(EQUIPMENT_ID)
-     .then(() => {
-       return helper.deleteTracker(TRACKER_ID);
-     })
+    .then(() => {
+      return helper.deleteTracker(TRACKER_ID);
+    })
     .catch(() => {})
     .finally(done);
   }
