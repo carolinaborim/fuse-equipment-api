@@ -1,5 +1,5 @@
-import config from '../../config';
-import EquipmentFetcher from '../../fetcher/equipmentFetcher';
+import config from '../../src/config';
+import EquipmentFetcher from '../../src/fetcher/equipmentFetcher';
 import helpers from '../helpers';
 import td from 'testdouble';
 
