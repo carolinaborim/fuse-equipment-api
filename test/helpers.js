@@ -3,6 +3,7 @@ import fs from 'fs';
 import td from 'testdouble';
 
 const FUSE_TELEMETRY_API_URL = 'https://agco-fuse-trackers-sandbox.herokuapp.com';
+const IAM_API_URL = 'https://agco-iam-test.herokuapp.com';
 const generateTelemetryEquipment = (equipmentId) => {
   return {
     id: equipmentId,
@@ -29,6 +30,7 @@ const respondWithFailure = (requestPromiseMock, result) => {
 
 module.exports = {
   FUSE_TELEMETRY_API_URL,
+  IAM_API_URL,
   generateTelemetryEquipment,
   readFixture,
   respondWithFailure,
