@@ -19,9 +19,17 @@ services:
     command: logstash -f /etc/logstash/conf.d/logstash.conf
     volumes:
       - ./elk/logstash:/etc/logstash/conf.d
+      - ./var/log:/var/log
     ports:
       - "5000:5000"
     links:
       - elasticsearch
     depends_on:
       - elasticsearch
+  filebeat:
+    image: prima/filebeat
+    volumes:
+      - ./filebeat/filebeat.yml:/filebeat.yml
+      - ./var/log:/var/log
+    depends_on:
+      - logstash
