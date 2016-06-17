@@ -9,13 +9,13 @@ import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 
-import ClientInformationTransformer from './metrics/transformers/clientInformationTransformer';
-import ApiResponseTimeExtractor from './metrics/apiResponseTimeExtractor';
+import UserInfoTransformer from './metrics/transformers/userInfoTransformer';
+import ResponseTimeExtractor from './metrics/responseTimeExtractor';
 
 const app = (equipmentFetcher,
              canVariablesFetcher,
              trackingPointFetcher,
-             clientInformationFetcher) => {
+             userInfoFetcher) => {
   const server = new Hapi.Server();
 
   const rootController = new RootController();
@@ -29,13 +29,13 @@ const app = (equipmentFetcher,
     }
   });
 
-  const clientInformationTransformer = new ClientInformationTransformer();
-  const apiResponseTimeExtractor = new ApiResponseTimeExtractor(
-    clientInformationFetcher,
-    clientInformationTransformer
+  const userInfoTransformer = new UserInfoTransformer();
+  const responseTimeExtractor = new ResponseTimeExtractor(
+    userInfoFetcher,
+    userInfoTransformer
   );
   server.on('response', (request) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((data) => {
       console.log(data);
     });

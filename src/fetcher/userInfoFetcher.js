@@ -1,6 +1,6 @@
 import config from '../config';
 
-class ClientInformationFetcher {
+class UserInfoFetcher {
   constructor(httpClient) {
     this.httpClient = httpClient;
   }
@@ -20,4 +20,4 @@ class ClientInformationFetcher {
   }
 }
 
-module.exports = ClientInformationFetcher;
+module.exports = UserInfoFetcher;

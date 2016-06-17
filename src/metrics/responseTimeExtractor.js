@@ -3,7 +3,7 @@ const metricUnit = 'miliseconds';
 const description = 'Response time in miliseconds';
 const tags = ['response-time', 'equipment-facade'];
 
-class ApiResponseTimeExtractor {
+class ResponseTimeExtractor {
   constructor(clientInformationFetcher, clientInformationTransformer) {
     this.clientInformationFetcher = clientInformationFetcher;
     this.clientInformationTransformer = clientInformationTransformer;
@@ -39,4 +39,4 @@ class ApiResponseTimeExtractor {
       });
   }
 }
-module.exports = ApiResponseTimeExtractor;
+module.exports = ResponseTimeExtractor;

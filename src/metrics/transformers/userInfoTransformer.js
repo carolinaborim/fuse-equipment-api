@@ -1,4 +1,4 @@
-class ClientInformationTransformer {
+class UserInfoTransformer {
   transform(data) {
     const json = JSON.parse(data);
 
@@ -16,4 +16,4 @@ class ClientInformationTransformer {
   }
 }
 
-module.exports = ClientInformationTransformer;
+module.exports = UserInfoTransformer;

@@ -1,13 +1,13 @@
 import config from '../../src/config';
-import ClientInformationFetcher from '../../src/fetcher/clientInformationFetcher';
+import UserInfoFetcher from '../../src/fetcher/userInfoFetcher';
 import td from 'testdouble';
 import helpers from '../helpers';
 
-describe('ClientInformationFetcher', () => {
-  it('fetches client information', (done) => {
+describe('UserInfoFetcher', () => {
+  it('fetches user information', (done) => {
     const authenticationHeader = 'Basic ???';
     const httpClient = td.function();
-    const clientInformationResponse = {
+    const userInfoResponse = {
       serviceUsers: [{
         id: 'fake-id',
         emailAddress: 'user@example.com',
@@ -18,7 +18,7 @@ describe('ClientInformationFetcher', () => {
       }]
     };
 
-    const clientInformationRequest = {
+    const userInfoRequest = {
       url: `${helpers.IAM_API_URL}/whoAmI`,
       method: 'GET',
       headers: {
@@ -28,12 +28,12 @@ describe('ClientInformationFetcher', () => {
       timeout: config.TIMEOUT
     };
 
-    helpers.respondWithSuccess(httpClient(clientInformationRequest), clientInformationResponse);
+    helpers.respondWithSuccess(httpClient(userInfoRequest), userInfoResponse);
 
-    const clientInformationFetcher = new ClientInformationFetcher(httpClient);
-    clientInformationFetcher.whoAmI(authenticationHeader)
+    const userInfoFetcher = new UserInfoFetcher(httpClient);
+    userInfoFetcher.whoAmI(authenticationHeader)
       .then((data) => {
-        expect(data).to.be.eql(clientInformationResponse);
+        expect(data).to.be.eql(userInfoResponse);
       })
       .then(done);
   });

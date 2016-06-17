@@ -1,9 +1,9 @@
-import ApiResponseTimeExtractor from '../../src/metrics/apiResponseTimeExtractor';
-import ClientInformationFetcher from '../../src/fetcher/clientInformationFetcher';
-import ClientInformationTransformer from '../../src/metrics/transformers/clientInformationTransformer';
+import ResponseTimeExtractor from '../../src/metrics/responseTimeExtractor';
+import UserInfoFetcher from '../../src/fetcher/userInfoFetcher';
+import UserInfoTransformer from '../../src/metrics/transformers/userInfoTransformer';
 import td from 'testdouble';
 
-describe('API response time extractor', () => {
+describe('Response time extractor', () => {
   const authorizationHeader = 'Basic ???';
   const clientID = 'fake-id';
   const username = 'user@example.com';
@@ -22,9 +22,9 @@ describe('API response time extractor', () => {
     }
   };
 
-  let clientInformationFetcher;
-  let clientInformationTransformer;
-  let apiResponseTimeExtractor;
+  let userInfoFetcher;
+  let userInfoTransformer;
+  let responseTimeExtractor;
 
   beforeEach(() => {
     const whoAmI = td.function();
@@ -43,8 +43,8 @@ describe('API response time extractor', () => {
     });
     td.when(whoAmI(authorizationHeader)).thenReturn(whoAmIPromise);
 
-    clientInformationFetcher = td.object(ClientInformationFetcher);
-    clientInformationFetcher.whoAmI = whoAmI;
+    userInfoFetcher = td.object(UserInfoFetcher);
+    userInfoFetcher.whoAmI = whoAmI;
 
     const transform = td.function();
     const transformPromise = new Promise((resolve) => {
@@ -55,14 +55,14 @@ describe('API response time extractor', () => {
       resolve(result);
     });
     td.when(transform(whoAmIResult)).thenReturn(transformPromise);
-    clientInformationTransformer = td.object(ClientInformationTransformer);
-    clientInformationTransformer.transform = transform;
+    userInfoTransformer = td.object(UserInfoTransformer);
+    userInfoTransformer.transform = transform;
 
-    apiResponseTimeExtractor = new ApiResponseTimeExtractor(clientInformationFetcher, clientInformationTransformer);
+    responseTimeExtractor = new ResponseTimeExtractor(userInfoFetcher, userInfoTransformer);
   });
 
   it('should extract application name', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.appName).to.be.eql('fuse-equipment-api');
     })
@@ -70,7 +70,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract path', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.path).to.be.eql('/equipment');
     })
@@ -78,7 +78,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract HTTP method', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.method).to.be.eql('get');
     })
@@ -86,7 +86,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract HTTP status code', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.statusCode).to.be.eql(200);
     })
@@ -94,7 +94,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract cliente ID', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.clientID).to.be.eql(clientID);
     })
@@ -102,7 +102,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract username', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.username).to.be.eql(username);
     })
@@ -110,7 +110,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract response time', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.metric).to.be.eql(27);
     })
@@ -118,7 +118,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract events unit', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.metricUnit).to.be.eql('miliseconds');
     })
@@ -126,7 +126,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract description', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.description).to.be.eql('Response time in miliseconds');
     })
@@ -134,7 +134,7 @@ describe('API response time extractor', () => {
   });
 
   it('should extract tags', (done) => {
-    apiResponseTimeExtractor.extract(request)
+    responseTimeExtractor.extract(request)
     .then((events) => {
       expect(events.tags).to.be.eql(['response-time', 'equipment-facade']);
     })
