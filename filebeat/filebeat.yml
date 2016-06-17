@@ -2,8 +2,9 @@ filebeat:
   prospectors:
     -
       paths:
-        - /var/log/*.log
+        - /var/log/metrics/*.log
       input_type: log
+      document_type: metrics
       scan_frequency: 10s
 output:
   logstash:
