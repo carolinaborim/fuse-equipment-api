@@ -8,6 +8,7 @@ import Inert from 'inert';
 import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
+import corsHeaders from 'hapi-cors-headers';
 
 import UserInfoTransformer from './metrics/transformers/userInfoTransformer';
 import ResponseTimeTransformer from './metrics/transformers/responseTimeTransformer';
@@ -50,7 +51,10 @@ const app = (equipmentFetcher,
     {
       register: HapiSwagger,
       options: config.HAPI_SWAGGER_CONFIG
-    }]);
+    }
+  ]);
+
+  server.ext('onPreResponse', corsHeaders);
 
   server.route([{
     path: '/',
