@@ -1,5 +1,6 @@
 module.exports = {
   TELEMETRY_API_URL: process.env.TELEMETRY_API_URL || 'https://agco-fuse-trackers-sandbox.herokuapp.com',
+  IAM_API_URL: process.env.IAM_API_URL || 'https://agco-iam-test.herokuapp.com',
   DEFAULT_CAN_VARIABLES: [
     'VEHICLE_SPEED',
     'DRIVING_DIRECTION',

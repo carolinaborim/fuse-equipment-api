@@ -4,11 +4,16 @@ import httpClient from 'request-promise';
 import CanVariablesFetcher from './src/fetcher/canVariablesFetcher';
 import EquipmentFetcher from './src/fetcher/equipmentFetcher';
 import TrackingPointFetcher from './src/fetcher/trackingPointFetcher';
+import UserInfoFetcher from './src/fetcher/userInfoFetcher';
 
 const canVariablesFetcher = new CanVariablesFetcher(httpClient);
 const equipmentFetcher = new EquipmentFetcher(httpClient);
 const trackingPointFetcher = new TrackingPointFetcher(httpClient);
-const server = app(equipmentFetcher, canVariablesFetcher, trackingPointFetcher);
+const userInfoFetcher = new UserInfoFetcher(httpClient);
+const server = app(equipmentFetcher,
+                   canVariablesFetcher,
+                   trackingPointFetcher,
+                   userInfoFetcher);
 
 server.start((err) => {
   if (err) {

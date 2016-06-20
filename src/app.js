@@ -9,7 +9,14 @@ import Vision from 'vision';
 import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 
-const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
+import UserInfoTransformer from './metrics/transformers/userInfoTransformer';
+import ResponseTimeTransformer from './metrics/transformers/responseTimeTransformer';
+import ResponseTimeExtractor from './metrics/responseTimeExtractor';
+
+const app = (equipmentFetcher,
+             canVariablesFetcher,
+             trackingPointFetcher,
+             userInfoFetcher) => {
   const server = new Hapi.Server();
 
   const rootController = new RootController();
@@ -21,6 +28,20 @@ const app = (equipmentFetcher, canVariablesFetcher, trackingPointFetcher) => {
     routes: {
       cors: true
     }
+  });
+
+  const userInfoTransformer = new UserInfoTransformer();
+  const responseTimeTransformer = new ResponseTimeTransformer();
+  const responseTimeExtractor = new ResponseTimeExtractor(
+    userInfoFetcher,
+    userInfoTransformer,
+    responseTimeTransformer
+  );
+  server.on('response', (request) => {
+    responseTimeExtractor.extract(request)
+    .then((data) => {
+      console.log(data);
+    });
   });
 
   server.register([
