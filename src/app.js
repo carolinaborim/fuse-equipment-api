@@ -38,10 +38,12 @@ const app = (equipmentFetcher,
     responseTimeTransformer
   );
   server.on('response', (request) => {
-    responseTimeExtractor.extract(request)
-    .then((data) => {
-      console.log(data);
-    });
+    if (request.headers.authorization) {
+      responseTimeExtractor.extract(request)
+      .then((data) => {
+        console.log(data);
+      });
+    }
   });
 
   server.register([
