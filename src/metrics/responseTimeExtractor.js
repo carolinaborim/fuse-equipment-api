@@ -1,5 +1,4 @@
 const defaultInformation = {
-  appName: 'fuse-equipment-api',
   metricUnit: 'miliseconds',
   description: 'Response time in miliseconds',
   tags: ['response-time', 'equipment-facade']

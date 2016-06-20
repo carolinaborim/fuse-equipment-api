@@ -56,13 +56,6 @@ describe('Response time extractor', () => {
                                                       responseTimeTransformer);
   });
 
-  it('should extract application name', (done) => {
-    responseTimeExtractor.extract(request)
-    .then((events) => {
-      expect(events.appName).to.be.eql('fuse-equipment-api');
-    })
-    .then(done);
-  });
 
   it('should extract path', (done) => {
     responseTimeExtractor.extract(request)
