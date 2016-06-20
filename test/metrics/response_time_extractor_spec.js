@@ -1,4 +1,5 @@
 import ResponseTimeExtractor from '../../src/metrics/responseTimeExtractor';
+import ResponseTimeTransformer from '../../src/metrics/transformers/responseTimeTransformer';
 import UserInfoFetcher from '../../src/fetcher/userInfoFetcher';
 import UserInfoTransformer from '../../src/metrics/transformers/userInfoTransformer';
 import td from 'testdouble';
@@ -24,20 +25,21 @@ describe('Response time extractor', () => {
 
   let userInfoFetcher;
   let userInfoTransformer;
+  let responseTimeTransformer;
   let responseTimeExtractor;
 
   beforeEach(() => {
     const whoAmI = td.function();
-    const whoAmIResult = {
-      serviceUsers: [{
-        id: 'fake-id',
-        emailAddress: 'user@example.com',
-        status: 'active',
-        links: {
-          roles: ['fake-role']
-        }
-      }]
-    };
+    const whoAmIResult = '{ \
+    "serviceUsers": [{ \
+      "id": "fake-id", \
+      "emailAddress": "user@example.com", \
+      "status": "active", \
+      "links": { \
+        "roles": ["fake-role"] \
+      } \
+    }] \
+    }';
     const whoAmIPromise = new Promise((resolve) => {
       resolve(whoAmIResult);
     });
@@ -46,19 +48,12 @@ describe('Response time extractor', () => {
     userInfoFetcher = td.object(UserInfoFetcher);
     userInfoFetcher.whoAmI = whoAmI;
 
-    const transform = td.function();
-    const transformPromise = new Promise((resolve) => {
-      const result = {
-        clientID,
-        username
-      };
-      resolve(result);
-    });
-    td.when(transform(whoAmIResult)).thenReturn(transformPromise);
-    userInfoTransformer = td.object(UserInfoTransformer);
-    userInfoTransformer.transform = transform;
+    userInfoTransformer = new UserInfoTransformer();
+    responseTimeTransformer = new ResponseTimeTransformer();
 
-    responseTimeExtractor = new ResponseTimeExtractor(userInfoFetcher, userInfoTransformer);
+    responseTimeExtractor = new ResponseTimeExtractor(userInfoFetcher,
+                                                      userInfoTransformer,
+                                                      responseTimeTransformer);
   });
 
   it('should extract application name', (done) => {

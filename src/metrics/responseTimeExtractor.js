@@ -1,41 +1,39 @@
-const appName = 'fuse-equipment-api';
-const metricUnit = 'miliseconds';
-const description = 'Response time in miliseconds';
-const tags = ['response-time', 'equipment-facade'];
+const defaultInformation = {
+  appName: 'fuse-equipment-api',
+  metricUnit: 'miliseconds',
+  description: 'Response time in miliseconds',
+  tags: ['response-time', 'equipment-facade']
+};
 
 class ResponseTimeExtractor {
-  constructor(clientInformationFetcher, clientInformationTransformer) {
-    this.clientInformationFetcher = clientInformationFetcher;
-    this.clientInformationTransformer = clientInformationTransformer;
+  constructor(userInfoFetcher, userInfoTransformer, responseTimeTransformer) {
+    this.userInfoFetcher = userInfoFetcher;
+    this.userInfoTransformer = userInfoTransformer;
+    this.responseTimeTransformer = responseTimeTransformer;
   }
 
   extract(request) {
-    return this.clientInformationFetcher.whoAmI(request.headers.authorization)
-      .then(this.clientInformationTransformer.transform)
-      .then((data) => {
+    return this.userInfoFetcher.whoAmI(request.headers.authorization)
+      .then((userInfo) => {
         const path = request.path;
         const method = request.method;
         const statusCode = request.response.statusCode;
 
-        const clientID = data.clientID;
-        const username = data.username;
+        const transformedUserInfo = this.userInfoTransformer.transform(userInfo);
+        const clientID = transformedUserInfo.clientID;
+        const username = transformedUserInfo.username;
 
-        const requestReceived = new Date(request.info.received);
-        const requestResponded = new Date(request.info.responded);
-        const metric = requestResponded - requestReceived;
+        const metric = this.responseTimeTransformer.transform(request.info);
 
-        return {
-          appName,
+        return Object.assign({
           path,
           method,
           statusCode,
           clientID,
           username,
-          metric,
-          metricUnit,
-          description,
-          tags
-        };
+          metric
+        },
+        defaultInformation);
       });
   }
 }

@@ -10,6 +10,7 @@ import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 
 import UserInfoTransformer from './metrics/transformers/userInfoTransformer';
+import ResponseTimeTransformer from './metrics/transformers/responseTimeTransformer';
 import ResponseTimeExtractor from './metrics/responseTimeExtractor';
 
 const app = (equipmentFetcher,
@@ -30,9 +31,11 @@ const app = (equipmentFetcher,
   });
 
   const userInfoTransformer = new UserInfoTransformer();
+  const responseTimeTransformer = new ResponseTimeTransformer();
   const responseTimeExtractor = new ResponseTimeExtractor(
     userInfoFetcher,
-    userInfoTransformer
+    userInfoTransformer,
+    responseTimeTransformer
   );
   server.on('response', (request) => {
     responseTimeExtractor.extract(request)

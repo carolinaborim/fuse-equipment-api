@@ -14,19 +14,15 @@ describe('User information transformer', () => {
 
   it('should transform IAM response into a client ID', (done) => {
     const userInfoTransformer = new UserInfoTransformer();
-    userInfoTransformer.transform(expectedResult)
-    .then((data) => {
-      expect(data.clientID).to.be.eql('fake-id');
-    })
-    .then(done);
+    const data = userInfoTransformer.transform(expectedResult);
+    expect(data.clientID).to.be.eql('fake-id');
+    done();
   });
 
   it('should transform IAM response into an username', (done) => {
     const userInfoTransformer = new UserInfoTransformer();
-    userInfoTransformer.transform(expectedResult)
-    .then((data) => {
-      expect(data.username).to.be.eql('user@example.com');
-    })
-    .then(done);
+    const data = userInfoTransformer.transform(expectedResult);
+    expect(data.username).to.be.eql('user@example.com');
+    done();
   });
 });
