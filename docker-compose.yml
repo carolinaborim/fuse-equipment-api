@@ -29,6 +29,6 @@ services:
     image: prima/filebeat
     volumes:
       - ./filebeat/filebeat.yml:/filebeat.yml
-      - ./logs/metrics:/var/log/metrics
+      - ./log/metrics:/var/log/metrics
     depends_on:
       - logstash
