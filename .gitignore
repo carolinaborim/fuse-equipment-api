@@ -1,5 +1,5 @@
 # Logs
-logs
+log
 *.log
 npm-debug.log*
 
@@ -34,3 +34,6 @@ jspm_packages
 .node_repl_history
 
 .vscode/*
+
+# jmeter
+monitoring-load.csv
