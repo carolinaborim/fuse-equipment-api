@@ -120,7 +120,7 @@ describe('Response time extractor', () => {
     })
     .then(done);
   });
-  
+
   it('should extract type', (done) => {
     responseTimeExtractor.extract(request)
     .then((events) => {
