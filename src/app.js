@@ -18,7 +18,7 @@ const log = bunyan.createLogger({
   name: 'fuse-equipment-api',
   streams: [{
     level: 'info',
-    path: 'log/metrics/request.log'
+    path: 'log/equipment-api.log'
   }]
 });
 

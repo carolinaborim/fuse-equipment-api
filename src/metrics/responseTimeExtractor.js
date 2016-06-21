@@ -1,7 +1,8 @@
 const defaultInformation = {
   metricUnit: 'miliseconds',
   description: 'Response time in miliseconds',
-  tags: ['response-time', 'equipment-facade']
+  tags: ['response-time', 'equipment-facade'],
+  type: 'metrics'
 };
 
 class ResponseTimeExtractor {
