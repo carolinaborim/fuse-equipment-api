@@ -1,1 +1,46 @@
-version: v1
+version: v1.5.0
+ignore:
+  'npm:minimatch:20160620':
+    - snyk > recursive-readdir > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:30:25.570Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.034Z'
+    - babel-core > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > babel-register > babel-core > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-core > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-preset-es2015 > babel-plugin-transform-regenerator > babel-core > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > chokidar > readdirp > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > babel-core > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar-pack > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar > fstream > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.035Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar-pack > tar > fstream > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.036Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar-pack > fstream > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.036Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar-pack > fstream-ignore > fstream > rimraf > glob > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.036Z'
+    - babel-cli > chokidar > fsevents > node-pre-gyp > tar-pack > fstream-ignore > minimatch:
+        reason: No patch available
+        expires: '2016-07-21T16:33:10.038Z'
+patch: {}
