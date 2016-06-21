@@ -121,6 +121,14 @@ describe('Response time extractor', () => {
     .then(done);
   });
 
+  it('should extract type', (done) => {
+    responseTimeExtractor.extract(request)
+    .then((events) => {
+      expect(events.type).to.be.eql('metrics');
+    })
+    .then(done);
+  });
+
   it('should extract tags', (done) => {
     responseTimeExtractor.extract(request)
     .then((events) => {
