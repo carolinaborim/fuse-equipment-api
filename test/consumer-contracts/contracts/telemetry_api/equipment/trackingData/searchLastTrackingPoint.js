@@ -1,6 +1,6 @@
 import { Contract, Joi } from 'consumer-contracts';
 import config from '../../../../contract_config';
-import trackingDataSearchHelper from '../../../../../../src/helper/trackingDataSearchHelper';
+import trackingDataSearchHelper from '../../../../../../src/helpers/trackingDataSearch';
 import helper from '../../../../contract_helper';
 
 const EQUIPMENT_ID = '7d7ceeb8-f628-45a1-b96d-587b3979f8ef';

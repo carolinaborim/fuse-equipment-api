@@ -1,8 +1,8 @@
-import app from '../../../src/app';
-import CanVariablesFetcher from '../../../src/fetcher/canVariablesFetcher';
-import EquipmentFetcher from '../../../src/fetcher/equipmentFetcher';
+import app from '../../../../src/app';
+import CanVariablesFetcher from '../../../../src/fetchers/canVariables';
+import EquipmentFetcher from '../../../../src/fetchers/equipment';
 import td from 'testdouble';
-import TrackingPointFetcher from '../../../src/fetcher/trackingPointFetcher';
+import TrackingPointFetcher from '../../../../src/fetchers/trackingPoints';
 
 describe('Asking for supported HTTP methods at (/equipment)', () => {
   let canVariablesFetcher;

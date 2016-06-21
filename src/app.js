@@ -1,7 +1,7 @@
-import RootController from './controllers/rootController';
-import EquipmentController from './controllers/equipmentController';
+import RootController from './controllers/root';
+import EquipmentController from './controllers/equipment';
 import EquipmentValidator from './validators/equipment';
-import EquipmentSchema from './schemas/equipmentSchema';
+import EquipmentSchema from './schemas/equipment';
 import config from './config';
 import bunyan from 'bunyan';
 import Inert from 'inert';
@@ -10,9 +10,9 @@ import Hapi from 'hapi';
 import HapiSwagger from 'hapi-swagger';
 import corsHeaders from 'hapi-cors-headers';
 
-import UserInfoTransformer from './metrics/transformers/userInfoTransformer';
-import ResponseTimeTransformer from './metrics/transformers/responseTimeTransformer';
-import ResponseTimeExtractor from './metrics/responseTimeExtractor';
+import UserInfoTransformer from './metrics/transformers/userInfo';
+import ResponseTimeTransformer from './metrics/transformers/responseTime';
+import ResponseTimeExtractor from './metrics/extractors/responseTime';
 
 const log = bunyan.createLogger({
   name: 'fuse-equipment-api',

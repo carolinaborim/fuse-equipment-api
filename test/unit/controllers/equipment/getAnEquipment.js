@@ -1,9 +1,9 @@
-import app from '../../../src/app';
-import CanVariablesFetcher from '../../../src/fetcher/canVariablesFetcher';
-import EquipmentFetcher from '../../../src/fetcher/equipmentFetcher';
+import app from '../../../../src/app';
+import CanVariablesFetcher from '../../../../src/fetchers/canVariables';
+import EquipmentFetcher from '../../../../src/fetchers/equipment';
 import helpers from '../../helpers';
 import td from 'testdouble';
-import TrackingPointFetcher from '../../../src/fetcher/trackingPointFetcher';
+import TrackingPointFetcher from '../../../../src/fetchers/trackingPoints';
 
 describe('Listing a specific equipment (/equipment/{id})', () => {
   let canVariablesFetcher;

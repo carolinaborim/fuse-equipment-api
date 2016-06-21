@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import trackingDataSearchHelper from '../helper/trackingDataSearchHelper';
+import trackingDataSearchHelper from '../helpers/trackingDataSearch';
 import config from '../config';
 
 class TrackingPointFetcher {

@@ -1,6 +1,6 @@
-import EquipmentParser from '../../src/parser/equipmentParser';
+import EquipmentParser from '../../../src/parsers/equipment';
 
-describe('Equipment model', () => {
+describe('EquipmentParser', () => {
   it('should parse equipment with informations', () => {
     const telemetryEquipment = {
       id: 'a-equipment-id',

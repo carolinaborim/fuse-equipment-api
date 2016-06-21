@@ -18,7 +18,7 @@ const generateTelemetryEquipment = (equipmentId) => {
   };
 };
 const readFixture = (fixtureName, partialObject) => {
-  const fixture = JSON.parse(fs.readFileSync(`${__dirname}/fixtures/${fixtureName}Fixture.json`, 'utf8'));
+  const fixture = JSON.parse(fs.readFileSync(`${__dirname}/fixtures/${fixtureName}.json`, 'utf8'));
   return Object.assign({}, fixture, partialObject);
 };
 const respondWithSuccess = (requestPromiseMock, result) => {

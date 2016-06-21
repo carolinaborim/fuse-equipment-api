@@ -1,5 +1,5 @@
-import config from '../../src/config';
-import UserInfoFetcher from '../../src/fetcher/userInfoFetcher';
+import config from '../../../src/config';
+import UserInfoFetcher from '../../../src/fetchers/userInfo';
 import td from 'testdouble';
 import helpers from '../helpers';
 

@@ -1,6 +1,6 @@
 import config from '../config';
 import _ from 'lodash';
-import trackingDataSearchHelper from '../helper/trackingDataSearchHelper';
+import trackingDataSearchHelper from '../helpers/trackingDataSearch';
 
 class CanVariablesFetcher {
   constructor(httpClient) {

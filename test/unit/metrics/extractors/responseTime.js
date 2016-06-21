@@ -1,7 +1,7 @@
-import ResponseTimeExtractor from '../../src/metrics/responseTimeExtractor';
-import ResponseTimeTransformer from '../../src/metrics/transformers/responseTimeTransformer';
-import UserInfoFetcher from '../../src/fetcher/userInfoFetcher';
-import UserInfoTransformer from '../../src/metrics/transformers/userInfoTransformer';
+import ResponseTimeExtractor from '../../../../src/metrics/extractors/responseTime';
+import ResponseTimeTransformer from '../../../../src/metrics/transformers/responseTime';
+import UserInfoFetcher from '../../../../src/fetchers/userInfo';
+import UserInfoTransformer from '../../../../src/metrics/transformers/userInfo';
 import td from 'testdouble';
 
 describe('Response time extractor', () => {

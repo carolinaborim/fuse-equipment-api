@@ -1,4 +1,4 @@
-import ResponseTimeTransformer from '../../../src/metrics/transformers/responseTimeTransformer';
+import ResponseTimeTransformer from '../../../../src/metrics/transformers/responseTime';
 
 describe('Response time transformer', () => {
   it('should transform received and responded timestamps into elapsed miliseconds', (done) => {
