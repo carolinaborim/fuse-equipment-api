@@ -1,5 +1,5 @@
-import EquipmentParser from '../parser/equipmentParser';
-import ResponseHandler from '../handlers/responseHandler';
+import EquipmentParser from '../parsers/equipment';
+import ResponseHandler from '../handlers/response';
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_LIMIT = 100;

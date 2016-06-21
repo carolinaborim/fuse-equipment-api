@@ -1,10 +1,10 @@
 import app from './src/app';
 import config from './src/config';
 import httpClient from 'request-promise';
-import CanVariablesFetcher from './src/fetcher/canVariablesFetcher';
-import EquipmentFetcher from './src/fetcher/equipmentFetcher';
-import TrackingPointFetcher from './src/fetcher/trackingPointFetcher';
-import UserInfoFetcher from './src/fetcher/userInfoFetcher';
+import CanVariablesFetcher from './src/fetchers/canVariables';
+import EquipmentFetcher from './src/fetchers/equipment';
+import TrackingPointFetcher from './src/fetchers/trackingPoints';
+import UserInfoFetcher from './src/fetchers/userInfo';
 
 const canVariablesFetcher = new CanVariablesFetcher(httpClient);
 const equipmentFetcher = new EquipmentFetcher(httpClient);

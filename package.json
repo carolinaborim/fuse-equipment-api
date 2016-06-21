@@ -9,7 +9,7 @@
     "start": "babel-node main.js",
     "start-dev": "nodemon main.js --exec babel-node",
     "test": "snyk test && npm run lint && npm run unit-tests",
-    "unit-tests": "NODE_ENV=test mocha 'test/**/*_spec.js' --require test/index.js"
+    "unit-tests": "NODE_ENV=test mocha 'test/unit/**/*.js' --require test/unit/index.js"
   },
   "keywords": [
     "Fuse",

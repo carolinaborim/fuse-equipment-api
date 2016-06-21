@@ -1,4 +1,4 @@
-import UserInfoTransformer from '../../../src/metrics/transformers/userInfoTransformer';
+import UserInfoTransformer from '../../../../src/metrics/transformers/userInfo';
 
 describe('User information transformer', () => {
   const expectedResult = '{ \
