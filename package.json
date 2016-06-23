@@ -27,6 +27,7 @@
     "bunyan": "^1.8.1",
     "consign": "^0.1.2",
     "cors": "^2.7.1",
+    "elasticdump": "^2.3.0",
     "hapi": "^13.4.1",
     "hapi-cors-headers": "^1.0.0",
     "hapi-swagger": "^6.1.0",
