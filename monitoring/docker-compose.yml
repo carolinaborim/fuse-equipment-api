@@ -18,7 +18,7 @@ services:
     image: logstash:2.3.2
     command: logstash -f /etc/logstash/conf.d/logstash.conf
     volumes:
-      - ./monitoring/logstash:/etc/logstash/conf.d
+      - ./logstash:/etc/logstash/conf.d
     ports:
       - "5000:5000"
     links:
@@ -28,7 +28,7 @@ services:
   filebeat:
     image: prima/filebeat
     volumes:
-      - ./monitoring/filebeat/filebeat.yml:/filebeat.yml
+      - ./filebeat/filebeat.yml:/filebeat.yml
       - ./log:/var/log
     depends_on:
       - logstash
