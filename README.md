@@ -1,4 +1,4 @@
-# FUSE Equipamente API
+# FUSE Equipment API
 
 [![Build Status](https://travis-ci.org/agco-fuse/fuse-equipment-api.svg?branch=master)](https://travis-ci.org/agco-fuse/fuse-equipment-api)
 [![Code Climate](https://codeclimate.com/github/agco-fuse/fuse-equipment-api/badges/gpa.svg)](https://codeclimate.com/github/agco-fuse/fuse-equipment-api)
