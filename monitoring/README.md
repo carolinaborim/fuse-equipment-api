@@ -28,6 +28,35 @@ The components are going to be available at:
 * Elasticsearch: `http://DOCKER_MACHINE_IP:9200`
 * Kibana: `http://DOCKER_MACHINE_IP:5601`
 
+## Directory structure explained
+
+```
+  ├── docker-compose.yml
+  ├── filebeat
+  │   └── filebeat.yml
+  ├── jmeter
+  │   └── monitoring-load.jmx
+  ├── log
+  │   ├── empty
+  └── logstash
+  │   ├── logstash.conf
+  │   └── template.json
+```
+
+* docker-compose.yml - Docker Compose configuration file
+* /filebeat
+  *  filebeat.yml - Filebeat configuration file, passed as volume to
+     Filebeat container
+* /jmeter
+  * monitoring-load.jmx - Apache Jmeter exported configuration
+* /log - Folder that Filebeat watches, .log files should be generated
+  here
+  * empty - Empty file just to make sure git tracks this directory
+* /logstash - This entire folder is passed as volume to Logstash
+  container
+  * logstash.conf -  Logstash configuration file
+  * template.json - Elasticsearch index template
+
 ## The ELK stack
 
 The ELK stack consists of three very popular technologies:
