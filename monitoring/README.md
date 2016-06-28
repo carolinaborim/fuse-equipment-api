@@ -19,7 +19,7 @@ More details on the evaluated tools as well on ELK can be found under
 
 ## Running it
 
-```js
+```shell
 $ docker-compose up
 ```
 
