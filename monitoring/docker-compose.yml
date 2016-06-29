@@ -14,7 +14,7 @@ services:
     entrypoint: |
       sh -c 'sleep 30;<<EOF /usr/lib/node_modules/elasticdump/bin/elasticdump --output=http://elasticsearch:9200/.kibana --input=/monitoring/kibana/dashboard.json --type=data --debug<<EOF'
     volumes:
-      - ./monitoring/kibana:/monitoring/kibana
+      - ./kibana:/monitoring/kibana
   kibana:
     image: kibana:4.5.1
     ports:
