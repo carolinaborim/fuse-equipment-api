@@ -45,7 +45,7 @@ The components are going to be available at:
 
 * docker-compose.yml - Docker Compose configuration file
 * /filebeat
-  *  filebeat.yml - Filebeat configuration file, passed as volume to
+  *  filebeat.yml - [Filebeat](https://www.elastic.co/guide/en/beats/filebeat/current/configuration-filebeat-options.html) configuration file, passed as volume to
      Filebeat container
 * /jmeter
   * monitoring-load.jmx - Apache Jmeter exported configuration
@@ -54,7 +54,7 @@ The components are going to be available at:
   * empty - Empty file just to make sure git tracks this directory
 * /logstash - This entire folder is passed as volume to Logstash
   container
-  * logstash.conf -  Logstash configuration file
+  * logstash.conf - [Logstash](https://www.elastic.co/guide/en/logstash/current/config-examples.html) configuration file
   * template.json - Elasticsearch index template
 
 ## The ELK stack
