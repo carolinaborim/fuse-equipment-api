@@ -3,7 +3,6 @@ import EquipmentController from './controllers/equipment';
 import EquipmentValidator from './validators/equipment';
 import EquipmentSchema from './schemas/equipment';
 import config from './config';
-import bunyan from 'bunyan';
 import Inert from 'inert';
 import Vision from 'vision';
 import Hapi from 'hapi';
@@ -14,18 +13,11 @@ import UserInfoTransformer from './metrics/transformers/userInfo';
 import ResponseTimeTransformer from './metrics/transformers/responseTime';
 import ResponseTimeExtractor from './metrics/extractors/responseTime';
 
-const log = bunyan.createLogger({
-  name: 'fuse-equipment-api',
-  streams: [{
-    level: 'info',
-    path: 'monitoring/log/equipment-api.log'
-  }]
-});
-
 const app = (equipmentFetcher,
              canVariablesFetcher,
              trackingPointFetcher,
-             userInfoFetcher) => {
+             userInfoFetcher,
+             logger) => {
   const server = new Hapi.Server();
 
   const rootController = new RootController();
@@ -50,7 +42,7 @@ const app = (equipmentFetcher,
     if (request.headers.authorization) {
       responseTimeExtractor.extract(request)
       .then((data) => {
-        log.info(data);
+        logger.info(data);
       });
     }
   });
@@ -116,6 +108,5 @@ const app = (equipmentFetcher,
 
   return server;
 };
-
 
 module.exports = app;
